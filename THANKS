@@ -1,0 +1,21 @@
+OpenSWG THANKS
+
+The vision of a PreNGE Star Wars Galaxies emulator came before the time 
+of the OpenSWG project. The SWGEmu team inspired the developers of OpenSWG
+and with the help of their open source release we are now able to use
+their work and carry on the open source initiative. Be sure to check
+http://www.swgemu.com often, these guys work hard and deserve a big thanks.
+
+We would also like to thank the MaNGOS project, an open source WoW 
+emulator; being able to look at how a fully functional emulator works has
+provided many ideas. They also had a number of network utilities that we 
+will be using to make life a little easier on the devs.
+
+Following is a list of people who have contributed to this project in 
+some form or another, either by collecting information or by submitting
+source code. 
+
+Name					Contribution
+------------------------------------------------------------------------
+SWGEmu Team				Packet Encryption/Compression Schemes
+					Initial packet documentation
