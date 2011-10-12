@@ -50,11 +50,11 @@ BinaryPacketPtr LoadReadyMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)1;
-    *packet << (uint32)SMSG_LOAD_READY;
-    *packet << (uint8)0x00 << (uint16)0x00;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)1;
+    *packet << (uint32_t)SMSG_LOAD_READY;
+    *packet << (uint8_t)0x00 << (uint16_t)0x00;
 	return packet;
 }
 

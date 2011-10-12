@@ -17,13 +17,18 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
+#include "osSOEProtocol/playercreatureobjectproxy.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/macros.h>
-#include <gsCore/log.h>
 #include <gsServer/session.h>
 #include <gsCore/datastore.h>
 #include <osSOEProtocol/objectpropertytypes.h>
 #include <osSOEProtocol/playercreatureobject.h>
-#include <osSOEProtocol/playercreatureobjectproxy.h>
 
 #include <osSOEProtocol/settingunk1message.h>
 #include <osSOEProtocol/unkint900message.h>
@@ -47,8 +52,6 @@
 #include <osSOEProtocol/playinitmessage.h>
 #include <osSOEProtocol/playlinkmessage.h>
 
-#include <zthread/Thread.h>
-
 using namespace gsCore;
 using namespace gsNetwork;
 using namespace gsServer;
@@ -58,7 +61,7 @@ PlayerCreatureObjectProxy::PlayerCreatureObjectProxy()
 : CreatureObjectProxy()
 {}
 
-void PlayerCreatureObjectProxy::update(uint64 updateTimestamp) 
+void PlayerCreatureObjectProxy::update(uint64_t updateTimestamp) 
 {
 	for (std::vector<boost::shared_ptr<ObjectProxy> >::iterator itor = m_inRange.begin();
 		itor != m_inRange.end(); ++itor)
@@ -84,8 +87,8 @@ void PlayerCreatureObjectProxy::buildPropertyMap()
 
 	addProperty(new Uint64ObjectProperty(
 		"GalaxyId", "Galaxy ID", 
-		makeFunctor((CBFunctor1<uint64>*)0, *playerCreature, &PlayerCreatureObject::setGalaxyId), 
-		makeFunctor((CBFunctor0wRet<uint64>*)0, *playerCreature, &PlayerCreatureObject::getGalaxyId), 
+		makeFunctor((CBFunctor1<uint64_t>*)0, *playerCreature, &PlayerCreatureObject::setGalaxyId), 
+		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *playerCreature, &PlayerCreatureObject::getGalaxyId), 
 		"Galaxy Id.", 
 		GROUPNAME));
 
@@ -126,15 +129,15 @@ void PlayerCreatureObjectProxy::buildPropertyMap()
 
 	addProperty(new Uint32ObjectProperty(
 		"BankCredits", "Bank Credits", 
-		makeFunctor((CBFunctor1<uint32>*)0, *playerCreature, &PlayerCreatureObject::setBankCredits), 
-		makeFunctor((CBFunctor0wRet<uint32>*)0, *playerCreature, &PlayerCreatureObject::getBankCredits), 
+		makeFunctor((CBFunctor1<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::setBankCredits), 
+		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::getBankCredits), 
 		"Amount of credits in the objects bank.", 
 		GROUPNAME));
 
 	addProperty(new Uint32ObjectProperty(
 		"InventoryCredits", "Inventory Credits", 
-		makeFunctor((CBFunctor1<uint32>*)0, *playerCreature, &PlayerCreatureObject::setInventoryCredits), 
-		makeFunctor((CBFunctor0wRet<uint32>*)0, *playerCreature, &PlayerCreatureObject::getInventoryCredits), 
+		makeFunctor((CBFunctor1<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::setInventoryCredits), 
+		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::getInventoryCredits), 
 		"Amount of credits in the objects inventory.", 
 		GROUPNAME));
 }
@@ -391,85 +394,73 @@ void PlayerCreatureObjectProxy::store()
 		  << "FROM characters "
 		  << "WHERE object_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
                 
 		if (result)
         {
-			mysqlpp::Row row = result.fetch_row();
 
-		mysqlpp::Query q = Datastore::getStationDB().query();
+		    q = Datastore::getStationDB().query();
 
-		q << "UPDATE `characters` "
-          << "SET galaxy_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("GalaxyId"))->getValue()  << " , "
-		  << " zone_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ZoneId"))->getValue()  << " , "
-		  << " cell_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->getValue()  << " , "
-		  << " object_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue()  << " , "
-          << " firstname = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Firstname"))->getValue() << " , "
-          << " surname = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Surname"))->getValue() << " , "
-		  << " model = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Model"))->getValue() << " , "
-		  << " category = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Category"))->getValue() << " , "
-		  << " type = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Type"))->getValue() << " , "
-		  << " appearance = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Appearance"))->getValue() << " , "
-		  << " hair = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Hair"))->getValue() << " , "
-		  << " hair_data = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("HairData"))->getValue() << " , "
-		  << " biography = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Biography"))->getValue() << " , "
-		  << " health = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxHealth"))->getValue() << ", " 
-		  << " strength = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStrength"))->getValue() << ", " 
-		  << " constitution = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxConstitution"))->getValue() << ", " 
-		  << " action = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxAction"))->getValue() << ", " 
-		  << " quickness = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxQuickness"))->getValue() << ", " 
-		  << " stamina = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStamina"))->getValue() << ", " 
-		  << " mind = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxMind"))->getValue() << ", " 
-		  << " focus = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxFocus"))->getValue() << ", " 
-		  << " willpower = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxWillpower"))->getValue() << ", " 
-		  
-		  << " health_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("HealthWounds"))->getValue() << ", " 			  		  
-		  << " strength_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("StrengthWounds"))->getValue() << ", " 
-		  << " constitution_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("ConstitutionWounds"))->getValue() << ", " 
-		  << " action_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("ActionWounds"))->getValue() << ", " 
-		  << " quickness_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("QuicknessWounds"))->getValue() << ", " 
-		  << " stamina_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("StaminaWounds"))->getValue() << ", " 
-		  << " mind_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MindWounds"))->getValue() << ", " 
-		  << " focus_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("FocusWounds"))->getValue() << ", " 
-		  << " willpower_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("WillpowerWounds"))->getValue() << ", " 
-		  << " battle_fatigue = " << getPropertyAs<Uint32ObjectProperty*>(std::string("BattleFatigue"))->getValue() << ", " 
-		  << " creature_type = " << getPropertyAs<Uint32ObjectProperty*>(std::string("CreatureType"))->getValue() << ", " 
-		  << " faction_alignment = " << getPropertyAs<Uint32ObjectProperty*>(std::string("FactionAlignment"))->getValue() << ", " 
-		  << " mood = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Mood"))->getValue() << " , "
-		  << " planet = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Planet"))->getValue() << " , "
-		  << " credits_bank = " << getPropertyAs<Uint32ObjectProperty*>(std::string("BankCredits"))->getValue() << " , "
-		  << " credits_inventory = " << getPropertyAs<Uint32ObjectProperty*>(std::string("InventoryCredits"))->getValue() << " , "
-          << " quaternion_x = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionX"))->getValue() << " , "
-          << " quaternion_y = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionY"))->getValue() << " , "
-          << " quaternion_z = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionZ"))->getValue() << " , "
-          << " quaternion_w = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionW"))->getValue() << " , "
-          << " position_x = " << getPropertyAs<FloatObjectProperty*>(std::string("PositionX"))->getValue() << " , "
-          << " position_y = " << getPropertyAs<FloatObjectProperty*>(std::string("PositionY"))->getValue() << " , "
-          << " position_z = " << getPropertyAs<FloatObjectProperty*>(std::string("PositionZ"))->getValue() << " , "
-          << " scale = " << getPropertyAs<FloatObjectProperty*>(std::string("Scale"))->getValue() << " , "
-          << " state = " << getPropertyAs<UintObjectProperty*>(std::string("State"))->getValue() << "  "
-		  << "WHERE characters.id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->getValue() << " LIMIT 1";
-		
-		mysqlpp::ResNSel result = q.execute();
-          
-		if (! result.success)
-        {
-			Log::getMainLog().error("Unable to update player character.");
-			return;
+		    q << "UPDATE `characters` "
+              << "SET galaxy_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("GalaxyId"))->getValue()  << " , "
+		      << " zone_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ZoneId"))->getValue()  << " , "
+		      << " cell_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->getValue()  << " , "
+		      << " object_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue()  << " , "
+              << " firstname = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Firstname"))->getValue() << " , "
+              << " surname = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Surname"))->getValue() << " , "
+		      << " model = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Model"))->getValue() << " , "
+		      << " category = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Category"))->getValue() << " , "
+		      << " type = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Type"))->getValue() << " , "
+		      << " appearance = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Appearance"))->getValue() << " , "
+		      << " hair = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Hair"))->getValue() << " , "
+		      << " hair_data = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("HairData"))->getValue() << " , "
+		      << " biography = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Biography"))->getValue() << " , "
+		      << " health = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxHealth"))->getValue() << ", " 
+		      << " strength = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStrength"))->getValue() << ", " 
+		      << " constitution = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxConstitution"))->getValue() << ", " 
+		      << " action = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxAction"))->getValue() << ", " 
+		      << " quickness = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxQuickness"))->getValue() << ", " 
+		      << " stamina = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStamina"))->getValue() << ", " 
+		      << " mind = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxMind"))->getValue() << ", " 
+		      << " focus = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxFocus"))->getValue() << ", " 
+		      << " willpower = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MaxWillpower"))->getValue() << ", " 
+		      
+		      << " health_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("HealthWounds"))->getValue() << ", " 			  		  
+		      << " strength_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("StrengthWounds"))->getValue() << ", " 
+		      << " constitution_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("ConstitutionWounds"))->getValue() << ", " 
+		      << " action_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("ActionWounds"))->getValue() << ", " 
+		      << " quickness_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("QuicknessWounds"))->getValue() << ", " 
+		      << " stamina_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("StaminaWounds"))->getValue() << ", " 
+		      << " mind_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("MindWounds"))->getValue() << ", " 
+		      << " focus_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("FocusWounds"))->getValue() << ", " 
+		      << " willpower_wounds = " << getPropertyAs<Uint32ObjectProperty*>(std::string("WillpowerWounds"))->getValue() << ", " 
+		      << " battle_fatigue = " << getPropertyAs<Uint32ObjectProperty*>(std::string("BattleFatigue"))->getValue() << ", " 
+		      << " creature_type = " << getPropertyAs<Uint32ObjectProperty*>(std::string("CreatureType"))->getValue() << ", " 
+		      << " faction_alignment = " << getPropertyAs<Uint32ObjectProperty*>(std::string("FactionAlignment"))->getValue() << ", " 
+		      << " mood = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Mood"))->getValue() << " , "
+		      << " planet = " << mysqlpp::quote << getPropertyAs<StringObjectProperty*>(std::string("Planet"))->getValue() << " , "
+		      << " credits_bank = " << getPropertyAs<Uint32ObjectProperty*>(std::string("BankCredits"))->getValue() << " , "
+		      << " credits_inventory = " << getPropertyAs<Uint32ObjectProperty*>(std::string("InventoryCredits"))->getValue() << " , "
+              << " quaternion_x = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionX"))->getValue() << " , "
+              << " quaternion_y = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionY"))->getValue() << " , "
+              << " quaternion_z = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionZ"))->getValue() << " , "
+              << " quaternion_w = " << getPropertyAs<FloatObjectProperty*>(std::string("QuaternionW"))->getValue() << " , "
+              << " position_x = " << getPropertyAs<FloatObjectProperty*>(std::string("PositionX"))->getValue() << " , "
+              << " position_y = " << getPropertyAs<FloatObjectProperty*>(std::string("PositionY"))->getValue() << " , "
+              << " position_z = " << getPropertyAs<FloatObjectProperty*>(std::string("PositionZ"))->getValue() << " , "
+              << " scale = " << getPropertyAs<FloatObjectProperty*>(std::string("Scale"))->getValue() << " , "
+              << " state = " << getPropertyAs<UintObjectProperty*>(std::string("State"))->getValue() << "  "
+		      << "WHERE characters.id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->getValue() << " LIMIT 1";
+		    
+		    if (! q.execute())
+            {
+		    	LOG(ERROR) << "Unable to update player character.";
+		    	return;
+            }
         }
-		}
-	}
-  
-	catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-		return;
-    }
-	
-	catch (const mysqlpp::EndOfResults&) {
+        else
 		// Continue normally.
-		mysqlpp::Query q = Datastore::getStationDB().query();
+		q = Datastore::getStationDB().query();
 
         q << "INSERT INTO `characters` (`galaxy_id`,`zone_id`, `cell_id`, `object_id`, `firstname`, "
 		  << "  `surname`, `model`, `category`, `type`, `appearance`, `hair`, `hair_data`, `biography`, "
@@ -532,24 +523,22 @@ void PlayerCreatureObjectProxy::store()
           << "NOW(), "
           << getPropertyAs<UintObjectProperty*>(std::string("State"))->getValue() << ")"; // Active subscriber state
 
-		mysqlpp::ResNSel result = q.execute();
-
-		if (! result.success)
+		if (! q.execute())
         {
-			Log::getMainLog().error("Unable to create new player character entry.");
+            LOG(ERROR) << "Unable to create new player character entry.";
 			return;
         }
 	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+		LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
 }
 
 
-void PlayerCreatureObjectProxy::loadFromDatabaseId(uint64 databaseId)
+void PlayerCreatureObjectProxy::loadFromDatabaseId(uint64_t databaseId)
 {
 	createObject();
 
@@ -609,53 +598,51 @@ void PlayerCreatureObjectProxy::loadFromDatabaseId(uint64 databaseId)
           << "FROM characters "
           << "WHERE characters.id = " << databaseId << " LIMIT 1";
 
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
                 
 		if (result)
-        {
-			mysqlpp::Row row = result.fetch_row();
-			
-			getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64)row["id"]);
-			getPropertyAs<Uint64ObjectProperty*>(std::string("GalaxyId"))->setValue((uint64)row["galaxy_id"]);
-			getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64)row["object_id"]);
-			getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->setValue((uint64)row["cell_id"]);
-			getPropertyAs<Uint64ObjectProperty*>(std::string("ZoneId"))->setValue((uint64)row["zone_id"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Firstname"))->setValue((std::string)row["firstname"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Surname"))->setValue((std::string)row["surname"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Appearance"))->setValue((std::string)row["appearance"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Hair"))->setValue((std::string)row["hair"]);
-			getPropertyAs<StringObjectProperty*>(std::string("HairData"))->setValue((std::string)row["hair_data"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Biography"))->setValue((std::string)row["biography"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Model"))->setValue((std::string)row["model"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Category"))->setValue((std::string)row["category"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Type"))->setValue((std::string)row["type"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxHealth"))->setValue((uint32)row["health"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStrength"))->setValue((uint32)row["strength"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxConstitution"))->setValue((uint32)row["constitution"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxAction"))->setValue((uint32)row["action"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxQuickness"))->setValue((uint32)row["quickness"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStamina"))->setValue((uint32)row["stamina"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxMind"))->setValue((uint32)row["mind"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxFocus"))->setValue((uint32)row["focus"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxWillpower"))->setValue((uint32)row["willpower"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentHealth"))->setValue((uint32)row["health"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentStrength"))->setValue((uint32)row["strength"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentConstitution"))->setValue((uint32)row["constitution"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentAction"))->setValue((uint32)row["action"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentQuickness"))->setValue((uint32)row["quickness"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentStamina"))->setValue((uint32)row["stamina"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentMind"))->setValue((uint32)row["mind"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentFocus"))->setValue((uint32)row["focus"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentWillpower"))->setValue((uint32)row["willpower"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("HealthWounds"))->setValue((uint32)row["health_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("StrengthWounds"))->setValue((uint32)row["strength_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("ConstitutionWounds"))->setValue((uint32)row["constitution_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("ActionWounds"))->setValue((uint32)row["action_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("QuicknessWounds"))->setValue((uint32)row["quickness_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("StaminaWounds"))->setValue((uint32)row["stamina_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("MindWounds"))->setValue((uint32)row["mind_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("FocusWounds"))->setValue((uint32)row["focus_wounds"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("WillpowerWounds"))->setValue((uint32)row["willpower_wounds"]);
+        {			
+			getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64_t)result[0]["id"]);
+			getPropertyAs<Uint64ObjectProperty*>(std::string("GalaxyId"))->setValue((uint64_t)result[0]["galaxy_id"]);
+			getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64_t)result[0]["object_id"]);
+			getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->setValue((uint64_t)result[0]["cell_id"]);
+			getPropertyAs<Uint64ObjectProperty*>(std::string("ZoneId"))->setValue((uint64_t)result[0]["zone_id"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Firstname"))->setValue((std::string)result[0]["firstname"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Surname"))->setValue((std::string)result[0]["surname"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Appearance"))->setValue((std::string)result[0]["appearance"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Hair"))->setValue((std::string)result[0]["hair"]);
+			getPropertyAs<StringObjectProperty*>(std::string("HairData"))->setValue((std::string)result[0]["hair_data"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Biography"))->setValue((std::string)result[0]["biography"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Model"))->setValue((std::string)result[0]["model"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Category"))->setValue((std::string)result[0]["category"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Type"))->setValue((std::string)result[0]["type"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxHealth"))->setValue((uint32_t)result[0]["health"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStrength"))->setValue((uint32_t)result[0]["strength"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxConstitution"))->setValue((uint32_t)result[0]["constitution"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxAction"))->setValue((uint32_t)result[0]["action"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxQuickness"))->setValue((uint32_t)result[0]["quickness"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxStamina"))->setValue((uint32_t)result[0]["stamina"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxMind"))->setValue((uint32_t)result[0]["mind"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxFocus"))->setValue((uint32_t)result[0]["focus"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MaxWillpower"))->setValue((uint32_t)result[0]["willpower"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentHealth"))->setValue((uint32_t)result[0]["health"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentStrength"))->setValue((uint32_t)result[0]["strength"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentConstitution"))->setValue((uint32_t)result[0]["constitution"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentAction"))->setValue((uint32_t)result[0]["action"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentQuickness"))->setValue((uint32_t)result[0]["quickness"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentStamina"))->setValue((uint32_t)result[0]["stamina"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentMind"))->setValue((uint32_t)result[0]["mind"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentFocus"))->setValue((uint32_t)result[0]["focus"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CurrentWillpower"))->setValue((uint32_t)result[0]["willpower"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("HealthWounds"))->setValue((uint32_t)result[0]["health_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("StrengthWounds"))->setValue((uint32_t)result[0]["strength_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("ConstitutionWounds"))->setValue((uint32_t)result[0]["constitution_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("ActionWounds"))->setValue((uint32_t)result[0]["action_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("QuicknessWounds"))->setValue((uint32_t)result[0]["quickness_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("StaminaWounds"))->setValue((uint32_t)result[0]["stamina_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("MindWounds"))->setValue((uint32_t)result[0]["mind_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("FocusWounds"))->setValue((uint32_t)result[0]["focus_wounds"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("WillpowerWounds"))->setValue((uint32_t)result[0]["willpower_wounds"]);
 			getPropertyAs<Uint32ObjectProperty*>(std::string("HealthModifiers"))->setValue(0);
 			getPropertyAs<Uint32ObjectProperty*>(std::string("StrengthModifiers"))->setValue(0);
 			getPropertyAs<Uint32ObjectProperty*>(std::string("ConstitutionModifiers"))->setValue(0);
@@ -665,44 +652,37 @@ void PlayerCreatureObjectProxy::loadFromDatabaseId(uint64 databaseId)
 			getPropertyAs<Uint32ObjectProperty*>(std::string("MindModifiers"))->setValue(0);
 			getPropertyAs<Uint32ObjectProperty*>(std::string("FocusModifiers"))->setValue(0);
 			getPropertyAs<Uint32ObjectProperty*>(std::string("WillpowerModifiers"))->setValue(0);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("BattleFatigue"))->setValue((uint32)row["battle_fatigue"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("CreatureType"))->setValue((uint32)row["creature_type"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("FactionAlignment"))->setValue((uint32)row["faction_alignment"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("BattleFatigue"))->setValue((uint32_t)result[0]["battle_fatigue"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("CreatureType"))->setValue((uint32_t)result[0]["creature_type"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("FactionAlignment"))->setValue((uint32_t)result[0]["faction_alignment"]);
 			
-			getPropertyAs<StringObjectProperty*>(std::string("Planet"))->setValue((std::string)row["planet"]);
-			getPropertyAs<StringObjectProperty*>(std::string("Mood"))->setValue((std::string)row["mood"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("BankCredits"))->setValue((uint32)row["credits_bank"]);
-			getPropertyAs<Uint32ObjectProperty*>(std::string("InventoryCredits"))->setValue((uint32)row["credits_inventory"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionX"))->setValue((float)row["quaternion_x"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionY"))->setValue((float)row["quaternion_y"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionZ"))->setValue((float)row["quaternion_z"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionW"))->setValue((float)row["quaternion_w"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("PositionX"))->setValue((float)row["position_x"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("PositionY"))->setValue((float)row["position_y"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("PositionZ"))->setValue((float)row["position_z"]);
-			getPropertyAs<FloatObjectProperty*>(std::string("Scale"))->setValue((float)row["scale"]);
-			getPropertyAs<UintObjectProperty*>(std::string("State"))->setValue((uint)row["state"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Planet"))->setValue((std::string)result[0]["planet"]);
+			getPropertyAs<StringObjectProperty*>(std::string("Mood"))->setValue((std::string)result[0]["mood"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("BankCredits"))->setValue((uint32_t)result[0]["credits_bank"]);
+			getPropertyAs<Uint32ObjectProperty*>(std::string("InventoryCredits"))->setValue((uint32_t)result[0]["credits_inventory"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionX"))->setValue((float)result[0]["quaternion_x"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionY"))->setValue((float)result[0]["quaternion_y"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionZ"))->setValue((float)result[0]["quaternion_z"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("QuaternionW"))->setValue((float)result[0]["quaternion_w"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("PositionX"))->setValue((float)result[0]["position_x"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("PositionY"))->setValue((float)result[0]["position_y"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("PositionZ"))->setValue((float)result[0]["position_z"]);
+			getPropertyAs<FloatObjectProperty*>(std::string("Scale"))->setValue((float)result[0]["scale"]);
+			getPropertyAs<UintObjectProperty*>(std::string("State"))->setValue((uint32_t)result[0]["state"]);
 
 			loadItems();
         }
         
 		else
         {
-            Log::getMainLog().error("Failed to load player character: 0x%08x", databaseId);
+            LOG(ERROR) << "Failed to load player character: " << std::hex << databaseId;
         }
-    }
-  
-	catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-		return;
     }
 	
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+		LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
 }
@@ -718,34 +698,23 @@ void PlayerCreatureObjectProxy::loadItems()
           << "FROM character_items "
           << "WHERE character_items.character_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
                 
 		if (result)
-        {
-            mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
+        { 
+            std::for_each(begin(result), end(result), [this] (const mysqlpp::Row& row) 
+            { 
 				boost::shared_ptr<TangibleObjectProxy> item(GS_NEW TangibleObjectProxy);
-				item->loadFromDatabaseId((uint32)row["id"]);
+				item->loadFromDatabaseId((uint32_t)row["id"]);
 				item->setLinkType(ObjLinkMessage::PLAYER_LINK);
 				m_items.push_back(item);
-            }
+            });
 		}
 	}
-  
-	catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-		return;
-    }
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}	
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+		LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
 }		

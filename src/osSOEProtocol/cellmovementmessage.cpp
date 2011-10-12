@@ -71,34 +71,34 @@ boost::shared_ptr<NetworkMessage> CellMovementMessage::clone()
 BinaryPacketPtr CellMovementMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)8;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)8;
 
-	*packet << (uint32)SMSG_CELL_POS_UPDATE;
+	*packet << (uint32_t)SMSG_CELL_POS_UPDATE;
 	*packet << cellId;
 	*packet << objectId;
 
-    *packet << (uint16)((positionX * 8.f));
-	*packet << (uint16)((positionY * 8.f));
-	*packet << (uint16)((positionZ * 8.f));
+    *packet << (uint16_t)((positionX * 8.f));
+	*packet << (uint16_t)((positionY * 8.f));
+	*packet << (uint16_t)((positionZ * 8.f));
 
-	*packet << (uint32)(timer+1);
+	*packet << (uint32_t)(timer+1);
 
-	*packet << (uint8)0; 
-    *packet << (uint8)direction;
+	*packet << (uint8_t)0; 
+    *packet << (uint8_t)direction;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }
 
 void CellMovementMessage::unserialize()
 {
-	objectId = m_serializedData->read<uint64>(); // Target (this is the character moving)
-    ticks = m_serializedData->read<uint32>(); // Ticks?
-    timer = m_serializedData->read<uint32>(); // Times?
-	cellId = m_serializedData->read<uint64>(); // Cell id
+	objectId = m_serializedData->read<uint64_t>(); // Target (this is the character moving)
+    ticks = m_serializedData->read<uint32_t>(); // Ticks?
+    timer = m_serializedData->read<uint32_t>(); // Times?
+	cellId = m_serializedData->read<uint64_t>(); // Cell id
     quaternionX = m_serializedData->read<float>(); // Quaternion x
     quaternionY = m_serializedData->read<float>(); // Quaternion y
     quaternionZ = m_serializedData->read<float>(); // Quaternion z

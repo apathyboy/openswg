@@ -53,119 +53,119 @@ BinaryPacketPtr Creo6Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)5;
-    *packet << (uint32)SMSG_OBJ_UPDATE;
-    *packet << (uint64)objectId;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)SMSG_OBJ_UPDATE;
+    *packet << (uint64_t)objectId;
 
     // Object Packet Type (CREO3)
-    *packet << (uint32)0x4352454F;
-    *packet << (uint8)6;
+    *packet << (uint32_t)0x4352454F;
+    *packet << (uint8_t)6;
 
-    *packet << (uint32)437+mood.length();
-    *packet << (uint16)22;
-    *packet << (uint32)0; // Defender update counter
-    *packet << (uint64)0; // Current defender
+    *packet << (uint32_t)437+mood.length();
+    *packet << (uint16_t)22;
+    *packet << (uint32_t)0; // Defender update counter
+    *packet << (uint64_t)0; // Current defender
 
-    *packet << (uint16)0; // Con level
+    *packet << (uint16_t)0; // Con level
 
-    *packet << (uint16)0; // Music/Dance type
+    *packet << (uint16_t)0; // Music/Dance type
 
     //Mood String
-    *packet << (uint16)mood.length();
+    *packet << (uint16_t)mood.length();
 	packet->append<std::string>(mood);
 
-    *packet << (uint64)objectId + 5; // weao id
+    *packet << (uint64_t)objectId + 5; // weao id
 
-    *packet << (uint64)0; // Group id
+    *packet << (uint64_t)0; // Group id
 
     //unknowns FIX ME s
-    *packet << (uint64)0;
-    *packet << (uint64)0;
-    *packet << (uint32)0; //
-    *packet << (uint64)0;
-    *packet << (uint8)0; //I was told that this wasmood.
-    *packet << (uint32)0; //one of these might be GILD ID.
-    *packet << (uint32)0; //
+    *packet << (uint64_t)0;
+    *packet << (uint64_t)0;
+    *packet << (uint32_t)0; //
+    *packet << (uint64_t)0;
+    *packet << (uint8_t)0; //I was told that this wasmood.
+    *packet << (uint32_t)0; //one of these might be GILD ID.
+    *packet << (uint32_t)0; //
 
-    *packet << (uint32)9; // list size for each HAM section
-    *packet << (uint32)9; // 
+    *packet << (uint32_t)9; // list size for each HAM section
+    *packet << (uint32_t)9; // 
 
-	*packet << (uint32)currentHealth;
-	*packet << (uint32)currentStrength;
-	*packet << (uint32)currentConstitution;
-	*packet << (uint32)currentAction;
-	*packet << (uint32)currentQuickness;
-	*packet << (uint32)currentStamina;
-	*packet << (uint32)currentMind;
-	*packet << (uint32)currentFocus;
-	*packet << (uint32)currentWillpower;
+	*packet << (uint32_t)currentHealth;
+	*packet << (uint32_t)currentStrength;
+	*packet << (uint32_t)currentConstitution;
+	*packet << (uint32_t)currentAction;
+	*packet << (uint32_t)currentQuickness;
+	*packet << (uint32_t)currentStamina;
+	*packet << (uint32_t)currentMind;
+	*packet << (uint32_t)currentFocus;
+	*packet << (uint32_t)currentWillpower;
 
-    *packet << (uint32)9; // list size for each HAM section
-    *packet << (uint32)9; // 
+    *packet << (uint32_t)9; // list size for each HAM section
+    *packet << (uint32_t)9; // 
 
-	*packet << (uint32)maxHealth;
-	*packet << (uint32)maxStrength;
-	*packet << (uint32)maxConstitution;
-	*packet << (uint32)maxAction;
-	*packet << (uint32)maxQuickness;
-	*packet << (uint32)maxStamina;
-	*packet << (uint32)maxMind;
-	*packet << (uint32)maxFocus;
-	*packet << (uint32)maxWillpower;
+	*packet << (uint32_t)maxHealth;
+	*packet << (uint32_t)maxStrength;
+	*packet << (uint32_t)maxConstitution;
+	*packet << (uint32_t)maxAction;
+	*packet << (uint32_t)maxQuickness;
+	*packet << (uint32_t)maxStamina;
+	*packet << (uint32_t)maxMind;
+	*packet << (uint32_t)maxFocus;
+	*packet << (uint32_t)maxWillpower;
 
 	if (isPlayer)
 	{
     //EQUIPTMENT LIST FIX ME LATER
-    *packet << (uint32)6; //List size for # of objects equipted
-    *packet << (uint32)6; //176
+    *packet << (uint32_t)6; //List size for # of objects equipted
+    *packet << (uint32_t)6; //176
 
     //weapon
-    *packet << (uint16)0;
-    *packet << (uint32)4;
-    *packet << (uint64)objectId + 5;
-    *packet << (uint32)0x70B79711;
+    *packet << (uint16_t)0;
+    *packet << (uint32_t)4;
+    *packet << (uint64_t)objectId + 5;
+    *packet << (uint32_t)0x70B79711;
 
     //datapad
-    *packet << (uint16)0;
-    *packet << (uint32)4;
-    *packet << (uint64)objectId + 3;
-    *packet << (uint32)0x73BA5001;
+    *packet << (uint16_t)0;
+    *packet << (uint32_t)4;
+    *packet << (uint64_t)objectId + 3;
+    *packet << (uint32_t)0x73BA5001;
 
     //inventory
-    *packet << (uint16)0;
-    *packet << (uint32)4;
-    *packet << (uint64)objectId + 1;
-    *packet << (uint32)SWGCRC("object/tangible/inventory/shared_character_inventory.iff");
+    *packet << (uint16_t)0;
+    *packet << (uint32_t)4;
+    *packet << (uint64_t)objectId + 1;
+    *packet << (uint32_t)SWGCRC("object/tangible/inventory/shared_character_inventory.iff");
 
     //bank
-    *packet << (uint16)0;
-    *packet << (uint32)4;
-    *packet << (uint64)objectId + 4;
-    *packet << (uint32)0x70FD1394;
+    *packet << (uint16_t)0;
+    *packet << (uint32_t)4;
+    *packet << (uint64_t)objectId + 4;
+    *packet << (uint32_t)0x70FD1394;
 
     //mission bag
-    *packet << (uint16)0;
-    *packet << (uint32)4;
-    *packet << (uint64)objectId + 2;
-    *packet << (uint32)0x3D7F6F9F;
+    *packet << (uint16_t)0;
+    *packet << (uint32_t)4;
+    *packet << (uint64_t)objectId + 2;
+    *packet << (uint32_t)0x3D7F6F9F;
 
     //hair
-    *packet << (uint16)0;
-    *packet << (uint32)4;
-    *packet << (uint64)objectId + 8;
-	*packet << (uint32)SWGCRC(hair.c_str());
+    *packet << (uint16_t)0;
+    *packet << (uint32_t)4;
+    *packet << (uint64_t)objectId + 8;
+	*packet << (uint32_t)SWGCRC(hair.c_str());
 	}
 	else
 	{
-    *packet << (uint32)0; //List size for # of objects equipted
-    *packet << (uint32)0; //176
+    *packet << (uint32_t)0; //List size for # of objects equipted
+    *packet << (uint32_t)0; //176
 	}
     //unknown short FIX ME
-    *packet << (uint16)0;
+    *packet << (uint16_t)0;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 
 	return packet;

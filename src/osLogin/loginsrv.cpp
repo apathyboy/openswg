@@ -18,12 +18,13 @@
 // *********************************************************************
 
 #include <crtdbg.h>
+
+#include <glog/logging.h>
+
 #include <gsCore/globals.h>
-#include <gsCore/log.h>
 #include <gsCore/macros.h>
 #include <gsCore/options.h>
 #include <gsCore/timing.h>
-#include <gsCore/types.h>
 
 #include <osSOEProtocol/soeclientsocket.h>
 #include <osSOEProtocol/soesocketfactory.h>
@@ -61,19 +62,16 @@ int main(int argc, char *argv[])
 //	tmpDbgFlag |= _CRTDBG_LEAK_CHECK_DF;					
 
 //	_CrtSetDbgFlag(tmpDbgFlag);
+    
+    // Initialize the google logging.
+    google::InitGoogleLogging(argv[0]);
 
-    // Initalize the main log.
-    Log::initMainLog("logs/mainlog.log");
-    Log::initPacketLog("logs/packetlog.log");
-    Log::initEventLog("logs/eventlog.log");
- 
-#ifdef _DEBUG
-    Log::getMainLog().setPriority(log4cpp::Priority::DEBUG);
-    Log::getPacketLog().setPriority(log4cpp::Priority::DEBUG);
-#else
-    Log::getMainLog().setPriority(log4cpp::Priority::INFO);
-    Log::getPacketLog().setPriority(log4cpp::Priority::INFO);
-#endif
+    #ifndef _WIN32
+        google::InstallFailureSignalHandler();
+    #endif
+
+    FLAGS_log_dir = "./logs";
+    FLAGS_stderrthreshold = 1;
 
     // Print out headers for the console.
     printf("%s v%s\n", kpAppName, kpVersion);

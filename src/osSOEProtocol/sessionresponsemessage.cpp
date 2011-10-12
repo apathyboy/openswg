@@ -42,13 +42,13 @@ SessionResponseMessage::~SessionResponseMessage()
 BinaryPacketPtr SessionResponseMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_SESSION_RESPONSE;
-    *packet << (uint32)this->connectionId;
-    *packet << (uint32)htonl(this->crcSeed);
-    *packet << (uint8)2;
-    *packet << (uint8)1;
-    *packet << (uint8)4;
-    *packet << (uint32)htonl(this->maxPacketSize);
+    *packet << (uint16_t)SOE_SESSION_RESPONSE;
+    *packet << (uint32_t)this->connectionId;
+    *packet << (uint32_t)htonl(this->crcSeed);
+    *packet << (uint8_t)2;
+    *packet << (uint8_t)1;
+    *packet << (uint8_t)4;
+    *packet << (uint32_t)htonl(this->maxPacketSize);
 
 	return packet;
 }

@@ -17,8 +17,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
 #include <gsCore/eventlistener.h>
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/eventmanager.h>
 
 using namespace gsCore;
@@ -39,23 +44,10 @@ void EventSnooper::registerEvents(EventListenerPtr listener)
 }
 
 bool EventSnooper::handleEvent( Event const & event )
-{
-
-#ifdef _VS2005_
-    Log::getEventLog().info(
-		"Event Snoop : event %08lx time %g : type %08lx [%s] : packet \n%s",
-		& event,
-		event.getTime(),
-		event.getType().getIdent(),
-		event.getType().getStr());
-#else
-	Log::getEventLog().info(
-		"Event Snoop : event %08lx time %g : type %08lx [%s] : ",
-		& event,
-		event.getTime(),
-		event.getType().getIdent(),
-		event.getType().getStr());
-#endif
+{    
+    LOG(INFO) << "Event snoop : event " << std::hex << event.getType().getIdent()
+        << " [" << event.getType().getStr() << "] "
+        << " time " << event.getTime();
 
 	return false;
 }

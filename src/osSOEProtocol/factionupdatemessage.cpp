@@ -50,16 +50,16 @@ BinaryPacketPtr FactionUpdateMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-    *packet << (uint16)4;
-    *packet << (uint32)SMSG_FACTION_STATE;
-	*packet << (uint32)type;
-	*packet << (uint32)faction;
-    *packet << (uint64)objectId; 
+    *packet << (uint16_t)4;
+    *packet << (uint32_t)SMSG_FACTION_STATE;
+	*packet << (uint32_t)type;
+	*packet << (uint32_t)faction;
+    *packet << (uint64_t)objectId; 
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

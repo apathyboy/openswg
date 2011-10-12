@@ -17,7 +17,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include "osSOEProtocol/objectmanager.h"
+#ifdef ERROR
+#undef ERROR
+#endif
+
+#include <glog/logging.h>
+
 #include <gsServer/opcodehandler.h>
 #include <gsServer/session.h>
 #include <gsServer/sessionevents.h>
@@ -37,7 +43,6 @@
 #include <osSOEProtocol/radialmenumanager.h>
 #include <osSOEProtocol/creatureobjectproxy.h>
 #include <osSOEProtocol/playercreatureobjectproxy.h>
-#include <osSOEProtocol/objectmanager.h>
 #include <osSOEProtocol/objectpropertytypes.h>
 
 using namespace gsCore;
@@ -53,7 +58,7 @@ ObjectManager::ObjectManager(ObjectGrid* objectGrid)
 	//m_objectGrid = GS_NEW ObjectGrid;
 }
 
-boost::optional<ObjectProxyPtr> ObjectManager::findObjectProxyById(uint64 objectId)
+boost::optional<ObjectProxyPtr> ObjectManager::findObjectProxyById(uint64_t objectId)
 {
 	boost::optional<ObjectProxyPtr> object = m_objectGrid->findObjectProxyById(objectId);
 	return object;
@@ -70,7 +75,7 @@ void ObjectManager::removeObject(ObjectProxyPtr object)
 	m_objectGrid->removeObject(object);
 }
 
-void ObjectManager::update(const uint64 updateTimestamp)
+void ObjectManager::update(const uint64_t updateTimestamp)
 {}
         
 void ObjectManager::initialize()
@@ -82,7 +87,7 @@ void ObjectManager::initialize()
 	ObjectManagerEventListener::registerEvents(objectManagerEventListener);
 
 	m_radialMenuManager = GS_NEW RadialMenuManager(this);
-	buildRadialMenuMap(*sRadialMenuMap);
+    buildRadialMenuMap(m_radialMenuMap);
 }
 
 void ObjectManager::registerOpcodes(gsServer::OpcodeFactory* factory)
@@ -156,14 +161,14 @@ void ObjectManager::handleLoginCharacter(gsServer::Session* session, gsNetwork::
 	proxy->loadFromDatabaseId(loginRequest->characterId);
 	proxy->setPlayerSession(session);
 
-	Log::getMainLog().debug("Logging in character [%s]!", proxy->getPropertyAs<StringObjectProperty*>(std::string("Firstname"))->getValue().c_str());
+    LOG(INFO) << "Logging in character: " << proxy->getPropertyAs<StringObjectProperty*>(std::string("Firstname"))->getValue();
 
 	m_objectGrid->insert(proxy);
 }
 
 void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
 {
-    uint32 header = message->read<uint32>();
+    uint32_t header = message->read<uint32_t>();
 
     switch(header)
     {
@@ -171,7 +176,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
     case 0x00000021:
     case 0x00000023:
         {
-            header = message->read<uint32>();
+            header = message->read<uint32_t>();
             
             switch (header)
             {
@@ -181,16 +186,16 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
 					
-					uint64 objectId = message->read<uint64>();
+					uint64_t objectId = message->read<uint64_t>();
 
 					boost::optional<ObjectProxyPtr> object = findObjectProxyById(objectId);
 					
 					if (! object)
 						return;
 
-					message->read<uint32>();
+					message->read<uint32_t>();
 
-					uint64 targetId = message->read<uint64>();
+					uint64_t targetId = message->read<uint64_t>();
 
 					(*object)->getPropertyAs<Uint64ObjectProperty*>(std::string("TargetId"))->setValue(targetId);
 					(*object)->notifyInRange(false);
@@ -203,23 +208,23 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 					session->sendToRemote(ok);
 					
 					printf("In Msg: \n%s\n", message->getLogString().c_str());
-                    uint64 objectId = message->read<uint64>();
-                    uint32 errCode = message->read<uint32>();
-                    uint64 targetId = message->read<uint64>();
-                    uint64 initiatorId = message->read<uint64>();
+                    uint64_t objectId = message->read<uint64_t>();
+                    uint32_t errCode = message->read<uint32_t>();
+                    uint64_t targetId = message->read<uint64_t>();
+                    uint64_t initiatorId = message->read<uint64_t>();
 
                     RadialMenuMap map;
 
-                    uint32 radialCount = message->read<uint32>();
-                    for (uint i = 0; i < radialCount; i++)
+                    uint32_t radialCount = message->read<uint32_t>();
+                    for (uint32_t i = 0; i < radialCount; i++)
                     {
-						uint8 index = message->read<uint8>();
-						uint8 parentIndex = message->read<uint8>();
-                        RadialMenuMap::iterator j = sRadialMenuMap->find(message->read<uint8>());
+						uint8_t index = message->read<uint8_t>();
+						uint8_t parentIndex = message->read<uint8_t>();
+                        RadialMenuMap::iterator j = m_radialMenuMap.find(message->read<uint8_t>());
 
                         RadialOption option;
 
-                        if (j != sRadialMenuMap->end())
+                        if (j != m_radialMenuMap.end())
                         {
                             option = (*j).second;
 							option.index = index; // Index.
@@ -227,14 +232,14 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                             map[option.id] = option;                           
                         }       
 
-                        message->read<uint8>(); // callback
-                        message->read<uint32>(); // ??
+                        message->read<uint8_t>(); // callback
+                        message->read<uint32_t>(); // ??
                     }
 
                     if (map.size() == 0)
                         break;
 
-                    uint8 defaultOption = message->read<uint8>();
+                    uint8_t defaultOption = message->read<uint8_t>();
 					printf("Radial Response: Target: %i Object: %i\n", targetId, objectId);
 
 					boost::shared_ptr<RadialResponseMessage> radialResponse(GS_NEW RadialResponseMessage());
@@ -254,11 +259,11 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
 
-                    uint64 target = message->read<uint64>();
-                    message->read<uint32>(); // error 1?
-                    uint16 count = message->read<uint16>();
-                    uint16 intcode = message->read<uint16>();                
-                    uint32 opcode = message->read<uint32>();
+                    uint64_t target = message->read<uint64_t>();
+                    message->read<uint32_t>(); // error 1?
+                    uint16_t count = message->read<uint16_t>();
+                    uint16_t intcode = message->read<uint16_t>();                
+                    uint32_t opcode = message->read<uint32_t>();
                
                     switch (opcode)
                     {
@@ -306,17 +311,17 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 						break;
 					case 0x32CF1BEE: // Emote
 						{
-							message->read<uint64>();
-							uint32 size = message->read<uint32>();
+							message->read<uint64_t>();
+							uint32_t size = message->read<uint32_t>();
 							std::ostringstream emoteString;
-							message->read<uint32>();
-							for (uint32 i = 0; i < size; ++i)
+							message->read<uint32_t>();
+							for (uint32_t i = 0; i < size; ++i)
 							{
-								uint8 tmp = message->read<uint8>();
+								uint8_t tmp = message->read<uint8_t>();
 
 								if (tmp == 32)
 									break;
-								message->read<uint8>();
+								message->read<uint8_t>();
 								emoteString << tmp;
 							}
 
@@ -325,7 +330,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 							if (! object)
 								return;
 
-							uint emoteId = atoi(emoteString.str().c_str());
+							uint32_t emoteId = atoi(emoteString.str().c_str());
        
 							boost::shared_ptr<EmoteMessage> emoteMessage(GS_NEW EmoteMessage);
 							emoteMessage->objectId = target;
@@ -338,21 +343,21 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 						break;
 					case 0x7759f35e: // MOOD
 						{
-							message->read<uint64>();
-							uint32 size = message->read<uint32>();
+							message->read<uint64_t>();
+							uint32_t size = message->read<uint32_t>();
 							std::ostringstream moodString;
 
-							for (uint32 i = 0; i < size; ++i)
+							for (uint32_t i = 0; i < size; ++i)
 							{
-								uint8 tmp = message->read<uint8>();
+								uint8_t tmp = message->read<uint8_t>();
 
 								if (tmp == 0 || tmp == 32)
 									break;
-								message->read<uint8>();
+								message->read<uint8_t>();
 								moodString << tmp;
 							}
 
-							uint moodInt = atoi(moodString.str().c_str());
+							uint32_t moodInt = atoi(moodString.str().c_str());
 							boost::optional<ObjectProxyPtr> object = findObjectProxyById(target);
 							
 							if (! object)
@@ -368,10 +373,10 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                         {                  
 							boost::shared_ptr<SpatialChatMessage> spatialChat(GS_NEW SpatialChatMessage);
 							                  
-                            message->read<uint64>();
-                            uint32 size = message->read<uint32>();
+                            message->read<uint64_t>();
+                            uint32_t size = message->read<uint32_t>();
 
-                            std::vector<uint64> moods;
+                            std::vector<uint64_t> moods;
                             
                             char tmp[5][32];
                             memset(tmp[0], 0, 32);
@@ -380,12 +385,12 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                             memset(tmp[3], 0, 32);
                             memset(tmp[4], 0, 32);
 
-                            uint8 spaces = 0;
-                            uint8 i = 0;
-                            uint8 remove = 0;            
+                            uint8_t spaces = 0;
+                            uint8_t i = 0;
+                            uint8_t remove = 0;            
                             
                             while (spaces<5) {
-                                uint8 data = message->read<uint8>();
+                                uint8_t data = message->read<uint8_t>();
 
                                 if (data == 32) {
                                     spaces++;
@@ -400,17 +405,17 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                                 i++;
                                 remove++;
                             }
-                            message->read<uint8>();
+                            message->read<uint8_t>();
                             remove /= 2;
                             remove += 5;
 
                             for (int j = 0; j < 5; ++j)
-                                spatialChat->moods.push_back((uint64)atoi(tmp[j]));
+                                spatialChat->moods.push_back((uint64_t)atoi(tmp[j]));
                             
                             size -= remove;
                             std::wstring textMessage;
                             
-                            for (uint i = 0; i < size+2; ++i)
+                            for (uint32_t i = 0; i < size+2; ++i)
                             {
                                 wchar_t buf = message->read<wchar_t>();
                                 textMessage += buf;
@@ -426,7 +431,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 
                     default:
                         {
-							Log::getMainLog().error("Unhandled Chat SubOpcode [0x%08x]", opcode);
+                            LOG(ERROR) << "Unhandled sub-opcode: " << std::hex << opcode;
                         }
                     }
 
@@ -465,7 +470,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 					boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
-					Log::getMainLog().error("Unhandled Int [0x%08x]", header);
+                    LOG(ERROR) << "Unhandled sub-opcode: " << std::hex << header;
                     break;
                 }
             }

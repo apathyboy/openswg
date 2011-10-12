@@ -17,7 +17,6 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
 #include <gsNetwork/events.h>
 #include <gsServer/sessioneventlistener.h>
 

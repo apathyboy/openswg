@@ -23,7 +23,7 @@
 #include <math.h>
 using namespace osSOEProtocol;
 
-boost::optional<Object*> ObjectGrid::findObjectById(uint64 objectId)
+boost::optional<Object*> ObjectGrid::findObjectById(uint64_t objectId)
 {
 	boost::optional<Object*> object;
 	for (std::list<ObjectProxyPtr>::iterator i = m_objects.begin(); i != m_objects.end();++i)
@@ -64,7 +64,7 @@ void ObjectGrid::removeObject(ObjectProxyPtr object)
 	}	
 }
 		
-boost::optional<ObjectProxyPtr> ObjectGrid::findObjectProxyById(uint64 objectId)
+boost::optional<ObjectProxyPtr> ObjectGrid::findObjectProxyById(uint64_t objectId)
 {
 	boost::optional<ObjectProxyPtr> object;
 	for (std::list<ObjectProxyPtr>::iterator i = m_objects.begin(); i != m_objects.end();++i)
@@ -131,7 +131,7 @@ void ObjectGrid::moveCellObject(boost::shared_ptr<osSOEProtocol::CellMovementMes
 	   movement->orientation = 0.0;
     }
        
-	movement->direction = (uint8)((movement->orientation/6.283)*100);	
+	movement->direction = (uint8_t)((movement->orientation/6.283)*100);	
 
 	(*object)->getPropertyAs<Uint8ObjectProperty*>(std::string("Direction"))->setValue(movement->direction);
 	(*object)->getPropertyAs<FloatObjectProperty*>(std::string("Orientation"))->setValue(movement->orientation);
@@ -173,14 +173,14 @@ void ObjectGrid::moveObject(boost::shared_ptr<osSOEProtocol::MovementMessage> mo
 	   movement->orientation = 0.0;
     }
        
-	movement->direction = (uint8)((movement->orientation/6.283)*100);	
+	movement->direction = (uint8_t)((movement->orientation/6.283)*100);	
 
 	(*object)->getPropertyAs<Uint8ObjectProperty*>(std::string("Direction"))->setValue(movement->direction);
 	(*object)->getPropertyAs<FloatObjectProperty*>(std::string("Orientation"))->setValue(movement->orientation);
 	sendInRange((*object)->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue(), movement);
 }
 
-void ObjectGrid::sendInRange(uint64 target, boost::shared_ptr<gsNetwork::NetworkMessage> message)
+void ObjectGrid::sendInRange(uint64_t target, boost::shared_ptr<gsNetwork::NetworkMessage> message)
 {
 	boost::optional<ObjectProxyPtr> object = findObjectProxyById(target);
 	
@@ -213,7 +213,7 @@ void ObjectGrid::sendInRange(uint64 target, boost::shared_ptr<gsNetwork::Network
 }
 
 
-void ObjectGrid::update(uint64 updateTimestamp)
+void ObjectGrid::update(uint64_t updateTimestamp)
 {
 	// Move objects to new cells.
 }

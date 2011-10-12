@@ -50,43 +50,43 @@ BinaryPacketPtr Play8Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-	*packet << (uint16)5;
-	*packet << (uint32)SMSG_OBJ_UPDATE;
-	*packet << (uint64)objectId+7;
-    *packet << (uint32)0x504C4159;
-    *packet << (uint8)8;
+	*packet << (uint16_t)5;
+	*packet << (uint32_t)SMSG_OBJ_UPDATE;
+	*packet << (uint64_t)objectId+7;
+    *packet << (uint32_t)0x504C4159;
+    *packet << (uint8_t)8;
 
-	*packet << (uint32)76; // Size without lists
-	*packet << (uint16)7;
+	*packet << (uint32_t)76; // Size without lists
+	*packet << (uint16_t)7;
 
-	*packet << (uint32)0; // XP list
-	*packet << (uint32)0;
+	*packet << (uint32_t)0; // XP list
+	*packet << (uint32_t)0;
 
-	*packet << (uint32)0; // Waypoint list
-	*packet << (uint32)0;
+	*packet << (uint32_t)0; // Waypoint list
+	*packet << (uint32_t)0;
 
-	*packet << (uint32)0; // Current force
-	*packet << (uint32)0; // Max force
+	*packet << (uint32_t)0; // Current force
+	*packet << (uint32_t)0; // Max force
 
-	*packet << (uint32)5;	// unk					 
-	*packet << (uint64)14;	// unk			// used to be 20
-	*packet << (uint8)0;		// unk
-	*packet << (uint32)5;	// unk
-	*packet << (uint64)14;	// unk			// used to be 20
+	*packet << (uint32_t)5;	// unk					 
+	*packet << (uint64_t)14;	// unk			// used to be 20
+	*packet << (uint8_t)0;		// unk
+	*packet << (uint32_t)5;	// unk
+	*packet << (uint64_t)14;	// unk			// used to be 20
 
-	*packet << (uint8)0;		// unk
+	*packet << (uint8_t)0;		// unk
 
-	*packet << (uint32)0; // Quest list
-	*packet << (uint32)0;
+	*packet << (uint32_t)0; // Quest list
+	*packet << (uint32_t)0;
 
-	*packet << (uint32)0;
+	*packet << (uint32_t)0;
 
-	*packet << (uint8)1 << (uint32)0 << (uint8)0x64 << (uint8)0xEA << (uint16)0;
+	*packet << (uint8_t)1 << (uint32_t)0 << (uint8_t)0x64 << (uint8_t)0xEA << (uint16_t)0;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

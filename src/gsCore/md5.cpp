@@ -32,6 +32,7 @@
 */
 
 //md5 class include
+#include <sstream>
 #include <gsCore/md5.h>
 
 // Constants for MD5Transform routine.
@@ -365,16 +366,14 @@ http://www.codeproject.com/cpp/cmd5.asp)
 */
 std::string md5wrapper::convToString(unsigned char *bytes)
 {
-	char asciihash[33];
+	std::stringstream ss;
 
-	int p = 0;
 	for(int i=0; i<16; i++)
 	{
-		::sprintf(&asciihash[p],"%02x",bytes[i]);
-		p += 2;
+		ss << std::hex << bytes[i];
 	}	
-	asciihash[32] = '\0';
-	return std::string(asciihash);
+
+	return ss.str();
 }
 
 //---------publics--------------------------

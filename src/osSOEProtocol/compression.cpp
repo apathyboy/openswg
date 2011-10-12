@@ -27,36 +27,36 @@ using namespace osSOEProtocol;
 void Compression::compress(gsNetwork::BinaryPacketPtr packet)
 {
     char* data = packet->getData();
-    uint32 length = packet->getLength();
+    uint32_t length = packet->getLength();
 
     char* tmp = new char[length];
     memcpy(tmp, data, length);
 
     data = tmp;
 
-    Compress(&data, (uint16*)&length, 1);
+    Compress(&data, (uint16_t*)&length, 1);
 
     // Clear the current data in the packet and add the processed
     // data back in.
     packet->clear();
-    for (uint32 i = 0; i < length; ++i)
+    for (uint32_t i = 0; i < length; ++i)
         packet->append<char>(data[i]);
 }
 
 void Compression::decompress(gsNetwork::BinaryPacketPtr packet)
 {
     char* data = packet->getData();
-    uint32 length = packet->getLength();
+    uint32_t length = packet->getLength();
 
     bool decompressed = false;
     if (data[2] == 'x' || data[1] == 'x')
     {
-        data = Decompress(data, (uint16 &)length);
+        data = Decompress(data, (uint16_t &)length);
         decompressed = true;
     }
 
     packet->clear();    
-    for (uint32 i = 0; i < length; ++i)
+    for (uint32_t i = 0; i < length; ++i)
         packet->append<char>(data[i]);
 
     if (decompressed)

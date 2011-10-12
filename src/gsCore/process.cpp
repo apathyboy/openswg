@@ -22,7 +22,7 @@
 using namespace gsCore;
 
 // CProcess constructor
-Process::Process(int type, uint order)
+Process::Process(int type, uint32_t order)
 : m_type(type)
 , m_kill(false)
 , m_isActive(true)
@@ -70,7 +70,3 @@ void Process::setAttached(const bool attached)
 		m_processFlags &= ~PROCESS_FLAG_ATTACHED;
 	}
 }
-
-
-
-

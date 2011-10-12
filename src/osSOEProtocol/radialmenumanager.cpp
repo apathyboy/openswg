@@ -33,11 +33,6 @@ RadialMenuManager::RadialMenuManager(ObjectManager* objectManager)
 		
 RadialMenuManager::~RadialMenuManager()
 {}
-        
-void RadialMenuManager::initialize()
-{
-	buildRadialMenuMap(*sRadialMenuMap);
-}
 
 void RadialMenuManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
@@ -52,8 +47,8 @@ void RadialMenuManager::handleRadialSelection(gsServer::Session* session, gsNetw
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 	
-	uint64 targetId = message->read<uint64>();
-	uint8 option = message->read<uint8>();
+	uint64_t targetId = message->read<uint64_t>();
+	uint8_t option = message->read<uint8_t>();
 
 	boost::optional<ObjectProxyPtr> objectProxy = m_objectManager->findObjectProxyById(targetId);
 	(*objectProxy)->radialSelection(option, session);

@@ -60,21 +60,21 @@ BinaryPacketPtr StationIdentifierMessage::serialize()
     };
 
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)4;
-    *packet << (uint32)SMSG_STATION_SESSION;
-    *packet << (uint32)60;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)4;
+    *packet << (uint32_t)SMSG_STATION_SESSION;
+    *packet << (uint32_t)60;
 
     for (int i=0; i < 56; ++i)
         *packet << station_head[i];
 
     *packet << session->getAccountId();
-    *packet << (uint32)0;
-    *packet << (uint16)session->getUsername().length();
+    *packet << (uint32_t)0;
+    *packet << (uint16_t)session->getUsername().length();
     packet->append<std::string>(session->getUsername());
-    *packet << (uint8)0;
-    *packet << (uint16)0;
+    *packet << (uint8_t)0;
+    *packet << (uint16_t)0;
 
 	return packet;
 }

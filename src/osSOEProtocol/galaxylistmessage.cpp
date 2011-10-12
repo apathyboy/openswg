@@ -49,11 +49,11 @@ GalaxyListMessage::~GalaxyListMessage()
 BinaryPacketPtr GalaxyListMessage::serialize()
 {
     BinaryPacketPtr packet(GS_NEW BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)3;
-    *packet << (uint32)SMSG_SERVER_NAMES;
-    *packet << (uint32)galaxies.size(); // Galaxy Count
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)3;
+    *packet << (uint32_t)SMSG_SERVER_NAMES;
+    *packet << (uint32_t)galaxies.size(); // Galaxy Count
 
     // Add galaxy data here.
 	for (std::list<GalaxyCluster*>::iterator i = galaxies.begin(); i != galaxies.end(); ++i)
@@ -62,14 +62,14 @@ BinaryPacketPtr GalaxyListMessage::serialize()
          //   continue;
 
         *packet << (*i)->getGalaxyId();
-        *packet << (uint16)(*i)->getGalaxyName().length();
+        *packet << (uint16_t)(*i)->getGalaxyName().length();
         *packet << (*i)->getGalaxyName();
-        *packet << (uint32)0xFFFF8F80; // Unknown
+        *packet << (uint32_t)0xFFFF8F80; // Unknown
     }
 
-    *packet << (uint32)8;
-    *packet << (uint8)0;
-    *packet << (uint16)0;
+    *packet << (uint32_t)8;
+    *packet << (uint8_t)0;
+    *packet << (uint16_t)0;
 	return packet;
 }
 

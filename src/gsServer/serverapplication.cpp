@@ -17,10 +17,17 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include <gsServer/serverapplication.h>
+
+#include <boost/thread/thread.hpp>
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/eventmanager.h>
 #include <gsCore/processmanager.h>
-#include <gsServer/serverapplication.h>
 #include <gsServer/servereventlistener.h>
 #include <gsServer/sessionmanager.h>
 #include <gsNetwork/events.h>
@@ -32,12 +39,6 @@
 #include <gsCore/datastore.h>
 #include <Sockets/StdoutLog.h>
 
-#include <zthread/ConcurrentExecutor.h>
-
-#ifdef WIN32
-//#include <omp.h>
-#endif // WIN32
-
 using namespace gsCore;
 using namespace gsServer;
 using namespace gsNetwork;
@@ -45,7 +46,7 @@ using namespace gsNetwork;
 mysqlpp::Connection sStationDB;
 mysqlpp::Connection sGalaxyDB;
 
-ServerApplication::ServerApplication(std::string serverType, uint32 serverId)
+ServerApplication::ServerApplication(std::string serverType, uint32_t serverId)
 : m_serverType(serverType)
 , m_serverId(serverId)
 , gsApplication::Application()
@@ -62,13 +63,13 @@ void ServerApplication::shutdown()
 {
 	m_socketListener->toggleRunning();
 
-	ZThread::Thread::sleep(1000);
-
+	boost::this_thread::sleep(boost::posix_time::seconds(1));
+	
 	if (Datastore::getStationDB().connected())
-		Datastore::getStationDB().close();
+		Datastore::getStationDB().disconnect();
 
 	if (Datastore::getGalaxyDB().connected())
-		Datastore::getGalaxyDB().close();
+		Datastore::getGalaxyDB().disconnect();
 }
 
 void ServerApplication::initialize(const std::string& configFilename)
@@ -87,10 +88,10 @@ void ServerApplication::initialize(const std::string& configFilename)
     // Create containers for the configuration data.
     std::string mainLog;
     std::string packetLog;
-    uint16 adminSocket;
-    uint16 clientSocket;
-    uint16 commSocket;
-    uint16 pingSocket;
+    uint16_t adminSocket;
+    uint16_t clientSocket;
+    uint16_t commSocket;
+    uint16_t pingSocket;
 
     // Try loading the configuration before going further.
     try {
@@ -98,41 +99,41 @@ void ServerApplication::initialize(const std::string& configFilename)
         // configuration variables.
         m_config = ConfigFile(configFilename.c_str());
     } catch(...) {
-        Log::getMainLog().error("Could not find configuration file %s.\n", configFilename);
+        LOG(FATAL) << "Could not find configuration file: " << configFilename;
 		exit(EXIT_FAILURE);
     }
 
     // Read the configuration data.
-    m_config.readInto<uint16>(adminSocket,  "admin_socket");
-    m_config.readInto<uint16>(clientSocket, "client_socket");
-    m_config.readInto<uint16>(commSocket,   "comm_socket");
-    m_config.readInto<uint16>(pingSocket,   "ping_socket");
+    m_config.readInto<uint16_t>(adminSocket,  "admin_socket");
+    m_config.readInto<uint16_t>(clientSocket, "client_socket");
+    m_config.readInto<uint16_t>(commSocket,   "comm_socket");
+    m_config.readInto<uint16_t>(pingSocket,   "ping_socket");
 
-    printf(" *** Server hostname: %s\n", Utility::GetLocalHostname().c_str());
-    printf(" *** Server IP: %s\n\n", Utility::GetLocalAddress().c_str());
+//    printf(" *** Server hostname: %s\n", Utility::GetLocalHostname().c_str());
+//    printf(" *** Server IP: %s\n\n", Utility::GetLocalAddress().c_str());
 
     if (adminSocket != SOCKET_DISABLED)
     {
         addSocket(m_socketFactory->createGameSocket(gsNetwork::AdminSocket::gkName, *m_socketListener), adminSocket);
-        Log::getMainLog().info("Listening for admin messages on port: [%i]", adminSocket);
+        LOG(INFO) << "Listening for admin messages on port: " << adminSocket;
     }
 
     if (clientSocket != SOCKET_DISABLED)
     {
         addSocket(m_socketFactory->createGameSocket(gsNetwork::ClientSocket::gkName, *m_socketListener), clientSocket);
-        Log::getMainLog().info("Listening for client messages on port: [%i]", clientSocket);
+        LOG(INFO) << "Listening for client messages on port: " << adminSocket;
     }
 
     if (commSocket != SOCKET_DISABLED)
     {
         addSocket(m_socketFactory->createGameSocket(gsNetwork::CommSocket::gkName, *m_socketListener), commSocket);
-        Log::getMainLog().info("Listening for server messages on port: [%i]", commSocket);
+        LOG(INFO) << "Listening for server messages on port: " << adminSocket;
     }
 
     if (pingSocket != SOCKET_DISABLED)
     {
         addSocket(m_socketFactory->createGameSocket(gsNetwork::PingSocket::gkName, *m_socketListener), pingSocket);
-        Log::getMainLog().info("Listening for ping messages on port: [%i]", pingSocket);
+        LOG(INFO) << "Listening for ping messages on port: " << adminSocket;
     }
 }
 
@@ -141,11 +142,11 @@ void ServerApplication::setSocketFactory(GameSocketFactory* factory)
     m_socketFactory = factory;
 }
 
-void ServerApplication::addSocket(GameSocket* socket, uint16 port)
+void ServerApplication::addSocket(GameSocket* socket, uint16_t port)
 {
     if (socket->Bind(port))
     {
-        Log::getMainLog().error("Add Socket Failed");
+        LOG(ERROR) << "Failed to add socket";
         return;
     }
 
@@ -155,9 +156,10 @@ void ServerApplication::addSocket(GameSocket* socket, uint16 port)
 void ServerApplication::startNetwork()
 {
     m_socketListener->toggleRunning();
-
-    ZThread::ConcurrentExecutor e;
-    e.execute(m_socketListener);
+    
+    boost::thread t([this] () {
+        m_socketListener->run();
+    });
 }
 
 void ServerApplication::run()
@@ -167,13 +169,13 @@ void ServerApplication::run()
 	Application::run();
 }
 
-void ServerApplication::tick(uint64 updateTimestamp)
+void ServerApplication::tick(uint64_t updateTimestamp)
 {
     if (isRunning())
     {
 		if (updateTimestamp - m_lastUpdateTimestamp > 25)
 		{
-		    uint64 deltaTimestamp = (updateTimestamp - m_lastUpdateTimestamp);
+		    uint64_t deltaTimestamp = (updateTimestamp - m_lastUpdateTimestamp);
 	        m_lastUpdateTimestamp = updateTimestamp;
             
             m_eventManager->tick(updateTimestamp);            

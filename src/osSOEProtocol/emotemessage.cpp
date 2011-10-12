@@ -60,22 +60,22 @@ BinaryPacketPtr EmoteMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-    *packet << (uint16)5;
-    *packet << (uint32)AMSG_INT_PACKET;
-    *packet << (uint32)0xB;
-    *packet << (uint32)0x012E;
-    *packet << (uint64)recipientId; //recipient
-    *packet << (uint32)0; //unkown
-    *packet << (uint64)objectId; //source
-    *packet << (uint64)targetId; //This is normally the target...
-    *packet << (uint16)emoteId; //ID
-    *packet << (uint8)0;
-    *packet << (uint16)0x0300;
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)AMSG_INT_PACKET;
+    *packet << (uint32_t)0xB;
+    *packet << (uint32_t)0x012E;
+    *packet << (uint64_t)recipientId; //recipient
+    *packet << (uint32_t)0; //unkown
+    *packet << (uint64_t)objectId; //source
+    *packet << (uint64_t)targetId; //This is normally the target...
+    *packet << (uint16_t)emoteId; //ID
+    *packet << (uint8_t)0;
+    *packet << (uint16_t)0x0300;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

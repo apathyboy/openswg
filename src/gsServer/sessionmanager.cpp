@@ -17,7 +17,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include "gsServer/sessionmanager.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/event.h>
 #include <gsNetwork/events.h>
 #include <gsServer/sessioneventlistener.h>
@@ -32,7 +38,7 @@ SessionManager::SessionManager()
 , Process(PROC_MANAGESESSIONS, 0)
 {}
     
-void SessionManager::update(const uint64 updateTimestamp)
+void SessionManager::update(const uint64_t updateTimestamp)
 {
 	Process::update(updateTimestamp);
 
@@ -54,24 +60,21 @@ void SessionManager::update(const uint64 updateTimestamp)
 		}
 		else
 		{
-			Log::getMainLog().debug("Removing invalid session [%s]", (*i).second->getRemoteAddress()->getAddressString().c_str());
-			i = m_sessions.erase(i);
-            Log::getMainLog().debug("Session count: [%d]", m_sessions.size());    
+            LOG(WARNING) << "Removing invalid session for address: " << (*i).second->getRemoteAddress()->getAddressString();
+			removeSession(i++);
 		}
 	}
 }
 
-void SessionManager::removeDeadSessions(const uint64 updateTimestamp)
+void SessionManager::removeDeadSessions(const uint64_t updateTimestamp)
 {
 	SessionMap::iterator i = m_sessions.begin();
 	while (i != m_sessions.end())
 	{
 		if (updateTimestamp - (*i).second->getLastUpdateTime() > 1000 * 60)
 		{
-			std::string address = (*i).second->getRemoteAddress()->getAddressString();
-			Log::getMainLog().debug("Removing inactive session [%s]", address.c_str());
-			removeSession(i++);                
-            Log::getMainLog().debug("Session count: [%d]", m_sessions.size());
+            LOG(WARNING) << "Removing inactive session for address: " << (*i).second->getRemoteAddress()->getAddressString();
+			removeSession(i++);
 		}
 		else 
 			i++;
@@ -99,12 +102,16 @@ void SessionManager::addSession(SessionPtr session)
 		return;
 
 	m_sessions[session->getRemoteAddress()->getAddressString()] = session;
+    
+    LOG(INFO) << "Current session count: " << m_sessions.size();
 }
 
 void SessionManager::removeSession(SessionMap::iterator i)
 {
     SessionPtr session = (*i).second;
     i = m_sessions.erase(i);
+            
+    LOG(INFO) << "Current session count: " << m_sessions.size();
 }
 
 void SessionManager::removeSession(SessionPtr session)

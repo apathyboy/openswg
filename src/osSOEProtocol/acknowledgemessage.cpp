@@ -44,9 +44,9 @@ AcknowledgeMessage::~AcknowledgeMessage()
 BinaryPacketPtr AcknowledgeMessage::serialize()
 {
     BinaryPacketPtr packet(GS_NEW BinaryPacket);
-    *packet << (uint16)SOE_ACK_A;
-    *packet << (uint16)sequence;
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint16_t)SOE_ACK_A;
+    *packet << (uint16_t)sequence;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

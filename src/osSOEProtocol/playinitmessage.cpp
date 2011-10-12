@@ -50,11 +50,11 @@ BinaryPacketPtr PlayInitMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)5;
-    *packet << (uint32)SMSG_OBJ_INIT;
-    *packet << (uint64)objectId+7; // Plus offset?
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)SMSG_OBJ_INIT;
+    *packet << (uint64_t)objectId+7; // Plus offset?
 
     // Orientation (FLOAT)
     *packet << (float)0;
@@ -70,11 +70,11 @@ BinaryPacketPtr PlayInitMessage::serialize()
     *packet << (float)0;
 
     // Object CRC
-    *packet << (uint32)0x619BAE21;
+    *packet << (uint32_t)0x619BAE21;
 
-    *packet << (uint8)0x00; //byte flag
+    *packet << (uint8_t)0x00; //byte flag
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

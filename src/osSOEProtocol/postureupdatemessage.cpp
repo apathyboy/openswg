@@ -60,20 +60,20 @@ BinaryPacketPtr PostureUpdateMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-    *packet << (uint16)5;
-    *packet << (uint32)SMSG_DELTA_UPDATE;
-    *packet << (uint64)objectId;
-    *packet << (uint32)0x4352454F;
-    *packet << (uint8)3;
-    *packet << (uint32)5;
-    *packet << (uint16)1;
-    *packet << (uint16)11;
-    *packet << (uint8)posture;
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)SMSG_DELTA_UPDATE;
+    *packet << (uint64_t)objectId;
+    *packet << (uint32_t)0x4352454F;
+    *packet << (uint8_t)3;
+    *packet << (uint32_t)5;
+    *packet << (uint16_t)1;
+    *packet << (uint16_t)11;
+    *packet << (uint8_t)posture;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

@@ -17,10 +17,15 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <osSOEProtocol/galaxymanager.h>
+#include "osSOEProtocol/galaxymanager.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsServer/serverevents.h>
 #include <osSOEProtocol/galaxymanagerlistener.h>
-#include <gsCore/log.h>
 #include <gsCore/datastore.h>
 
 using namespace gsCore;
@@ -36,7 +41,7 @@ GalaxyCharacter::GalaxyCharacter()
 , m_characterId(NULL)
 {}
 GalaxyCharacter::GalaxyCharacter(std::string firstname, std::string surname, std::string model,
-			uint64 zoneId, uint64 objectId, uint64 characterId)
+			uint64_t zoneId, uint64_t objectId, uint64_t characterId)
 : m_firstname(firstname)
 , m_surname(surname)
 , m_model(model)
@@ -63,7 +68,7 @@ GalaxyCluster::GalaxyCluster()
 , m_maxCapacity(3000)
 {}
 
-GalaxyCluster::GalaxyCluster(uint32 id, uint32 version, std::string name, uint32 maxCapacity, uint32 status)
+GalaxyCluster::GalaxyCluster(uint32_t id, uint32_t version, std::string name, uint32_t maxCapacity, uint32_t status)
 : m_id(id)
 , m_version(version)
 , m_name(name)
@@ -71,9 +76,9 @@ GalaxyCluster::GalaxyCluster(uint32 id, uint32 version, std::string name, uint32
 , m_maxCapacity(maxCapacity)
 {}
 		
-uint32 GalaxyCluster::getPopulation()
+uint32_t GalaxyCluster::getPopulation()
 {
-	uint32 population = 0;
+	uint32_t population = 0;
 
 	for (std::list<GalaxyServer*>::iterator i = m_connectionServers.begin();
 		i != m_connectionServers.end(); ++i)
@@ -96,9 +101,9 @@ GalaxyServer::GalaxyServer()
 , m_serverStatus(SERVER_OFFLINE)
 {}
 
-GalaxyServer::GalaxyServer(uint32 id, GalaxyCluster* galaxy, uint serverType, std::string serverAddress,
-			uint16 adminPort, uint16 clientPort, uint16 commPort, uint16 pingPort,
-			uint32 population, uint serverStatus)
+GalaxyServer::GalaxyServer(uint32_t id, GalaxyCluster* galaxy, uint32_t serverType, std::string serverAddress,
+			uint16_t adminPort, uint16_t clientPort, uint16_t commPort, uint16_t pingPort,
+			uint32_t population, uint32_t serverStatus)
 : m_id(id)
 , m_galaxy(galaxy)
 , m_serverType(serverType)
@@ -120,7 +125,7 @@ GalaxyManager::~GalaxyManager()
 	
 }
 
-void GalaxyManager::update(const uint64 updateTimestamp)
+void GalaxyManager::update(const uint64_t updateTimestamp)
 {
 	Process::update(updateTimestamp);
 
@@ -136,7 +141,7 @@ void GalaxyManager::initialize()
 	m_galaxies = getGalaxyList();
 }
 
-GalaxyCluster* GalaxyManager::getGalaxy(uint32 galaxyId)
+GalaxyCluster* GalaxyManager::getGalaxy(uint32_t galaxyId)
 {
 	GalaxyCluster* galaxy;
 	for(std::list<GalaxyCluster*>::iterator i = m_galaxies.begin();
@@ -150,7 +155,7 @@ GalaxyCluster* GalaxyManager::getGalaxy(uint32 galaxyId)
 	return galaxy;
 }
 
-GalaxyServer* GalaxyManager::getConnectionServer(uint32 galaxyId)
+GalaxyServer* GalaxyManager::getConnectionServer(uint32_t galaxyId)
 {
 	GalaxyServer* connectionServer;
 
@@ -162,42 +167,32 @@ GalaxyServer* GalaxyManager::getConnectionServer(uint32 galaxyId)
           << " AND galaxy_id = " << galaxyId
           << " ORDER BY population LIMIT 1";
 
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
 
         if (result)
         {
-            mysqlpp::Row row = result.fetch_row();
-
 			connectionServer = GS_NEW GalaxyServer
-				((uint32)row["id"],
+				((uint32_t)result[0]["id"],
 				 getGalaxy(galaxyId),
-				 (uint)row["type"],
-				 (std::string)row["address"],
-				 (uint16)row["admin_port"],
-				 (uint16)row["client_port"],
-				 (uint16)row["comm_port"],
-				 (uint16)row["ping_port"],
-				 (uint32)row["population"],
-				 (uint)row["status"]);
+				 (uint32_t)result[0]["type"],
+				 (std::string)result[0]["address"],
+				 (uint16_t)result[0]["admin_port"],
+				 (uint16_t)result[0]["client_port"],
+				 (uint16_t)result[0]["comm_port"],
+				 (uint16_t)result[0]["ping_port"],
+				 (uint32_t)result[0]["population"],
+				 (uint32_t)result[0]["status"]);
         }
 
         else
         {
-            Log::getMainLog().error("Failed to select connection server list: %s", q.error().c_str());
+            LOG(ERROR) << "Failed to select connection server list";
         }
     }
-    catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-    }
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR" << er.what();
 	}
 
 	return connectionServer;
@@ -212,50 +207,37 @@ std::list<GalaxyCluster*> GalaxyManager::getGalaxyList()
 
         q << "SELECT * FROM galaxies";
 
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
 
         if (result)
         {
-            mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
+            std::for_each(begin(result), end(result), [&galaxies] (const mysqlpp::Row& row) 
+            {                
                 GalaxyCluster* galaxy = GS_NEW GalaxyCluster
-					((uint32)row["id"],
-					 (uint32)row["version"],
+					((uint32_t)row["id"],
+					 (uint32_t)row["version"],
 					 (std::string)row["name"],
-					 (uint32)row["max_capacity"],
-					 (uint32)row["status"]);
+					 (uint32_t)row["max_capacity"],
+					 (uint32_t)row["status"]);
 
                 galaxies.push_back(galaxy);
-            }
+            });
         }
-
         else
         {
-            Log::getMainLog().error("Failed to select galaxy list: %s", q.error().c_str());
-			return galaxies;
+            LOG(ERROR) << "Failed to select galaxy list";
         }
     }
-    catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-			return galaxies;
-    }
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("%s", er.what());
-			return galaxies;
+        LOG(ERROR) << "ERROR" << er.what();
 	}
 
 	return galaxies;
 }
 
-std::list<GalaxyServer*> GalaxyManager::getConnectionServerList(uint32 galaxyId)
+std::list<GalaxyServer*> GalaxyManager::getConnectionServerList(uint32_t galaxyId)
 {
 	std::list<GalaxyServer*> connectionServers;
 	
@@ -267,41 +249,32 @@ std::list<GalaxyServer*> GalaxyManager::getConnectionServerList(uint32 galaxyId)
           << " AND galaxy_id = " << galaxyId
           << " ORDER BY population";
 
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
 
         if (result)
-        {
-			mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
+        {            
+            std::for_each(begin(result), end(result), [this, galaxyId, &connectionServers] (const mysqlpp::Row& row) 
+            {   
 				GalaxyServer* connectionServer = GS_NEW GalaxyServer
-					((uint32)row["id"],
+					((uint32_t)row["id"],
 					 getGalaxy(galaxyId),
-					 (uint)row["type"],
+					 (uint32_t)row["type"],
 					 (std::string)row["address"],
-					 (uint16)row["admin_port"],
-					 (uint16)row["client_port"],
-					 (uint16)row["comm_port"],
-					 (uint16)row["ping_port"],
-					 (uint32)row["population"],
-					 (uint)row["status"]);
+					 (uint16_t)row["admin_port"],
+					 (uint16_t)row["client_port"],
+					 (uint16_t)row["comm_port"],
+					 (uint16_t)row["ping_port"],
+					 (uint32_t)row["population"],
+					 (uint32_t)row["status"]);
 
 				connectionServers.push_back(connectionServer);
-            }
+            });
         }                    
     }
-    catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-    }
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR" << er.what();
 	}
 	
 	return connectionServers;
@@ -321,7 +294,7 @@ std::list<GalaxyServer*> GalaxyManager::getConnectionServerList()
 	return connectionServers;
 }
 
-std::list<GalaxyCharacter*> GalaxyManager::getCharacterList(uint32 accountId)
+std::list<GalaxyCharacter*> GalaxyManager::getCharacterList(uint32_t accountId)
 {
 	std::list<GalaxyCharacter*> characters;
         
@@ -339,37 +312,28 @@ std::list<GalaxyCharacter*> GalaxyManager::getCharacterList(uint32 accountId)
           << "FROM characters "
           << "WHERE characters.account_id = " << accountId;
 
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
 
         if (result)
-        {
-			mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
+        {      
+            std::for_each(begin(result), end(result), [&characters] (const mysqlpp::Row& row) 
+            {  
 				GalaxyCharacter* character = GS_NEW GalaxyCharacter
 					((std::string)row["firstname"],
 					 (std::string)row["surname"],
 					 (std::string)row["model"],
-					 (uint64)row["zone_id"],
-					 (uint64)row["object_id"],
-					 (uint64)row["id"]);
+					 (uint64_t)row["zone_id"],
+					 (uint64_t)row["object_id"],
+					 (uint64_t)row["id"]);
 
 				characters.push_back(character);
-            }
+            });
         }                    
     }
-    catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-    }
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR" << er.what();
 	}
 
 	return characters;

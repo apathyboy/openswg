@@ -17,12 +17,17 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include "osSOEProtocol/soesessionmanager.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsNetwork/events.h>
 #include <gsServer/sessionevents.h>
 #include <osSOEProtocol/opcodes.h>
 #include <osSOEProtocol/soesessionlistener.h>
-#include <osSOEProtocol/soesessionmanager.h>
 #include <osSOEProtocol/soelayermessages.h>
 
 using namespace gsCore;
@@ -34,7 +39,7 @@ SOESessionManager::SOESessionManager()
 : SessionManager()
 {}
     
-void SOESessionManager::update(const uint64 updateTimestamp)
+void SOESessionManager::update(const uint64_t updateTimestamp)
 {
 	SessionManager::update(updateTimestamp);
 }
@@ -54,7 +59,7 @@ boost::optional<SessionPtr> SOESessionManager::createSession(gsNetwork::NetworkM
 	
 	if (i != m_sessions.end())
 	{
-		Log::getMainLog().error("Session already exists for address [%s]", address->getAddressString().c_str());
+        LOG(ERROR) << "Session already exists for address: " << address->getAddressString();
 		return NULL;
 	}
 

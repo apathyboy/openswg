@@ -18,12 +18,10 @@
 // *********************************************************************
 
 #include <gsNetwork/priorityqueue.h>
-#include <zthread/Mutex.h>
-#include <zthread/Guard.h>
 
 using namespace gsNetwork;
 
-PriorityQueue::PriorityQueue(uint slots)
+PriorityQueue::PriorityQueue(uint32_t slots)
 : m_slots(slots)
 , m_sequence(0)
 {}
@@ -31,7 +29,7 @@ PriorityQueue::PriorityQueue(uint slots)
 PriorityQueue::~PriorityQueue()
 {}
 
-uint16 PriorityQueue::getNextSequence()
+uint16_t PriorityQueue::getNextSequence()
 {
 	return m_sequence++;
 }
@@ -41,7 +39,7 @@ void PriorityQueue::queue(NetworkMessagePtr message)
 	m_messages.push_back(message);
 }
 
-void PriorityQueue::resend(uint16 sequence, GameSocket* socket, NetworkAddressPtr address)
+void PriorityQueue::resend(uint16_t sequence, GameSocket* socket, NetworkAddressPtr address)
 {
 	SentQueue::iterator i = m_sentMessages.find(sequence);
 
@@ -72,7 +70,7 @@ void PriorityQueue::sendQueue(GameSocket* socket, NetworkAddressPtr address)
 		if (message->resend()) //&& (message->sendCount == 0))
 		{
 			// Get next sequence number.
-			uint16 sequence = getNextSequence();
+			uint16_t sequence = getNextSequence();
 			message->setSequence(sequence);
 
 			// Insert message into the sent queue here.

@@ -50,16 +50,16 @@ BinaryPacketPtr ObjDestroyMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)3;
-    *packet << (uint32)0x4D45D504;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)3;
+    *packet << (uint32_t)0x4D45D504;
     
     // Link Offset TO object
-    *packet << (uint64)objectId; // id
-    *packet << (uint8)0; 
+    *packet << (uint64_t)objectId; // id
+    *packet << (uint8_t)0; 
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

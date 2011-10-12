@@ -17,14 +17,20 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include "osSOEProtocol/soesession.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsServer/sessionevents.h>
 
 #include <osSOEProtocol/encryption.h>
 #include <osSOEProtocol/compression.h>
-#include <osSOEProtocol/soesession.h>
 #include <osSOEProtocol/opcodes.h>
 #include <osSOEProtocol/soelayermessages.h>
+
 using namespace gsCore;
 using namespace gsNetwork;
 using namespace gsServer;
@@ -56,7 +62,7 @@ void SOESession::handleSOELayer(BinaryPacketPtr packet) {
 	if ((packet->getLength() - (packet->getReadPosition())) < 2)
 		return;
 
-	uint16 opcode = packet->read<uint16>();
+	uint16_t opcode = packet->read<uint16_t>();
 
 	switch(opcode)
 	{
@@ -133,13 +139,13 @@ void SOESession::processClientCommand(gsNetwork::BinaryPacketPtr packet)
 	if (packet->getLength() < 4)
 		return;
 
-	uint32 opcode = packet->read<uint32>();
+	uint32_t opcode = packet->read<uint32_t>();
 
 	boost::optional<OpcodeHandlerPtr> handler = m_opcodeFactory->findOpcodeHandler(opcode);
 
 	if (! handler)
 	{
-		Log::getMainLog().error("Invalid opcode recieved: [0x%08x] %s", opcode, getRemoteAddress()->getAddressString().c_str());
+        LOG(ERROR) << "Invalid opcode received: " << std::hex << opcode ;
 		return;
 	}
 

@@ -50,41 +50,41 @@ BinaryPacketPtr Creo4Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-	*packet << (uint16)5;
+	*packet << (uint16_t)5;
 
-	*packet << (uint32)SMSG_OBJ_UPDATE;
-	*packet << (uint64)objectId;
-	*packet << (uint32)0x4352454F << (uint8)4;
-	*packet << (uint32)86; // Size without skills
+	*packet << (uint32_t)SMSG_OBJ_UPDATE;
+	*packet << (uint64_t)objectId;
+	*packet << (uint32_t)0x4352454F << (uint8_t)4;
+	*packet << (uint32_t)86; // Size without skills
 
-	*packet << (uint16)14; // Object count
+	*packet << (uint16_t)14; // Object count
 	*packet << (float)1.0;
 	*packet << (float)1.0; 
 	
-    *packet << (uint32)3;  // Ham encumbrence
-    *packet << (uint32)3;
+    *packet << (uint32_t)3;  // Ham encumbrence
+    *packet << (uint32_t)3;
 
     for (int i = 0; i < 3; ++i)
-        *packet << (uint32)0;
+        *packet << (uint32_t)0;
 
-	*packet << (uint32)0; // Skill list size
-	*packet << (uint32)0;
+	*packet << (uint32_t)0; // Skill list size
+	*packet << (uint32_t)0;
 	
     *packet << (float)1.0; //unknown
     *packet << (float)1.f; // Acceleration?
-    *packet << (uint64)0; // unknown
+    *packet << (uint64_t)0; // unknown
     *packet << (float)5.376f; // Players Running Speed.
     *packet << (float)0.453786; // unknown
     *packet << (float)0.0125; // unknown
     *packet << (float)1.0; // unknown
     *packet << (float)1.549; // unknown
     *packet << (float)0.75; // unknown
-    *packet << (uint64)0; // unknown
+    *packet << (uint64_t)0; // unknown
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

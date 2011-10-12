@@ -26,58 +26,58 @@
 using namespace gsNetwork;
 using namespace osSOEProtocol;
 
-void Encryption::crc(gsNetwork::BinaryPacketPtr packet, uint32 crcSeed)
+void Encryption::crc(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
 {
     char* data = packet->getData();
-    uint32 length = packet->getLength();
+    uint32_t length = packet->getLength();
 
-    AppendCRC(data, (uint16)length, crcSeed);
+    AppendCRC(data, (uint16_t)length, crcSeed);
 
     packet->clear();
-    for (uint32 i = 0; i < length; ++i)
+    for (uint32_t i = 0; i < length; ++i)
         packet->append<char>(data[i]);
 }
         
-void Encryption::encrypt(gsNetwork::BinaryPacketPtr packet, uint32 crcSeed)
+void Encryption::encrypt(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
 {
     char* data = packet->getData();
-    uint32 length = packet->getLength();
+    uint32_t length = packet->getLength();
 
-    Encrypt(data, (uint16)length, crcSeed);
+    Encrypt(data, (uint16_t)length, crcSeed);
 
     packet->clear();
-    for (uint32 i = 0; i < length; ++i)
+    for (uint32_t i = 0; i < length; ++i)
         packet->append<char>(data[i]);	
 }
         
-void Encryption::decrypt(gsNetwork::BinaryPacketPtr packet, uint32 crcSeed)
+void Encryption::decrypt(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
 {
     char* data = packet->getData();
-    uint32 length = packet->getLength();
+    uint32_t length = packet->getLength();
 
-    uint16 group = ntohs(data[1]);
-    uint32 seed = crcSeed;
+    uint16_t group = ntohs(data[1]);
+    uint32_t seed = crcSeed;
 
     if (group == SOE_MULTI_PKT)
     {
-        if (CrcTest(data, (uint16)length, seed))
-            Decrypt(data, (uint16)length, seed);
+        if (CrcTest(data, (uint16_t)length, seed))
+            Decrypt(data, (uint16_t)length, seed);
     }
 
     else if(group == SOE_CHL_DATA_A || group == SOE_DATA_FRAG_A || group == SOE_PING ||
             group == SOE_NET_STATUS_REQ || group == SOE_ACK_A || group == SOE_DISCONNECT ||
             group == SOE_OUT_ORDER_PKT_A)
     {
-        Decrypt(data, (uint16)length, seed);
+        Decrypt(data, (uint16_t)length, seed);
     }
 
 	else if(data[0] == 0x05)
 	{
-        Decrypt(data, (uint16)length, seed, false);
+        Decrypt(data, (uint16_t)length, seed, false);
 	}
 
     packet->clear();
-    for (uint32 i = 0; i < length; ++i)
+    for (uint32_t i = 0; i < length; ++i)
         packet->append<char>(data[i]);
 }
 

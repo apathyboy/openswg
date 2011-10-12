@@ -54,74 +54,74 @@ BinaryPacketPtr Creo3Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)5;
-    *packet << (uint32)SMSG_OBJ_UPDATE;
-    *packet << (uint64)objectId;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)SMSG_OBJ_UPDATE;
+    *packet << (uint64_t)objectId;
 
     // Object Packet Type (CREO3)
-    *packet << (uint32)0x4352454F;
-    *packet << (uint8)3;
+    *packet << (uint32_t)0x4352454F;
+    *packet << (uint8_t)3;
     
-    *packet << (uint32)(149 + category.length() + appearance.length() + type.length() + (fullname.length() * 2));
-    *packet << (uint16)12;
+    *packet << (uint32_t)(149 + category.length() + appearance.length() + type.length() + (fullname.length() * 2));
+    *packet << (uint16_t)12;
 
-    *packet << (uint32)16256;
+    *packet << (uint32_t)16256;
 
-    *packet << (uint16)category.length();
+    *packet << (uint16_t)category.length();
     packet->append<std::string>(category);
 
-    *packet << (uint32)0;
+    *packet << (uint32_t)0;
 
-    *packet << (uint16)type.length();
+    *packet << (uint16_t)type.length();
     packet->append<std::string>(type);
 
-    *packet << (uint32)fullname.length();
-    for (uint i = 0; i < fullname.length(); ++i)
-        *packet << (unicode)fullname.c_str()[i];
+    *packet << (uint32_t)fullname.length();
+    for (uint32_t i = 0; i < fullname.length(); ++i)
+        *packet << (uint16_t)fullname.c_str()[i];
 
-    *packet << (uint32)1000000;
+    *packet << (uint32_t)1000000;
 
-    *packet << (uint16)appearance.length();
+    *packet << (uint16_t)appearance.length();
 	if (appearance.length()>0)
 		packet->append<std::string>(appearance);
 
     // 7 unk uint32's default
     //FIX ME - XENO
-    *packet << (uint32)1; 
-    *packet << (uint32)0; 
-    *packet << (uint32)0; 
-    *packet << (uint32)128; 
-    *packet << (uint32)0; 
-    *packet << (uint32)0; 
-    *packet << (uint32)3000; 
+    *packet << (uint32_t)1; 
+    *packet << (uint32_t)0; 
+    *packet << (uint32_t)0; 
+    *packet << (uint32_t)128; 
+    *packet << (uint32_t)0; 
+    *packet << (uint32_t)0; 
+    *packet << (uint32_t)3000; 
 
-    *packet << (uint8)1;
+    *packet << (uint8_t)1;
 
-    *packet << (uint8)posture << (uint8)0; // Posture id    
-    *packet << (uint64)targetId; // Target
+    *packet << (uint8_t)posture << (uint8_t)0; // Posture id    
+    *packet << (uint64_t)targetId; // Target
     *packet << (float)scale; // Height
-    *packet << (uint32)battleFatigue; // Battle Fatigue
-    *packet << (uint64)0; // State
+    *packet << (uint32_t)battleFatigue; // Battle Fatigue
+    *packet << (uint64_t)0; // State
 
-    *packet << (uint32)9;
-    *packet << (uint32)9;
+    *packet << (uint32_t)9;
+    *packet << (uint32_t)9;
 
-	*packet << (uint32)healthWounds;
-	*packet << (uint32)strengthWounds;
-	*packet << (uint32)constitutionWounds;
-	*packet << (uint32)actionWounds;
-	*packet << (uint32)quicknessWounds;
-	*packet << (uint32)staminaWounds;
-	*packet << (uint32)mindWounds;
-	*packet << (uint32)focusWounds;
-	*packet << (uint32)willpowerWounds;
+	*packet << (uint32_t)healthWounds;
+	*packet << (uint32_t)strengthWounds;
+	*packet << (uint32_t)constitutionWounds;
+	*packet << (uint32_t)actionWounds;
+	*packet << (uint32_t)quicknessWounds;
+	*packet << (uint32_t)staminaWounds;
+	*packet << (uint32_t)mindWounds;
+	*packet << (uint32_t)focusWounds;
+	*packet << (uint32_t)willpowerWounds;
 
     for (int i = 0; i < 9; ++i)
-        *packet << (uint32)0;
+        *packet << (uint32_t)0;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

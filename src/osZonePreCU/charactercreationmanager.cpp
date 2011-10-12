@@ -19,7 +19,6 @@
 
 #include <gsServer/opcodehandler.h>
 #include <gsServer/session.h>
-#include <gsCore/log.h>
 #include <gsCore/datastore.h>
 #include <gsCore/timing.h>
 #include <osSOEProtocol/characteroptionsmessage.h>
@@ -57,39 +56,27 @@ void CharacterCreationManager::loadCreationItems()
           << "       creation_items.template "
           << "FROM creation_items";
 	
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
                 
 		if (result)
         {
-            mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
+            std::for_each(begin(result), end(result), [this] (const mysqlpp::Row& row) 
+            {  
 				CreationItem item;
-				item.id = (uint32)row["id"];
+				item.id = (uint32_t)row["id"];
 				item.profession = (std::string)row["profession"];
 				item.species = (std::string)row["species"];
 				item.gender = (std::string)row["gender"];
 				item.templateItem = (std::string)row["template"];
 
 				m_creationItems.push_back(item);
-			}
+			});
 		}
     }
-  
-	catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-		return;
-    }
-	
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
 }
@@ -114,46 +101,34 @@ void CharacterCreationManager::loadRacialMods()
           << "       racial_mods.willpower "
           << "FROM racial_mods";
 	
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
                 
 		if (result)
         {
-            mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
+            std::for_each(begin(result), end(result), [this] (const mysqlpp::Row& row) 
+            {  
 				RacialMod mod;
-				mod.id = (uint32)row["id"];
+				mod.id = (uint32_t)row["id"];
 				mod.maleTemplate = (std::string)row["male_template"];
 				mod.femaleTemplate = (std::string)row["female_template"];
-				mod.health = (uint32)row["health"];
-				mod.strength = (uint32)row["strength"];
-				mod.constitution = (uint32)row["constitution"];
-				mod.action = (uint32)row["action"];
-				mod.quickness = (uint32)row["quickness"];
-				mod.stamina = (uint32)row["stamina"];
-				mod.mind = (uint32)row["mind"];
-				mod.focus = (uint32)row["focus"];
-				mod.willpower = (uint32)row["willpower"];
+				mod.health = (uint32_t)row["health"];
+				mod.strength = (uint32_t)row["strength"];
+				mod.constitution = (uint32_t)row["constitution"];
+				mod.action = (uint32_t)row["action"];
+				mod.quickness = (uint32_t)row["quickness"];
+				mod.stamina = (uint32_t)row["stamina"];
+				mod.mind = (uint32_t)row["mind"];
+				mod.focus = (uint32_t)row["focus"];
+				mod.willpower = (uint32_t)row["willpower"];
 
 				m_racialMods.push_back(mod);
-			}
+			});
 		}
     }
-  
-	catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-		return;
-    }
-	
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
 }
@@ -177,45 +152,33 @@ void CharacterCreationManager::loadProfessionMods()
           << "       profession_mods.willpower "
           << "FROM profession_mods";
 	
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
                 
 		if (result)
         {
-            mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
+            std::for_each(begin(result), end(result), [this] (const mysqlpp::Row& row) 
+            {  
 				ProfessionMod mod;
-				mod.id = (uint32)row["id"];
+				mod.id = (uint32_t)row["id"];
 				mod.profession = (std::string)row["profession"];
-				mod.health = (uint32)row["health"];
-				mod.strength = (uint32)row["strength"];
-				mod.constitution = (uint32)row["constitution"];
-				mod.action = (uint32)row["action"];
-				mod.quickness = (uint32)row["quickness"];
-				mod.stamina = (uint32)row["stamina"];
-				mod.mind = (uint32)row["mind"];
-				mod.focus = (uint32)row["focus"];
-				mod.willpower = (uint32)row["willpower"];
+				mod.health = (uint32_t)row["health"];
+				mod.strength = (uint32_t)row["strength"];
+				mod.constitution = (uint32_t)row["constitution"];
+				mod.action = (uint32_t)row["action"];
+				mod.quickness = (uint32_t)row["quickness"];
+				mod.stamina = (uint32_t)row["stamina"];
+				mod.mind = (uint32_t)row["mind"];
+				mod.focus = (uint32_t)row["focus"];
+				mod.willpower = (uint32_t)row["willpower"];
 
 				m_professionMods.push_back(mod);
-			}
+			});
 		}
     }
-  
-	catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-		return;
-    }
-	
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
 }
@@ -268,8 +231,8 @@ void CharacterCreationManager::handleCreateCharacter(gsServer::Session* session,
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 
-	uint64 objectId = generateObjectId();
-	uint64 characterId = generateObjectId();
+	uint64_t objectId = generateObjectId();
+	uint64_t characterId = generateObjectId();
 
 	boost::optional<RacialMod> racialMod = findRacialMod(creationRequest->race);
 	if (! racialMod)
@@ -325,30 +288,22 @@ void CharacterCreationManager::handleCreateCharacter(gsServer::Session* session,
           << "NOW(), "
           << 1 << ")"; // Active subscriber state
 
-		mysqlpp::ResNSel result = q.execute();
+		mysqlpp::SimpleResult result = q.execute();
 
-		if (! result.success)
+		if (! result)
         {
 			Log::getMainLog().error("Unable to create character [%s]", creationRequest->fullname.c_str());
 			return;
         }
 
-		characterId = (uint64)result.insert_id;
+		characterId = (uint64_t)result.insert_id;
 
 		createCharacterItems(objectId, creationRequest->profession, creationRequest->race);
 	}
-    
-	catch (const mysqlpp::BadQuery& er)
-    {
-		// handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-        return;
-    }
-	
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
 
@@ -390,7 +345,7 @@ boost::optional<RacialMod> CharacterCreationManager::findRacialMod(const std::st
 	return mod;
 }
 
-void CharacterCreationManager::createCharacterItems(uint64 playerId, const std::string& profession, const std::string& race)
+void CharacterCreationManager::createCharacterItems(uint64_t playerId, const std::string& profession, const std::string& race)
 {
 	// Get the species.
 	std::string::size_type pos = race.find_first_of("_");

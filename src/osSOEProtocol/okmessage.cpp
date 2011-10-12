@@ -47,14 +47,14 @@ OkMessage::~OkMessage()
 BinaryPacketPtr OkMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_MULTI_PKT;
-    *packet << (uint8)4;
-    *packet << (uint16)SOE_ACK_A;
-    *packet << (uint16)sequence;
-    *packet << (uint8)6;
-    *packet << (uint16)1;
-    *packet << (uint32)SMSG_OK_PACKET;
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint16_t)SOE_MULTI_PKT;
+    *packet << (uint8_t)4;
+    *packet << (uint16_t)SOE_ACK_A;
+    *packet << (uint16_t)sequence;
+    *packet << (uint8_t)6;
+    *packet << (uint16_t)1;
+    *packet << (uint32_t)SMSG_OK_PACKET;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

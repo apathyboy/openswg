@@ -55,6 +55,6 @@ BinaryPacketPtr LoginCharacterRequest::serialize()
 
 void LoginCharacterRequest::unserialize()
 {
-	characterId = m_serializedData->read<uint64>();
+	characterId = m_serializedData->read<uint64_t>();
 }
 

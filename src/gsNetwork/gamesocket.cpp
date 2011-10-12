@@ -18,7 +18,6 @@
 // *********************************************************************
 
 #include <gsCore/eventmanager.h>
-#include <gsCore/log.h>
 #include <gsNetwork/gamesocket.h>
 #include <gsNetwork/networkaddress.h>
 #include <gsNetwork/events.h>

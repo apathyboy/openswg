@@ -50,43 +50,43 @@ BinaryPacketPtr Play3Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)5;
-    *packet << (uint32)SMSG_OBJ_UPDATE;
-    *packet << (uint64)objectId+7; // id+offset
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)SMSG_OBJ_UPDATE;
+    *packet << (uint64_t)objectId+7; // id+offset
 
     // Object Packet Type (CREO3)
-    *packet << (uint32)0x504C4159;
-    *packet << (uint8)3;
+    *packet << (uint32_t)0x504C4159;
+    *packet << (uint8_t)3;
 
-    *packet << (uint32)127;
+    *packet << (uint32_t)127;
 
 	//WTF
-	*packet << (uint16)0x000B; // Maybe subop count?
-	*packet << (uint32)0x3F800000; // (float)1.0
+	*packet << (uint16_t)0x000B; // Maybe subop count?
+	*packet << (uint32_t)0x3F800000; // (float)1.0
     
-	*packet << (uint16)0x0F; //string size
+	*packet << (uint16_t)0x0F; //string size
     packet->append<std::string>(std::string("string_id_table"));    
 	
 	//Wierd Shit Here
-	*packet << (uint64)0;
-	*packet << (uint64)0;
-	*packet << (uint16)0;
-	*packet << (uint64)4;
-	*packet << (uint64)0;
-	*packet << (uint32)0;
-	*packet << (uint64)4;
-	*packet << (uint64)0;
-	*packet << (uint32)0;
+	*packet << (uint64_t)0;
+	*packet << (uint64_t)0;
+	*packet << (uint16_t)0;
+	*packet << (uint64_t)4;
+	*packet << (uint64_t)0;
+	*packet << (uint32_t)0;
+	*packet << (uint64_t)4;
+	*packet << (uint64_t)0;
+	*packet << (uint32_t)0;
 
-    *packet << (uint16)0; // Title (string)
+    *packet << (uint16_t)0; // Title (string)
 
-    *packet << (uint32)0x0000059B; // Figure out what these do
-    *packet << (uint32)0x001FEFD2;
-    *packet << (uint32)0x0000001E;
+    *packet << (uint32_t)0x0000059B; // Figure out what these do
+    *packet << (uint32_t)0x001FEFD2;
+    *packet << (uint32_t)0x0000001E;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

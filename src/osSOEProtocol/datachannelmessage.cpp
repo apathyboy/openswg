@@ -54,24 +54,24 @@ BinaryPacketPtr DataChannelMessage::serialize()
 
 void DataChannelMessage::unserialize()
 {
-	clientSequence = m_serializedData->read<uint16>();
-	delta = m_serializedData->read<uint16>();
+	clientSequence = m_serializedData->read<uint16_t>();
+	delta = m_serializedData->read<uint16_t>();
 		
     if (delta == SOE_MULTI_DATA_CHL)
     {
-        for (uint i = 4; i < (m_serializedData->getLength()); ++i)
+        for (uint32_t i = 4; i < (m_serializedData->getLength()); ++i)
         {
-			uint8 size = m_serializedData->read<uint8>();
+			uint8_t size = m_serializedData->read<uint8_t>();
 			++i;
 
 			if (size == 0xFF)
 			{
-				uint8 counter = m_serializedData->read<uint8>();
+				uint8_t counter = m_serializedData->read<uint8_t>();
 				++i;
 
 				m_serializedData->setReadPosition(m_serializedData->getReadPosition()+counter);
 	
-				size += m_serializedData->read<uint8>();
+				size += m_serializedData->read<uint8_t>();
 				++i;
 			}
 
@@ -80,9 +80,9 @@ void DataChannelMessage::unserialize()
 
 			BinaryPacketPtr segment(GS_NEW BinaryPacket);
 
-			uint16 group = m_serializedData->read<uint16>();
-			for (uint j = 0; j < (size-(uint)2); ++j)
-				segment->append<uint8>(m_serializedData->read<uint8>());
+			uint16_t group = m_serializedData->read<uint16_t>();
+			for (uint32_t j = 0; j < (size-(uint32_t)2); ++j)
+				segment->append<uint8_t>(m_serializedData->read<uint8_t>());
 
 			segments.push_back(segment);
 
@@ -94,7 +94,7 @@ void DataChannelMessage::unserialize()
 	{
 		BinaryPacketPtr segment(GS_NEW BinaryPacket);
 
-		for (uint i = m_serializedData->getReadPosition(); i < m_serializedData->getLength(); ++i)
+		for (uint32_t i = m_serializedData->getReadPosition(); i < m_serializedData->getLength(); ++i)
 			segment->append<char>(m_serializedData->read<char>());
 		
 		segments.push_back(segment);

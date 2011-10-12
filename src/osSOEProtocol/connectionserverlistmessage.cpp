@@ -49,11 +49,11 @@ ConnectionServerListMessage::~ConnectionServerListMessage()
 BinaryPacketPtr ConnectionServerListMessage::serialize()
 {
     BinaryPacketPtr packet(GS_NEW BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)2;
-    *packet << (uint32)SMSG_SERVER_ADDR;
-	*packet << (uint32)connectionServers.size(); // Temporary holder for Connection server count
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)SMSG_SERVER_ADDR;
+	*packet << (uint32_t)connectionServers.size(); // Temporary holder for Connection server count
 
     // Add connection server list
 	for (std::list<GalaxyServer*>::iterator i = connectionServers.begin(); i != connectionServers.end(); ++i)
@@ -62,21 +62,21 @@ BinaryPacketPtr ConnectionServerListMessage::serialize()
        //     continue;
 
         *packet << (*i)->getGalaxy()->getGalaxyId();
-		*packet << (uint16)(*i)->getServerAddress().length();
+		*packet << (uint16_t)(*i)->getServerAddress().length();
 		*packet << (*i)->getServerAddress();
-		*packet << (uint16)(*i)->getClientPort();
-		*packet << (uint16)(*i)->getPingPort();
-		*packet << (uint32)(*i)->getGalaxy()->getPopulation();
+		*packet << (uint16_t)(*i)->getClientPort();
+		*packet << (uint16_t)(*i)->getPingPort();
+		*packet << (uint32_t)(*i)->getGalaxy()->getPopulation();
 
-        *packet << (uint32)0x00000CB2;
-        *packet << (uint32)8;
-        *packet << (uint32)0xFFFF8F80;
-		*packet << (uint32)(*i)->getGalaxy()->getGalaxyStatus();
-        *packet << (uint8)0;
+        *packet << (uint32_t)0x00000CB2;
+        *packet << (uint32_t)8;
+        *packet << (uint32_t)0xFFFF8F80;
+		*packet << (uint32_t)(*i)->getGalaxy()->getGalaxyStatus();
+        *packet << (uint8_t)0;
     }
 
-    *packet << (uint8)0;
-    *packet << (uint16)0;
+    *packet << (uint8_t)0;
+    *packet << (uint16_t)0;
 
 	return packet;
 }

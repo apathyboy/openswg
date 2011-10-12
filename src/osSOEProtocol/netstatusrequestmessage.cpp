@@ -53,6 +53,6 @@ BinaryPacketPtr NetStatusRequestMessage::serialize()
 
 void NetStatusRequestMessage::unserialize()
 {
-    tick = m_serializedData->read<uint16>();
+    tick = m_serializedData->read<uint16_t>();
 }
 

@@ -50,36 +50,36 @@ BinaryPacketPtr Creo1Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-	*packet << (uint16)5;
-	*packet << (uint32)SMSG_OBJ_UPDATE;
-	*packet << (uint64)objectId;
+	*packet << (uint16_t)5;
+	*packet << (uint32_t)SMSG_OBJ_UPDATE;
+	*packet << (uint64_t)objectId;
 
-	*packet << (uint32)0x4352454F << (uint8)1;
+	*packet << (uint32_t)0x4352454F << (uint8_t)1;
 
-	*packet << (uint32)62; // Packet size (without skills)
-	*packet << (uint16)4;
-	*packet << (uint32)bankCredits; // Bank credits
-	*packet << (uint32)inventoryCredits; // Inventory credits
+	*packet << (uint32_t)62; // Packet size (without skills)
+	*packet << (uint16_t)4;
+	*packet << (uint32_t)bankCredits; // Bank credits
+	*packet << (uint32_t)inventoryCredits; // Inventory credits
 
-    *packet << (uint32)9;  // Ham modifiers
-    *packet << (uint32)9;
+    *packet << (uint32_t)9;  // Ham modifiers
+    *packet << (uint32_t)9;
 
-	*packet << (uint32)healthModifiers;
-	*packet << (uint32)strengthModifiers;
-	*packet << (uint32)constitutionModifiers;
-	*packet << (uint32)actionModifiers;
-	*packet << (uint32)quicknessModifiers;
-	*packet << (uint32)staminaModifiers;
-	*packet << (uint32)mindModifiers;
-	*packet << (uint32)focusModifiers;
-	*packet << (uint32)willpowerModifiers;
+	*packet << (uint32_t)healthModifiers;
+	*packet << (uint32_t)strengthModifiers;
+	*packet << (uint32_t)constitutionModifiers;
+	*packet << (uint32_t)actionModifiers;
+	*packet << (uint32_t)quicknessModifiers;
+	*packet << (uint32_t)staminaModifiers;
+	*packet << (uint32_t)mindModifiers;
+	*packet << (uint32_t)focusModifiers;
+	*packet << (uint32_t)willpowerModifiers;
 
-	*packet << (uint64)0; // Skill list
+	*packet << (uint64_t)0; // Skill list
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

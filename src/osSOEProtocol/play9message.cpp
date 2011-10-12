@@ -50,24 +50,24 @@ BinaryPacketPtr Play9Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-	*packet << (uint16)5;
-	*packet << (uint32)SMSG_OBJ_UPDATE;
-	*packet << (uint64)objectId+7;
-    *packet << (uint32)0x504C4159;
-    *packet << (uint8)9;
+	*packet << (uint16_t)5;
+	*packet << (uint32_t)SMSG_OBJ_UPDATE;
+	*packet << (uint64_t)objectId+7;
+    *packet << (uint32_t)0x504C4159;
+    *packet << (uint8_t)9;
 
-	*packet << (uint32)98; // Size without lists.
-	*packet << (uint32)11;
+	*packet << (uint32_t)98; // Size without lists.
+	*packet << (uint32_t)11;
 	
-	*packet << (uint32)0;
-	*packet << (uint32)0;
+	*packet << (uint32_t)0;
+	*packet << (uint32_t)0;
 	
 
-	*packet << (uint32)0; // unk
-	*packet << (uint32)0; // unk
+	*packet << (uint32_t)0; // unk
+	*packet << (uint32_t)0; // unk
 
 	/* Schematic list (The following puts a saber in the datapad's Draft Schematics)
 	packet << (uint32)1; // unk
@@ -77,42 +77,42 @@ BinaryPacketPtr Play9Message::serialize()
 	packet << (uint64)0x94BB8DC513020F2B;
 	packet << (uint32)1;
 	*/
-	*packet << (uint32)0; // unk
-	*packet << (uint32)0; // unk
+	*packet << (uint32_t)0; // unk
+	*packet << (uint32_t)0; // unk
 
-	*packet << (uint32)0; // schematic list?
-	*packet << (uint32)0; // schematic list?
+	*packet << (uint32_t)0; // schematic list?
+	*packet << (uint32_t)0; // schematic list?
 	// this gave me an unknown schematic
 	//packet << (uint8)0x03 << (uint8)0 << "F" << "U"; // unk list item?
 	//packet << (uint8)0x03 << (uint8)0 << "F" << "U"; // unk list item?
 
-	*packet << (uint32)8; // unk
-	*packet << (uint32)0; // unk
+	*packet << (uint32_t)8; // unk
+	*packet << (uint32_t)0; // unk
 
 	// Friend List
-	*packet << (uint32)0; // unk list
-	*packet << (uint32)0; // unk list
+	*packet << (uint32_t)0; // unk list
+	*packet << (uint32_t)0; // unk list
 
 	// Ignore List
-	*packet << (uint32)0; // unk list
-	*packet << (uint32)0; // unk list
+	*packet << (uint32_t)0; // unk list
+	*packet << (uint32_t)0; // unk list
 
-	*packet << (uint32)1; 
+	*packet << (uint32_t)1; 
 
-	*packet << (uint32)0; // Food fullness
-	*packet << (uint32)100; // max food
+	*packet << (uint32_t)0; // Food fullness
+	*packet << (uint32_t)100; // max food
 
-	*packet << (uint32)0; // Drink fullness
-	*packet << (uint32)100; // max drink
+	*packet << (uint32_t)0; // Drink fullness
+	*packet << (uint32_t)100; // max drink
 
-	*packet << (uint32)0; // unk
-	*packet << (uint32)100; // unk
+	*packet << (uint32_t)0; // unk
+	*packet << (uint32_t)100; // unk
 
 
-	*packet << (uint32)0; // unk
-	*packet << (uint32)0; // unk list
+	*packet << (uint32_t)0; // unk
+	*packet << (uint32_t)0; // unk list
 
-	*packet << (uint32)1; // jedi flag 0=normal 1=force sensative 4=light rank 8=jedi force rank dark
+	*packet << (uint32_t)1; // jedi flag 0=normal 1=force sensative 4=light rank 8=jedi force rank dark
 /*
 	*packet << (uint32)0; // Skill Abilities and Cert list
 	*packet << (uint32)0;
@@ -142,7 +142,7 @@ BinaryPacketPtr Play9Message::serialize()
 
 	*packet << (uint32)1;					// this wasnt here
 */
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

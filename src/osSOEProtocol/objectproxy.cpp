@@ -17,9 +17,16 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include "osSOEProtocol/objectproxy.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <osSOEProtocol/object.h>
-#include <osSOEProtocol/objectproxy.h>
+
+
 #include <osSOEProtocol/objectproperty.h>
 #include <osSOEProtocol/objectpropertytypes.h>
 #include <osSOEProtocol/movementmessage.h>
@@ -55,7 +62,7 @@ void ObjectProxy::notifyInRange(bool sendToSelf)
 	}
 }
 
-void ObjectProxy::radialSelection(uint8 option, gsServer::Session* session)
+void ObjectProxy::radialSelection(uint8_t option, gsServer::Session* session)
 {
 }
 		
@@ -102,29 +109,29 @@ void ObjectProxy::buildPropertyMap()
 
 	addProperty(new Uint64ObjectProperty(
 		"DatabaseId", "Database ID", 
-		makeFunctor((CBFunctor1<uint64>*)0, *m_object, &Object::setDatabaseId), 
-		makeFunctor((CBFunctor0wRet<uint64>*)0, *m_object, &Object::getDatabaseId), 
+		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setDatabaseId), 
+		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getDatabaseId), 
 		"A local database table id.", 
 		GROUPNAME));
 
 	addProperty(new Uint64ObjectProperty(
 		"ObjectId", "Object ID", 
-		makeFunctor((CBFunctor1<uint64>*)0, *m_object, &Object::setObjectId), 
-		makeFunctor((CBFunctor0wRet<uint64>*)0, *m_object, &Object::getObjectId), 
+		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setObjectId), 
+		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getObjectId), 
 		"A globally unique identifier assigned to every object.", 
 		GROUPNAME));
 
 	addProperty(new Uint64ObjectProperty(
 		"ParentId", "Parent ID", 
-		makeFunctor((CBFunctor1<uint64>*)0, *m_object, &Object::setParentId), 
-		makeFunctor((CBFunctor0wRet<uint64>*)0, *m_object, &Object::getParentId), 
+		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setParentId), 
+		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getParentId), 
 		"A globally unique identifier assigned to every object.", 
 		GROUPNAME));
 
 	addProperty(new Uint64ObjectProperty(
 		"ZoneId", "Zone ID", 
-		makeFunctor((CBFunctor1<uint64>*)0, *m_object, &Object::setZoneId), 
-		makeFunctor((CBFunctor0wRet<uint64>*)0, *m_object, &Object::getZoneId), 
+		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setZoneId), 
+		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getZoneId), 
 		"Zone ID of the current object.", 
 		GROUPNAME));
 	
@@ -214,15 +221,15 @@ void ObjectProxy::buildPropertyMap()
 	
 	addProperty(new Uint8ObjectProperty(
 		"Direction", "Direction", 
-		makeFunctor((CBFunctor1<uint8>*)0, *m_object, &Object::setDirection), 
-		makeFunctor((CBFunctor0wRet<uint8>*)0, *m_object, &Object::getDirection), 
+		makeFunctor((CBFunctor1<uint8_t>*)0, *m_object, &Object::setDirection), 
+		makeFunctor((CBFunctor0wRet<uint8_t>*)0, *m_object, &Object::getDirection), 
 		"Directional facing of the object.", 
 		GROUPNAME));
 
 	addProperty(new UintObjectProperty(
 		"State", "State", 
-		makeFunctor((CBFunctor1<uint>*)0, *m_object, &Object::setState), 
-		makeFunctor((CBFunctor0wRet<uint>*)0, *m_object, &Object::getState), 
+		makeFunctor((CBFunctor1<uint32_t>*)0, *m_object, &Object::setState), 
+		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *m_object, &Object::getState), 
 		"State.", 
 		GROUPNAME));
 }
@@ -238,8 +245,7 @@ void ObjectProxy::addProperty(ObjectProperty* newProperty)
 		m_propertyMap.find(newProperty->getName());
 	if (itor != m_propertyMap.end())
 	{
-		Log::getMainLog().error("Could not add property %s because "
-			"a property with that name already exists.", newProperty->getName().c_str());
+        LOG(ERROR) << "Property already exists: " << newProperty->getName();
 	}
 	else
 	{
@@ -256,7 +262,7 @@ void ObjectProxy::removeProperty(const std::string& name)
 	if (itor != m_propertyMap.end())
 	{
 		m_propertyMap.erase(itor);
-		for (uint i = 0; i < m_properties.size(); ++i)
+		for (uint32_t i = 0; i < m_properties.size(); ++i)
 		{
 			if (m_properties[i]->getName() == name)
 			{
@@ -267,7 +273,7 @@ void ObjectProxy::removeProperty(const std::string& name)
 	}
 	else
 	{
-		Log::getMainLog().error("Could not find property '%s' to remove.", name.c_str());
+        LOG(ERROR) << "Property does not exist: " << name;
 	}
 }
 		

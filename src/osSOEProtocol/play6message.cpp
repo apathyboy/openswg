@@ -50,22 +50,22 @@ BinaryPacketPtr Play6Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)5;
-    *packet << (uint32)SMSG_OBJ_UPDATE;
-    *packet << (uint64)objectId+7; // id+offset
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)SMSG_OBJ_UPDATE;
+    *packet << (uint64_t)objectId+7; // id+offset
 
     // Object Packet Type (CREO3)
-    *packet << (uint32)0x504C4159;
-    *packet << (uint8)6;
+    *packet << (uint32_t)0x504C4159;
+    *packet << (uint8_t)6;
 
-    *packet << (uint32)7;
-    *packet << (uint16)2;
-    *packet << (uint32)61;
-    *packet << (uint8)0;
+    *packet << (uint32_t)7;
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)61;
+    *packet << (uint8_t)0;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

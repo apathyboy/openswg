@@ -18,8 +18,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
+#include <osLogin/loginserver.h>
 
-#include <gsCore/log.h>
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/eventmanager.h>
 #include <gsCore/processmanager.h>
 #include <gsCore/sha1.h>
@@ -33,7 +38,6 @@
 #include <gsServer/serverevents.h>
 #include <gsCore/datastore.h>
 #include <Sockets/StdoutLog.h>
-#include <osLogin/loginserver.h>
 #include <osLogin/loginservereventlistener.h>
 #include <osSOEProtocol/soesessionmanager.h>
 #include <osSOEProtocol/soesocketfactory.h>
@@ -52,7 +56,7 @@ using namespace gsServer;
 using namespace osSOEProtocol;
 using namespace osLogin;
 
-LoginServer::LoginServer(std::string serverType, uint32 serverId)
+LoginServer::LoginServer(std::string serverType, uint32_t serverId)
 : ServerApplication(serverType, serverId)
 {
 }
@@ -111,13 +115,13 @@ void LoginServer::initialize(const std::string& configFilename)
 
         if (! Datastore::getStationDB().connected())
         {
-            Log::getMainLog().error("Unable to connect to the datastore");
+            LOG(ERROR) << "Unable to connecto to the datastore";
         }
     }
     catch (const mysqlpp::ConnectionFailed& er)
     {
         // handle any query errors.
-        Log::getMainLog().error("ERROR: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
         exit(EXIT_FAILURE);
     }
 

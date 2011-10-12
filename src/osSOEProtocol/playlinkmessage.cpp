@@ -50,19 +50,19 @@ BinaryPacketPtr PlayLinkMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-    *packet << (uint16)4;
-    *packet << (uint32)SMSG_OBJ_LINK;
+    *packet << (uint16_t)4;
+    *packet << (uint32_t)SMSG_OBJ_LINK;
     
     // Link Offset TO object
-    *packet << (uint64)objectId+7; // id+offset
-    *packet << (uint64)objectId; // id
+    *packet << (uint64_t)objectId+7; // id+offset
+    *packet << (uint64_t)objectId; // id
 
-    *packet << (uint32)0x00000004;
+    *packet << (uint32_t)0x00000004;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

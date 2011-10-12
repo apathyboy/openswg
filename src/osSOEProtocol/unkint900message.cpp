@@ -50,12 +50,12 @@ BinaryPacketPtr UnkInt900Message::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)2;
-    *packet << (uint32)SMSG_UNK_INT900;
-    *packet << (uint32)900;
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)SMSG_UNK_INT900;
+    *packet << (uint32_t)900;
+    *packet << (uint8_t)0 << (uint16_t)0;
 	return packet;
 }
 

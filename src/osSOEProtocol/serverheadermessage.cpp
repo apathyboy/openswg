@@ -49,22 +49,22 @@ ServerHeaderMessage::~ServerHeaderMessage()
 BinaryPacketPtr ServerHeaderMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
     *packet << htons(25);
 
-    *packet << (uint8)(8+this->serverType.length());
-    *packet << (uint16)2;
-    *packet << (uint32)SMSG_LS_STRING;
-    *packet << (uint16)this->serverType.length();
+    *packet << (uint8_t)(8+this->serverType.length());
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)SMSG_LS_STRING;
+    *packet << (uint16_t)this->serverType.length();
     packet->append<std::string>(this->serverType);
 
-    *packet << (uint8)10;
-    *packet << (uint16)2;
-    *packet << (uint32)SMSG_LS_NUM;
+    *packet << (uint8_t)10;
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)SMSG_LS_NUM;
     *packet << this->serverId;
-	*packet << (uint8)0;
-	*packet << (uint16)0;
+	*packet << (uint8_t)0;
+	*packet << (uint16_t)0;
 
 	return packet;
 }

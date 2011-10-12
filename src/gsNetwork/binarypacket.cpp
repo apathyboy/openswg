@@ -39,7 +39,7 @@ using namespace gsNetwork;
         m_packetData.reserve(DEFAULT_SIZE);
         m_timestamp = 0;
 		  
-		for (uint i=0; i < length; ++i)
+		for (uint32_t i=0; i < length; ++i)
 			append<char>(data[i]);
     }
 
@@ -51,14 +51,14 @@ using namespace gsNetwork;
         return (char*)&m_packetData[0];
     }
 
-    char * BinaryPacket::getData(uint offset) const
+    char * BinaryPacket::getData(uint32_t offset) const
     {
         return (char*)&m_packetData[offset];
     }
 
-    uint32 BinaryPacket::getLength() const
+    uint32_t BinaryPacket::getLength() const
     {   
-        return (uint32)m_packetData.size();
+        return m_packetData.size();
     }
 
     void BinaryPacket::clear()
@@ -67,12 +67,12 @@ using namespace gsNetwork;
         m_readPosition = m_writePosition = 0;
     }
 
-    void BinaryPacket::setTimestamp(uint64 timestamp)
+    void BinaryPacket::setTimestamp(uint64_t timestamp)
     {
         m_timestamp = timestamp;
     }
 
-    uint64 BinaryPacket::getTimestamp()
+    uint64_t BinaryPacket::getTimestamp()
     {
         return m_timestamp;
     }
@@ -110,21 +110,21 @@ using namespace gsNetwork;
     {
     	std::stringstream message;
 
-        uint32 length = getLength();
+        uint32_t length = getLength();
     
         char* data = GS_NEW char[length];
         memcpy(data, (char*)&m_packetData[0], length);
 
-	    uint16 lines = (uint16)(length / 16);
-        uint16 extra = (uint16)(length % 16);
+	    uint16_t lines = (uint16_t)(length / 16);
+        uint16_t extra = (uint16_t)(length % 16);
 
 			char tmp[100];
-        for (uint16 i = 0; i < lines; i++)
+        for (uint16_t i = 0; i < lines; i++)
         {
 			
 		    sprintf(tmp, "%4.4X:   %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X %2.2X   %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n",
 			        i * 16,
-                    (uint8)data[0], (uint8)data[1], (uint8)data[2], (uint8)data[3], (uint8)data[4], (uint8)data[5], (uint8)data[6], (uint8)data[7], (uint8)data[8], (uint8)data[9], (uint8)data[10], (uint8)data[11], (uint8)data[12], (uint8)data[13], (uint8)data[14], (uint8)data[15],
+                    (uint8_t)data[0], (uint8_t)data[1], (uint8_t)data[2], (uint8_t)data[3], (uint8_t)data[4], (uint8_t)data[5], (uint8_t)data[6], (uint8_t)data[7], (uint8_t)data[8], (uint8_t)data[9], (uint8_t)data[10], (uint8_t)data[11], (uint8_t)data[12], (uint8_t)data[13], (uint8_t)data[14], (uint8_t)data[15],
                     atoc(data[0]), atoc(data[1]), atoc(data[2]), atoc(data[3]), atoc(data[4]), atoc(data[5]), atoc(data[6]), atoc(data[7]), atoc(data[8]), atoc(data[9]), atoc(data[10]), atoc(data[11]), atoc(data[12]), atoc(data[13]), atoc(data[14]), atoc(data[15]));
             data+=16;
 		
@@ -136,10 +136,10 @@ using namespace gsNetwork;
 	        sprintf(tmp, "%4.4x:   ", lines * 16);
 		    message << tmp;
 
-		    uint16 i;
+		    uint16_t i;
             for (i = 0; i < extra; i++)
             {
-				sprintf(tmp, "%2.2X ", (uint8)data[i]);
+				sprintf(tmp, "%2.2X ", (uint8_t)data[i]);
 			    message << tmp;
             }
 

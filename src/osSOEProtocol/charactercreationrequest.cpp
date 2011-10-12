@@ -62,7 +62,7 @@ void CharacterCreationRequest::unserialize()
 
     if (split.length())
     {
-        uint16 i = split.find(" ");
+        uint16_t i = split.find(" ");
 
         if (i < split.length())
         {
@@ -77,7 +77,7 @@ void CharacterCreationRequest::unserialize()
 	
     if (race.length())
     {
-        uint16 i = race.find("player/");
+        uint16_t i = race.find("player/");
 		
         race.replace(i, 7, "player/shared_");
 		
@@ -91,18 +91,18 @@ void CharacterCreationRequest::unserialize()
 
     if (hair.length())
     {
-        uint16 i = hair.find("hair_");
+        uint16_t i = hair.find("hair_");
 		hair.replace(i, 5, "shared_hair_");
 	}
 
 	hairData = m_serializedData->read<std::string>();
     profession = m_serializedData->read<std::string>();
 
-    m_serializedData->read<uint8>(); // buffer byte, not used
+    m_serializedData->read<uint8_t>(); // buffer byte, not used
     
     scale = m_serializedData->read<float>();
     
     biography = m_serializedData->read<std::wstring>();
-	tutorial = m_serializedData->read<uint8>();
+	tutorial = m_serializedData->read<uint8_t>();
 }
 

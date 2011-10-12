@@ -17,13 +17,18 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
+#include "osSOEProtocol/soesessionlistener.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/globals.h>
-#include <gsCore/log.h>
 #include <gsNetwork/events.h>
 #include <gsServer/sessionevents.h>
 #include <osSOEProtocol/opcodes.h>
 #include <osSOEProtocol/soesession.h>
-#include <osSOEProtocol/soesessionlistener.h>
 #include <osSOEProtocol/soelayermessages.h>
 
 using namespace gsCore;
@@ -44,7 +49,7 @@ bool SOESessionListener::handleEvent(Event const & event)
     {
 		EventData_RemoteMessage * eventData = event.getDataPtr<EventData_RemoteMessage>();
 		
-		uint16 opcode = eventData->packet->read<uint16>();
+		uint16_t opcode = eventData->packet->read<uint16_t>();
 		if (opcode == SOE_SESSION_REQUEST)
 		{
 			boost::shared_ptr<SessionRequestMessage> message(GS_NEW SessionRequestMessage(eventData->packet));
@@ -54,12 +59,12 @@ bool SOESessionListener::handleEvent(Event const & event)
 			
 			if (! session)
 			{
-				Log::getMainLog().error("Unable to create session for %s", eventData->address->getAddressString().c_str());
+                LOG(ERROR) << "Unable to create session for address: " << eventData->address->getAddressString();
 				return true;			
 			}
 			
-			Log::getMainLog().debug("Session created for [%s]", eventData->address->getAddressString().c_str());
-			Log::getMainLog().debug("Session Count: [%i]", m_sessionManager->countSessions());
+            LOG(INFO) << "Session created for address: " << eventData->address->getAddressString();
+            LOG(INFO) << "Total sessions: " << m_sessionManager->countSessions();
 		}
     }
 

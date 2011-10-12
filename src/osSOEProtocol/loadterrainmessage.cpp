@@ -50,21 +50,21 @@ BinaryPacketPtr LoadTerrainMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)9;
-    *packet << (uint32)SMSG_LOAD_TERRN;
-    *packet << (uint8)0;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)9;
+    *packet << (uint32_t)SMSG_LOAD_TERRN;
+    *packet << (uint8_t)0;
     *packet << objectId;
-	*packet << (uint16)terrain.length();
+	*packet << (uint16_t)terrain.length();
 	packet->append<std::string>(terrain);
     *packet << positionX;
     *packet << positionY;
     *packet << positionZ;
-	*packet << (uint16)sharedModel.length();
+	*packet << (uint16_t)sharedModel.length();
 	packet->append<std::string>(sharedModel);
 	*packet << zoneId;
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

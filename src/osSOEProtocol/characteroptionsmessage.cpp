@@ -49,17 +49,17 @@ CharacterOptionsMessage::~CharacterOptionsMessage()
 BinaryPacketPtr CharacterOptionsMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)4;
-    *packet << (uint32)SMSG_CHAR_OPTS;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)4;
+    *packet << (uint32_t)SMSG_CHAR_OPTS;
 
-    *packet << (uint8)1;    
-    *packet << (uint8)availableSlots; 
-    *packet << (uint8)0;
+    *packet << (uint8_t)1;    
+    *packet << (uint8_t)availableSlots; 
+    *packet << (uint8_t)0;
 
-	*packet << (uint8)0;
-	*packet << (uint16)0;
+	*packet << (uint8_t)0;
+	*packet << (uint16_t)0;
 
 	return packet;
 }

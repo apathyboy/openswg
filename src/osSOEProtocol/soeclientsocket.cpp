@@ -18,7 +18,6 @@
 // *********************************************************************
 
 #include <gsCore/eventmanager.h>
-#include <gsCore/log.h>
 #include <gsNetwork/events.h>
 #include <gsServer/sessionevents.h>
 
@@ -52,14 +51,7 @@ bool SOEClientSocket::handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddres
 	{
 		Encryption::decrypt(packet, (*sessionLookup)->getCrcSeed());
 		Compression::decompress(packet);
-
-		Log::getPacketLog().info("Received Packet !Post-Processing! - Length: %d\n%s -> %s:%d\n%s\n", 
-			packet->getLength(),
-			address->getAddressString().c_str(), 
-			Utility::GetLocalAddress().c_str(), 
-			GetPort(), 
-			packet->getLogString().c_str());
-
+        
 		(*sessionLookup)->handleIncoming(packet);
 		return true;
 	}	    
@@ -74,16 +66,7 @@ void SOEClientSocket::sendPacket(gsNetwork::BinaryPacketPtr packet, gsNetwork::N
 	if (sessionLookup && (*sessionLookup)->isValid())
 	{
 		SOESessionPtr session(boost::shared_dynamic_cast<SOESession>(*sessionLookup));
-
-	    // Trigger an event for this? not sure how this should be handled 
-		// for outgoing messages just yet.
-		Log::getPacketLog().info("Sending Packet !PreProcessing! - Length: %d\n%s:%d -> %s\n%s\n", 
-			packet->getLength(),
-			Utility::GetLocalAddress().c_str(), 
-			GetPort(), 
-			address->getAddressString().c_str(), 
-			packet->getLogString().c_str());
-
+        
 		PrepareSOEPacket(packet, session, encrypt, compress, crc);
 
 		SendToBuf(*(address->getRawAddress()), packet->getData(), packet->getLength());

@@ -47,8 +47,8 @@ PingMessage::~PingMessage()
 BinaryPacketPtr PingMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_SESSION_RESPONSE;
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint16_t)SOE_SESSION_RESPONSE;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

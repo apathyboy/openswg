@@ -17,7 +17,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include "osLogin/authmanager.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/sha1.h>
 #include <gsCore/md5.h>
 
@@ -33,7 +39,6 @@
 
 #include <osSOEProtocol/opcodes.h>
 
-#include <osLogin/authmanager.h>
 #define AUTH_MD5
 
 using namespace gsCore;
@@ -91,48 +96,35 @@ bool AuthManager::authenticate(gsServer::Session* session, std::string username,
         q << "SELECT * FROM accounts WHERE username = "
           << mysqlpp::quote << username;
 		  
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
 
-        if (result.num_rows() != 0)
+        if (result)
         {
-            mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {
-				std::string dbPassword = (std::string)row["password"];
-				std::string salt = (std::string)row["salt"];
-				
-				md5wrapper wrapper;
-				std::string md5 = wrapper.getHashFromString(password);
-				std::string md5WithSalt = wrapper.getHashFromString(md5+salt);
+			std::string dbPassword = (std::string)result[0]["password"];
+			std::string salt = (std::string)result[0]["salt"];
+			
+			md5wrapper wrapper;
+			std::string md5 = wrapper.getHashFromString(password);
+			std::string md5WithSalt = wrapper.getHashFromString(md5+salt);
 
-				if (dbPassword.compare(md5WithSalt) == 0)
-				{
-	                session->setAccountId((uint32)row["id"]);
+			if (dbPassword.compare(md5WithSalt) == 0)
+			{
+	            session->setAccountId((uint32_t)result[0]["id"]);
             
-		            // Set account information in the session ptr here.
-			        // return true;
-				    session->setUsername(username);
+		        // Set account information in the session ptr here.
+			    // return true;
+			    session->setUsername(username);
 
-					return true;
-				}
-            }
+				return true;
+			}
         }
     }
-    catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-    }
-	catch (const mysqlpp::EndOfResults&) {
-		// Continue normally.
-	}
     catch (const mysqlpp::Exception& er)
     {
-		    // Catch-all for any other MySQL++ exceptions
-		    Log::getMainLog().error("Error: %s", er.what());
+		LOG(ERROR) << "ERROR: " << er.what();
     }
 			
-	Log::getMainLog().debug("Unable to authenticate [%s]", username.c_str());
+    LOG(ERROR) << "Unable to authenticate user: " << username;
     return false;
 }
 

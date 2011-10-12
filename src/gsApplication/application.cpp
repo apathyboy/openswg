@@ -17,14 +17,18 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
-#include <gsCore/eventmanager.h>
-#include <gsCore/processmanager.h>
 #include <gsApplication/application.h>
 
-#include <signal.h>
+#include <boost/thread/thread.hpp>
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
 
-#include <zthread/Thread.h>
+#include <gsCore/eventmanager.h>
+#include <gsCore/processmanager.h>
+
+#include <signal.h>
 
 #ifdef WIN32
 #define SIGQUIT 3 // Windows doesn't specify this
@@ -53,7 +57,7 @@ void Application::run()
     if (! isRunning())
 		toggleRunning();
 
-    uint64 currentTime = 0;
+    uint64_t currentTime = 0;
     // Start the main server loop.
     do
     {
@@ -66,11 +70,11 @@ void Application::run()
         // Advance the application forward to the current time.
         tick(currentTime);
 		
-		ZThread::Thread::sleep(1);
+        boost::this_thread::sleep(boost::posix_time::milliseconds(1));
     }
     while (Application::isRunning());
 
-	Log::getMainLog().info("Received exit signal... shutting down now.");
+	LOG(INFO) << "Received exit signal... shutting down now.";
 
 	shutdown();
 }
@@ -101,9 +105,9 @@ void Application::toggleRunning()
         Application::m_running = true;
 }
 
-void Application::tick(uint64 updateTimestamp)
+void Application::tick(uint64_t updateTimestamp)
 {
-    uint64 deltaTimestamp = (updateTimestamp - m_lastUpdateTimestamp);
+    uint64_t deltaTimestamp = (updateTimestamp - m_lastUpdateTimestamp);
     m_lastUpdateTimestamp = updateTimestamp;
 
 	m_eventManager->tick(deltaTimestamp);

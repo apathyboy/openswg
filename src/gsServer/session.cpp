@@ -59,12 +59,12 @@ void Session::handleIncoming(BinaryPacketPtr packet)
 	setLastUpdateTime(gsCore::getTimeInMs());
 }
 
-uint64 Session::getLastUpdateTime()
+uint64_t Session::getLastUpdateTime()
 {
     return m_lastUpdateTime;
 }
       
-void Session::setLastUpdateTime(uint64 lastUpdateTime)
+void Session::setLastUpdateTime(uint64_t lastUpdateTime)
 {
     m_lastUpdateTime = lastUpdateTime;
 }

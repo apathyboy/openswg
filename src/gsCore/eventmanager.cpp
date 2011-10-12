@@ -20,7 +20,6 @@
 #include <gsCore/eventmanager.h>
 
 #include <cstring>
-#include <zthread/FastMutex.h>
 
 using namespace gsCore;
 
@@ -409,10 +408,10 @@ bool EventManager::abortEvent(EventType const & inType, bool allOfType)
  *  Returns true if all messages ready for processing were
  *  completed, false otherwise (e.g. timeout)
  */
-bool EventManager::tick ( uint64 deltaMilliseconds )
+bool EventManager::tick(uint64_t deltaMilliseconds)
 {
-    uint64 curMs = gsCore::getTimeInMs();
-	uint64 maxMs =
+    uint64_t curMs = gsCore::getTimeInMs();
+	uint64_t maxMs =
 		deltaMilliseconds == IEventManager::kINFINITE
 		? IEventManager::kINFINITE
 		: (curMs + deltaMilliseconds );
@@ -422,14 +421,13 @@ bool EventManager::tick ( uint64 deltaMilliseconds )
 	// swap active queues, make sure new queue is empty after the
 	// swap ...
 	
-	ZThread::FastMutex mutex;
-	mutex.acquire();
+    // @TODO use mutex here
 	int queueToProcess = _activeQueue;
 
 	_activeQueue = (_activeQueue + 1) % kNumQueues;
 
 	_queues[_activeQueue].clear();
-	mutex.release();
+    // @TODO end mutex ehre
 
 	// now process as many events as we can ( possibly time
 	// limited ) ... always do AT LEAST one event, if ANY are

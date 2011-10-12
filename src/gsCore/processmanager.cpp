@@ -76,7 +76,7 @@ void ProcessManager::deleteProcessList()
 // ProcessManager::tick
 //  - run through the list of processes and update them
 //
-void ProcessManager::tick(uint64 deltaMilliseconds)
+void ProcessManager::tick(uint64_t deltaMilliseconds)
 {
 	ProcessPtr next;
     ProcessList::iterator i = m_processList.begin();

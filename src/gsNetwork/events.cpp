@@ -17,7 +17,11 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsNetwork/events.h>
 
 #include <Sockets/Utility.h>
@@ -47,12 +51,11 @@ bool PacketLogListener::handleEvent( Event const & event )
     if (_stricmp(event.getType().getStr(), Event_RemoteMessage::gkName) == 0)
     {
         EventData_RemoteMessage * eventData = event.getDataPtr<EventData_RemoteMessage>();
-
-        Log::getPacketLog().info("Received Packet\n%s -> %s:%d\n%s\n", 
-            eventData->address->getAddressString().c_str(), // From address:port
-            Utility::GetLocalAddress().c_str(),         // To address
-            eventData->socket->GetPort(),              // To port
-            eventData->packet->getLogString().c_str()); 
+        
+        LOG(INFO) << "Received Packet\n" <<
+            eventData->address->getAddressString().c_str() << " -> " <<
+            Utility::GetLocalAddress().c_str() << ":" << eventData->socket->GetPort() <<
+            eventData->packet->getLogString().c_str();
     }
 
     return false;

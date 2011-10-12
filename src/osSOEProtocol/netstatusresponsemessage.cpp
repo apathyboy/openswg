@@ -48,11 +48,11 @@ BinaryPacketPtr NetStatusResponseMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_NET_STATUS_RES;
+    *packet << (uint16_t)SOE_NET_STATUS_RES;
     *packet << tick;
 
-    for (uint i = 0; i < 39; ++i)
-        *packet << (uint8)0;
+    for (uint32_t i = 0; i < 39; ++i)
+        *packet << (uint8_t)0;
 
 	return packet;
 }

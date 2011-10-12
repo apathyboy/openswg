@@ -52,12 +52,12 @@ BinaryPacketPtr TimeUpdateMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)2;
-    *packet << (uint32)0x2EBC3BD9;
-    *packet << (uint64)time(0);
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)0x2EBC3BD9;
+    *packet << (uint64_t)time(0);
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

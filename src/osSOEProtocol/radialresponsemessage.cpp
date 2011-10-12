@@ -50,45 +50,45 @@ BinaryPacketPtr RadialResponseMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)5;
-    *packet << (uint32)AMSG_INT_PACKET;
-    *packet << (uint32)0x0000000b;
-    *packet << (uint32)0x00000147;
-    *packet << (uint64)objectId;
-    *packet << (uint32)0;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)AMSG_INT_PACKET;
+    *packet << (uint32_t)0x0000000b;
+    *packet << (uint32_t)0x00000147;
+    *packet << (uint64_t)objectId;
+    *packet << (uint32_t)0;
 
-    *packet << (uint64)targetId;
-    *packet << (uint64)objectId;
+    *packet << (uint64_t)targetId;
+    *packet << (uint64_t)objectId;
 
-    *packet << (uint32)radialMap.size();
+    *packet << (uint32_t)radialMap.size();
 
-    uint count = 1;
+    uint32_t count = 1;
     for (RadialMenuMap::reverse_iterator i = radialMap.rbegin(); i != radialMap.rend(); ++i)
     {
         RadialOption option = (*i).second;
 
-        *packet << (uint8)option.index;
-        *packet << (uint8)option.parentIndex;
-        *packet << (uint8)option.id;
+        *packet << (uint8_t)option.index;
+        *packet << (uint8_t)option.parentIndex;
+        *packet << (uint8_t)option.id;
 
         if (option.id == 20)
         {
-            *packet << (uint8)3;
+            *packet << (uint8_t)3;
         }
         else
         {
-            *packet << (uint8)1;
+            *packet << (uint8_t)1;
         }
 
-        *packet << (uint32)0;
+        *packet << (uint32_t)0;
         ++count;
     }
 
-    *packet << (uint8)1;
+    *packet << (uint8_t)1;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 	return packet;
 }
 

@@ -50,25 +50,25 @@ BinaryPacketPtr AnimationMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-    *packet << (uint16)5;
-    *packet << (uint32)AMSG_INT_PACKET;
-    *packet << (uint32)27;
-    *packet << (uint32)204;
-    *packet << (uint64)objectId;
-    *packet << (uint32)0;
-    *packet << (uint32)animationCrc; // Animation crc?
-    *packet << (uint64)objectId;
-    *packet << (uint64)0;
-    *packet << (uint8)posture;
-	*packet << (uint8)0;
-	*packet << (uint16)0;
-	*packet << (uint32)0;
-    *packet << (uint16)0;
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)AMSG_INT_PACKET;
+    *packet << (uint32_t)27;
+    *packet << (uint32_t)204;
+    *packet << (uint64_t)objectId;
+    *packet << (uint32_t)0;
+    *packet << (uint32_t)animationCrc; // Animation crc?
+    *packet << (uint64_t)objectId;
+    *packet << (uint64_t)0;
+    *packet << (uint8_t)posture;
+	*packet << (uint8_t)0;
+	*packet << (uint16_t)0;
+	*packet << (uint32_t)0;
+    *packet << (uint16_t)0;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

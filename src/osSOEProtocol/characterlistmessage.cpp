@@ -49,30 +49,30 @@ CharacterListMessage::~CharacterListMessage()
 BinaryPacketPtr CharacterListMessage::serialize()
 {
     BinaryPacketPtr packet(GS_NEW BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)2;
-    *packet << (uint32)SMSG_CHAR_LIST;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)SMSG_CHAR_LIST;
     
-    *packet << (uint32)characters.size(); // Character count
+    *packet << (uint32_t)characters.size(); // Character count
 
 	for (std::list<GalaxyCharacter*>::iterator i = characters.begin(); i != characters.end(); ++i)
     {
-        *packet << (uint32)(*i)->getFullName().length();
+        *packet << (uint32_t)(*i)->getFullName().length();
 
-        for (uint j = 0; j < (*i)->getFullName().length(); ++j)
-			*packet << (unicode)(*i)->getFullName().c_str()[j];
+        for (uint32_t j = 0; j < (*i)->getFullName().length(); ++j)
+			*packet << (uint16_t)(*i)->getFullName().c_str()[j];
 
-        *packet << (uint32)(*i)->getModelCrc();
-        *packet << (uint64)(*i)->getCharacterId();
-        *packet << (uint32)(*i)->getZoneId();
-        *packet << (uint32)1;
+        *packet << (uint32_t)(*i)->getModelCrc();
+        *packet << (uint64_t)(*i)->getCharacterId();
+        *packet << (uint32_t)(*i)->getZoneId();
+        *packet << (uint32_t)1;
     }
 
     // Add character list data
 
-    *packet << (uint8)0;
-    *packet << (uint16)0;
+    *packet << (uint8_t)0;
+    *packet << (uint16_t)0;
 
 	return packet;
 }

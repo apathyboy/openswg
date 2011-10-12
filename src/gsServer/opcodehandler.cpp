@@ -22,7 +22,7 @@
 using namespace gsNetwork;
 using namespace gsServer;
 
-boost::optional<OpcodeHandlerPtr> OpcodeFactory::addOpcodeHandler(uint32 opcode, OpcodeHandlerPtr opcodeHandler)
+boost::optional<OpcodeHandlerPtr> OpcodeFactory::addOpcodeHandler(uint32_t opcode, OpcodeHandlerPtr opcodeHandler)
 {
 	boost::optional<OpcodeHandlerPtr> oldHandler = findOpcodeHandler(opcode);
 
@@ -31,7 +31,7 @@ boost::optional<OpcodeHandlerPtr> OpcodeFactory::addOpcodeHandler(uint32 opcode,
 	return oldHandler;
 }
 		
-boost::optional<OpcodeHandlerPtr> OpcodeFactory::findOpcodeHandler(uint32 opcode)
+boost::optional<OpcodeHandlerPtr> OpcodeFactory::findOpcodeHandler(uint32_t opcode)
 {
 	OpcodeHandlerMap::iterator i = m_opcodeMap.find(opcode);
 

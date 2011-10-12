@@ -26,7 +26,7 @@
  * @param env System environment variable to lookup and return
  * @return Value of the requested system environment variable.
  */
-GS_CORE_EXPORT std::string gsCore::GetEnvironment( const std::string& env )
+std::string gsCore::GetEnvironment( const std::string& env )
 {
     if ( char* ptr = getenv( env.c_str() ) )
     {
@@ -43,8 +43,7 @@ GS_CORE_EXPORT std::string gsCore::GetEnvironment( const std::string& env )
  * If the GALAXY_ROOT environment is not set, the local direcotry will
  * be returned.
  */
-GS_CORE_EXPORT std::string gsCore::GetGalaxyRootPath()
+std::string gsCore::GetGalaxyRootPath()
 {
     return GetEnvironment("GALAXY_ROOT");
 }
-

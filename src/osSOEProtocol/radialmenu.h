@@ -1,0 +1,49 @@
+/**
+ * Galaxy Open-Source Massively Multiplayer Game Simulation Engine
+ * Copyright (C) 2007 OpenSWG Team <http://www.openswg.com>
+ */
+
+// *********************************************************************
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// To read the license please visit http://www.gnu.org/copyleft/gpl.html
+// *********************************************************************
+
+#ifndef OPENSWG_SOEPROTOCOL_RADIALMENU
+#define OPENSWG_SOEPROTOCOL_RADIALMENU
+
+#include <cstdint>
+
+#include <boost/shared_ptr.hpp>
+#include <string>
+#include <map>
+
+namespace osSOEProtocol
+{
+    class RadialOption;
+    typedef std::map<uint8_t, RadialOption> RadialMenuMap;
+    
+    class RadialOption
+    {
+    public:
+        uint8_t id;
+		uint8_t index;
+		uint8_t parentIndex;
+        std::string caption;
+        float range;
+        std::string command;
+        bool useRadialTarget;
+    };
+
+    void buildRadialMenuMap(RadialMenuMap & radialMap);
+}
+
+#endif // OPENSWG_SOEPROTOCOL_RADIALMENU

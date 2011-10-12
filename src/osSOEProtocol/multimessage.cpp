@@ -53,19 +53,19 @@ BinaryPacketPtr MultiMessage::serialize()
 
 void MultiMessage::unserialize()
 {
-    for (uint i = 2; i < (m_serializedData->getLength()-4); ++i)
+    for (uint32_t i = 2; i < (m_serializedData->getLength()-4); ++i)
     {
-		uint8 size = m_serializedData->read<uint8>();
+		uint8_t size = m_serializedData->read<uint8_t>();
 		++i;
 
 		if (size == 0xFF)
 		{
-			uint8 counter = m_serializedData->read<uint8>();
+			uint8_t counter = m_serializedData->read<uint8_t>();
 			++i;
 
 			m_serializedData->setReadPosition(m_serializedData->getReadPosition()+counter);
 	
-			size += m_serializedData->read<uint8>();
+			size += m_serializedData->read<uint8_t>();
 			++i;
 		}
 
@@ -74,7 +74,7 @@ void MultiMessage::unserialize()
 
 		BinaryPacketPtr segment(GS_NEW BinaryPacket);
 
-		for (uint j = 0; j < size; ++j)
+		for (uint32_t j = 0; j < size; ++j)
 			segment->append<char>(m_serializedData->read<char>());
 		
 		segment->setReadPosition(0);

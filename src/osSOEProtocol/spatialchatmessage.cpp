@@ -60,30 +60,30 @@ boost::shared_ptr<NetworkMessage> SpatialChatMessage::clone()
 BinaryPacketPtr SpatialChatMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)5;
-    *packet << (uint32)AMSG_INT_PACKET;
-    *packet << (uint32)0x0000000B;
-    *packet << (uint32)0x000000F4;
-    *packet << (uint64)recipientId; // recipient
-    *packet << (uint32)0x00000000; // unknown
-    *packet << (uint64)targetId; //source
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)AMSG_INT_PACKET;
+    *packet << (uint32_t)0x0000000B;
+    *packet << (uint32_t)0x000000F4;
+    *packet << (uint64_t)recipientId; // recipient
+    *packet << (uint32_t)0x00000000; // unknown
+    *packet << (uint64_t)targetId; //source
 
-    *packet << (uint64)moods[0]; // No mood or target mood for now.
+    *packet << (uint64_t)moods[0]; // No mood or target mood for now.
 
-    *packet << (uint32)message.length();
+    *packet << (uint32_t)message.length();
 
-    for (uint j = 0; j < message.length(); ++j)
-        *packet << (unicode)message.c_str()[j];
+    for (uint32_t j = 0; j < message.length(); ++j)
+        *packet << (uint16_t)message.c_str()[j];
 
-    *packet << (uint16)0x0032; 
-    *packet << (uint16)moods[1];
-    *packet << (uint16)moods[2];
-    *packet << (uint16)0x0100;
-    *packet << (uint64)0;
+    *packet << (uint16_t)0x0032; 
+    *packet << (uint16_t)moods[1];
+    *packet << (uint16_t)moods[2];
+    *packet << (uint16_t)0x0100;
+    *packet << (uint64_t)0;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 	return packet;
 }
 

@@ -47,11 +47,11 @@ DisconnectMessage::~DisconnectMessage()
 BinaryPacketPtr DisconnectMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-	*packet << (uint16)SOE_DISCONNECT; // opcode
+	*packet << (uint16_t)SOE_DISCONNECT; // opcode
     *packet << connectionId;
-    *packet << (uint16)htons(6);
-    *packet << (uint8)0;
-    *packet << (uint16)0;
+    *packet << (uint16_t)htons(6);
+    *packet << (uint8_t)0;
+    *packet << (uint16_t)0;
 	return packet;
 }
 

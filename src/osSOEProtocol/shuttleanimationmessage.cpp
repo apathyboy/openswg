@@ -49,45 +49,45 @@ ShuttleAnimationMessage::~ShuttleAnimationMessage()
 BinaryPacketPtr ShuttleAnimationMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
 
-    *packet << (uint16)htonl(25);
+    *packet << (uint16_t)htonl(25);
 
-    *packet << (uint8)28;
-    *packet << (uint32)SMSG_DELTA_UPDATE;
-    *packet << (uint64)objectId;
-    *packet << (uint32)0x4352454F;
-    *packet << (uint8)3;
-    *packet << (uint32)5;
-    *packet << (uint16)1;
-    *packet << (uint16)11;
-    *packet << (uint8)posture;
+    *packet << (uint8_t)28;
+    *packet << (uint32_t)SMSG_DELTA_UPDATE;
+    *packet << (uint64_t)objectId;
+    *packet << (uint32_t)0x4352454F;
+    *packet << (uint8_t)3;
+    *packet << (uint32_t)5;
+    *packet << (uint16_t)1;
+    *packet << (uint16_t)11;
+    *packet << (uint8_t)posture;
     
-    *packet << (uint8)56;
-    *packet << (uint16)5;
-    *packet << (uint32)AMSG_INT_PACKET;
-    *packet << (uint32)27;
-    *packet << (uint32)204;
-    *packet << (uint64)objectId;
-    *packet << (uint32)0;
-    *packet << (uint32)0xab290245; // Animation crc?
-    *packet << (uint64)objectId;
-    *packet << (uint64)0;
-    *packet << (uint64)posture;
-    *packet << (uint16)0;
+    *packet << (uint8_t)56;
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)AMSG_INT_PACKET;
+    *packet << (uint32_t)27;
+    *packet << (uint32_t)204;
+    *packet << (uint64_t)objectId;
+    *packet << (uint32_t)0;
+    *packet << (uint32_t)0xab290245; // Animation crc?
+    *packet << (uint64_t)objectId;
+    *packet << (uint64_t)0;
+    *packet << (uint64_t)posture;
+    *packet << (uint16_t)0;
 
-    *packet << (uint8)28;
-    *packet << (uint16)5;
-    *packet << (uint32)AMSG_INT_PACKET;
-    *packet << (uint32)27;
-    *packet << (uint32)305;
-    *packet << (uint64)objectId;
-    *packet << (uint32)0;
-    *packet << (uint8)posture;
-    *packet << (uint8)1;
+    *packet << (uint8_t)28;
+    *packet << (uint16_t)5;
+    *packet << (uint32_t)AMSG_INT_PACKET;
+    *packet << (uint32_t)27;
+    *packet << (uint32_t)305;
+    *packet << (uint64_t)objectId;
+    *packet << (uint32_t)0;
+    *packet << (uint8_t)posture;
+    *packet << (uint8_t)1;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

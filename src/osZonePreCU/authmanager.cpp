@@ -41,12 +41,12 @@ void AuthManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 
 void AuthManager::handleAuthRequest(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) const
 {
-    message->read<uint32>();
-    uint32 length = message->read<uint32>();
+    message->read<uint32_t>();
+    uint32_t length = message->read<uint32_t>();
 
-    for (uint i = 0; i < (length-4); ++i)
+    for (uint32_t i = 0; i < (length-4); ++i)
         message->read<char>();
 
-    session->setAccountId(message->read<uint32>());
+    session->setAccountId(message->read<uint32_t>());
 }
 

@@ -50,32 +50,32 @@ BinaryPacketPtr Play9UpdateMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
 
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)2;
-    *packet << (uint32)SMSG_DELTA_UPDATE;
-    *packet << (uint64)objectId+12; // id+offset
-	*packet << (uint8)0x59 << (uint8)0x41 << (uint8)0x4C << (uint8)0x50; // PLAY (YALP)
-    *packet << (uint8)9;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)SMSG_DELTA_UPDATE;
+    *packet << (uint64_t)objectId+12; // id+offset
+	*packet << (uint8_t)0x59 << (uint8_t)0x41 << (uint8_t)0x4C << (uint8_t)0x50; // PLAY (YALP)
+    *packet << (uint8_t)9;
 
 	// Size
-	*packet << (uint8)0x1C << (uint8)0x00 << (uint8)0x00 << (uint8)0x00, 
-	*packet << (uint16)2; // ??
-	*packet << (uint16)7; // ??
+	*packet << (uint8_t)0x1C << (uint8_t)0x00 << (uint8_t)0x00 << (uint8_t)0x00, 
+	*packet << (uint16_t)2; // ??
+	*packet << (uint16_t)7; // ??
 
-	*packet << (uint32)1; // List size
-	*packet << (uint32)2; // This is double the first, maybe its used for measuring the beginning and end?
+	*packet << (uint32_t)1; // List size
+	*packet << (uint32_t)2; // This is double the first, maybe its used for measuring the beginning and end?
 
-	*packet << (uint16)3; // // Size 
-	*packet << (uint8)0; // byte buffer
+	*packet << (uint16_t)3; // // Size 
+	*packet << (uint8_t)0; // byte buffer
 
-	*packet << (uint16)8; // ??
-	*packet << (uint32)1; // list size
-	*packet << (uint32)2; // list size double
-	*packet << (uint16)3; // Size
-	*packet << (uint8)0; // Byte buffer
+	*packet << (uint16_t)8; // ??
+	*packet << (uint32_t)1; // list size
+	*packet << (uint32_t)2; // list size double
+	*packet << (uint16_t)3; // Size
+	*packet << (uint8_t)0; // Byte buffer
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

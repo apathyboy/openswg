@@ -18,10 +18,11 @@
 // *********************************************************************
 
 #include <gsApplication/application.h>
+
+#include <boost/thread/thread.hpp>
+
 #include <gsNetwork/events.h>
 #include <gsNetwork/gamesocketlistener.h>
-
-#include <zthread/Thread.h>
 
 using namespace gsCore;
 using namespace gsNetwork;
@@ -62,7 +63,7 @@ void GameSocketListener::run()
 	while (isRunning() && GetCount())
     {
         Select(1, 0);
-		ZThread::Thread::sleep(50);
+        boost::this_thread::sleep(boost::posix_time::milliseconds(1));
     }
 }
 

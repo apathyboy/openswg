@@ -58,7 +58,7 @@ MovementMessage::~MovementMessage()
 
 bool MovementMessage::canSendScheduled()
 {
-	uint64 m_currentTime = gsCore::getTimeInMs();
+	uint64_t m_currentTime = gsCore::getTimeInMs();
 
 	if (m_currentTime - m_lastUpdateTime > 300)
 	{
@@ -92,32 +92,32 @@ boost::shared_ptr<NetworkMessage> MovementMessage::clone()
 BinaryPacketPtr MovementMessage::serialize()
 {
     BinaryPacketPtr packet(new BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)8;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)8;
 
-	*packet << (uint32)SMSG_POS_UPDATE;
+	*packet << (uint32_t)SMSG_POS_UPDATE;
     *packet << objectId;
 
-	*packet << (uint16)((positionX * 4.f)+0.5f);
-	*packet << (uint16)((positionY * 4.f)+0.5f);
-	*packet << (uint16)((positionZ * 4.f)+0.5f);
+	*packet << (uint16_t)((positionX * 4.f)+0.5f);
+	*packet << (uint16_t)((positionY * 4.f)+0.5f);
+	*packet << (uint16_t)((positionZ * 4.f)+0.5f);
 
-	*packet << (uint32)(timer+1);
+	*packet << (uint32_t)(timer+1);
 
-	*packet << (uint8)1; 
-    *packet << (uint8)direction;
+	*packet << (uint8_t)1; 
+    *packet << (uint8_t)direction;
 
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }
 
 void MovementMessage::unserialize()
 {
-	objectId = m_serializedData->read<uint64>(); // Target (this is the character moving)
-    ticks = m_serializedData->read<uint32>(); // Ticks?
-    timer = m_serializedData->read<uint32>(); // Times?
+	objectId = m_serializedData->read<uint64_t>(); // Target (this is the character moving)
+    ticks = m_serializedData->read<uint32_t>(); // Ticks?
+    timer = m_serializedData->read<uint32_t>(); // Times?
     quaternionX = m_serializedData->read<float>(); // Quaternion x
     quaternionY = m_serializedData->read<float>(); // Quaternion y
     quaternionZ = m_serializedData->read<float>(); // Quaternion z

@@ -49,12 +49,12 @@ AssignCharacterIdMessage::~AssignCharacterIdMessage()
 BinaryPacketPtr AssignCharacterIdMessage::serialize()
 {
 	BinaryPacketPtr packet(GS_NEW BinaryPacket);
-    *packet << (uint16)SOE_CHL_DATA_A;
-    *packet << (uint16)htons(getSequence());
-    *packet << (uint16)2;
-    *packet << (uint32)SMSG_ASSIGN_CHAR_ID;
-    *packet << (uint64)characterId;
-    *packet << (uint8)0 << (uint16)0;
+    *packet << (uint16_t)SOE_CHL_DATA_A;
+    *packet << (uint16_t)htons(getSequence());
+    *packet << (uint16_t)2;
+    *packet << (uint32_t)SMSG_ASSIGN_CHAR_ID;
+    *packet << (uint64_t)characterId;
+    *packet << (uint8_t)0 << (uint16_t)0;
 
 	return packet;
 }

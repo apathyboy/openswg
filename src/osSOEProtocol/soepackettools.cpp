@@ -1,5 +1,4 @@
 #include <osSOEProtocol/soepackettools.h>
-#include <gsCore/types.h>
 #include <gsCore/macros.h>
 #include <osSOEProtocol/soesession.h>
 #include <gsCore/globals.h>
@@ -158,7 +157,7 @@ char *osSOEProtocol::Decompress(char *pData, unsigned short &nLength)
     packet.next_out = (Bytef*)output;
     packet.avail_out = CompBuf;
     inflate(&packet,Z_FINISH);
-    newLength = (uint16)packet.total_out;
+    newLength = (uint16_t)packet.total_out;
     inflateEnd(&packet);
     char *Decomp_pData  = GS_NEW char [newLength + offset + 3];
     char *begDecomp_pData = Decomp_pData;
@@ -216,7 +215,7 @@ bool osSOEProtocol::Compress(char **pData, unsigned short *nLength, bool crc)
             {
                 comp_pData[2+x] = output[x];
             }
-            comp_pData[2+newLength] = (uint8)1;
+            comp_pData[2+newLength] = (uint8_t)1;
             delete [] output;
             delete [] tempData;
             newLength+=3;
@@ -245,7 +244,7 @@ void osSOEProtocol::PrepareSOEPacket(BinaryPacketPtr packet, SessionPtr session,
     // Trigger an event for this? not sure how this should be handled 
     // for outgoing messages just yet.
     char* data = packet->getData();
-    uint32 length = packet->getLength();
+    uint32_t length = packet->getLength();
 
     char* tmp = new char[length];
     memcpy(tmp, data, length);
@@ -255,7 +254,7 @@ void osSOEProtocol::PrepareSOEPacket(BinaryPacketPtr packet, SessionPtr session,
     if (! crc)
     {
         if (encrypt)
-            Encrypt(data, (uint16)length, soeSession->getCrcSeed());
+            Encrypt(data, (uint16_t)length, soeSession->getCrcSeed());
     }   
     else
     {
@@ -269,7 +268,7 @@ void osSOEProtocol::PrepareSOEPacket(BinaryPacketPtr packet, SessionPtr session,
 
         if (compress)
         {
-            Compress(&data, (uint16*)&length, 1);
+            Compress(&data, (uint16_t*)&length, 1);
         }
 
         if (encrypt)
@@ -284,14 +283,14 @@ void osSOEProtocol::PrepareSOEPacket(BinaryPacketPtr packet, SessionPtr session,
 
             length += 2;
 
-            Encrypt(data, (uint16)length, soeSession->getCrcSeed());
+            Encrypt(data, (uint16_t)length, soeSession->getCrcSeed());
         }
 
-        AppendCRC(data, (uint16)length, soeSession->getCrcSeed());
+        AppendCRC(data, (uint16_t)length, soeSession->getCrcSeed());
     }
 
     // Clear the current data in the packet and add the processed
     // data back in.
     packet->clear();
-    packet->append((uint8 *)data, length);
+    packet->append((uint8_t *)data, length);
 }

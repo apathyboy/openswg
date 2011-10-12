@@ -49,9 +49,9 @@ BinaryPacketPtr SessionRequestMessage::serialize()
 
 void SessionRequestMessage::unserialize()
 {
-	m_serializedData->read<uint32>(); // Skip ahead to the data we want.
+	m_serializedData->read<uint32_t>(); // Skip ahead to the data we want.
 
-	connectionId  = m_serializedData->read<uint32>();
-    maxPacketSize = (uint32)ntohl(m_serializedData->read<uint32>());
+	connectionId  = m_serializedData->read<uint32_t>();
+    maxPacketSize = (uint32_t)ntohl(m_serializedData->read<uint32_t>());
 }
 
