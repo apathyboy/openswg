@@ -9,22 +9,5 @@ example of the capabilities of the Galaxy Simulation Framework.
   are permitted in any medium without royalty provided the copyright
   notice and this notice are preserved.
 
-See the files ./INSTALL* for building and installation instructions.
-
-Primary distribution point: http://sourceforge.net/project/showfiles.php?group_id=183699
-
-Home page: http://www.openswg.com/
-
-Bug reports:
- Please include enough information for the maintainers to reproduce the
- problem.  Generally speaking, that means:
-- the contents of any input files necessary to reproduce the bug
-  and command line invocations of the program(s) involved (crucial!).
-- a description of the problem and any samples of the erroneous output.
-- the version number of the program(s) involved (use --version).
-- hardware, operating system, and compiler versions (uname -a).
-- unusual options you gave to configure, if any (see config.status).
-- anything else that you think would be helpful.
-
-Patches are most welcome; if possible, please make them with diff -c and
-include ChangeLog entries.
+Patches are most welcome; please use the github pull request system to
+contribute changes.
