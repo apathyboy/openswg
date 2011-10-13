@@ -20,7 +20,6 @@
 #ifndef OPENSWG_ZONEPRECU_PRECUZONESERVER
 #define OPENSWG_ZONEPRECU_PRECUZONESERVER
 
-#include <gsCore/types.h>
 #include <gsServer/opcodehandler.h>
 #include <gsServer/serverapplication.h>
 #include <gsServer/session.h>
@@ -41,7 +40,7 @@ namespace osZonePreCU
 	class PreCUZoneServer : public gsServer::ServerApplication
 	{
     public:
-        PreCUZoneServer(std::string serverType, uint32 serverId);
+        PreCUZoneServer(std::string serverType, uint32_t serverId);
         virtual ~PreCUZoneServer();
 
 		virtual void initialize(const std::string& configFilename);

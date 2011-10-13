@@ -15,7 +15,7 @@
 // GNU General Public License for more details.
 //
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
-// *********************************************************************
+// ************************
 
 #include "gsServer/sessionmanager.h"
 

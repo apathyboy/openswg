@@ -49,7 +49,7 @@ namespace osZonePreCU
 		std::list<osSOEProtocol::ObjectProxyPtr> m_staticNpcs;
 		
     public: // gsCore::Process virtual overrides
-        virtual void update(const uint64 updateTimestamp);
+        virtual void update(const uint64_t updateTimestamp);
         virtual void initialize();
 
 	public: // OPCODE HANDLING

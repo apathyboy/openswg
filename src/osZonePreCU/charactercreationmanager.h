@@ -20,6 +20,10 @@
 #ifndef OPENSWG_ZONEPRECU_CHARACTERCREATIONMANAGER
 #define OPENSWG_ZONEPRECU_CHARACTERCREATIONMANAGER
 
+#include <cstdint>
+
+#include <boost/optional.hpp>
+
 #include <gsCore/timing.h>
 #include <gsNetwork/binarypacket.h>
 
@@ -33,7 +37,7 @@ namespace osZonePreCU
 {
 	struct CreationItem
 	{
-		uint32 id;
+		uint32_t id;
 		std::string profession;
 		std::string species;
 		std::string gender;
@@ -42,33 +46,33 @@ namespace osZonePreCU
 
 	struct ProfessionMod
 	{
-		uint32 id;
+		uint32_t id;
 		std::string profession;
-		uint32 health;
-		uint32 strength;
-		uint32 constitution;
-		uint32 action;
-		uint32 quickness;
-		uint32 stamina;
-		uint32 mind;
-		uint32 focus;
-		uint32 willpower;
+		uint32_t health;
+		uint32_t strength;
+		uint32_t constitution;
+		uint32_t action;
+		uint32_t quickness;
+		uint32_t stamina;
+		uint32_t mind;
+		uint32_t focus;
+		uint32_t willpower;
 	};
 
 	struct RacialMod
 	{
-		uint32 id;
+		uint32_t id;
 		std::string maleTemplate;
 		std::string femaleTemplate;
-		uint32 health;
-		uint32 strength;
-		uint32 constitution;
-		uint32 action;
-		uint32 quickness;
-		uint32 stamina;
-		uint32 mind;
-		uint32 focus;
-		uint32 willpower;
+		uint32_t health;
+		uint32_t strength;
+		uint32_t constitution;
+		uint32_t action;
+		uint32_t quickness;
+		uint32_t stamina;
+		uint32_t mind;
+		uint32_t focus;
+		uint32_t willpower;
 	};
 
 	class CharacterCreationManager //: public GameManager 
@@ -78,7 +82,7 @@ namespace osZonePreCU
 		CharacterCreationManager();
 
 	protected:
-		uint32 m_idChunk;
+		uint32_t m_idChunk;
 
 	public: // OPCODE HANDLING
 		virtual void registerOpcodes(gsServer::OpcodeFactory* factory);
@@ -100,7 +104,7 @@ namespace osZonePreCU
 	
 		boost::optional<ProfessionMod> findProfessionMod(const std::string& profession);
 		boost::optional<RacialMod> findRacialMod(const std::string& race);
-		void createCharacterItems(uint64 playerId, const std::string& profession, const std::string& race);
+		void createCharacterItems(uint64_t playerId, const std::string& profession, const std::string& race);
 	};
 }
 

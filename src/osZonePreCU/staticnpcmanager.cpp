@@ -17,12 +17,17 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/log.h>
+#include "osZonePreCU/staticnpcmanager.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsServer/opcodehandler.h>
 #include <gsServer/session.h>
 #include <gsCore/datastore.h>
 #include <osSOEProtocol/opcodes.h>
-#include <osZonePreCU/staticnpcmanager.h>
 #include <osSOEProtocol/tangibleobjectproxy.h>
 #include <osSOEProtocol/creatureobjectproxy.h>
 #include <osSOEProtocol/objectpropertytypes.h>
@@ -40,7 +45,7 @@ StaticNpcManager::StaticNpcManager(ObjectGrid* objectGrid)
 {
 }
 
-void StaticNpcManager::update(const uint64 updateTimestamp)
+void StaticNpcManager::update(const uint64_t updateTimestamp)
 {
 }
         
@@ -56,7 +61,7 @@ void StaticNpcManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 
 void StaticNpcManager::loadStaticNpcs()
 {
-			uint count = 0;
+			uint32_t count = 0;
 	try
     {
 		mysqlpp::Query q = Datastore::getGalaxyDB().query();
@@ -80,18 +85,17 @@ void StaticNpcManager::loadStaticNpcs()
         << "       static_npcs.state "
         << "FROM static_npcs ";
 
-        mysqlpp::Result result = q.store();
+        mysqlpp::StoreQueryResult result = q.store();
                 
-		   if (result)
+		if (result)
         {
-            mysqlpp::Row row;
-            while (row = result.fetch_row())
-            {		
+            std::for_each(begin(result), end(result), [this, &count] (const mysqlpp::Row& row) 
+            {  	
 				boost::shared_ptr<CreatureObjectProxy> staticNpc(GS_NEW CreatureObjectProxy);
 				staticNpc->createTemplate();
-				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64)row["id"]);
-				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64)row["object_id"]);
-				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->setValue((uint64)row["cell_id"]);
+				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64_t)row["id"]);
+				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64_t)row["object_id"]);
+				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->setValue((uint64_t)row["cell_id"]);
 				staticNpc->getPropertyAs<StringObjectProperty*>(std::string("Model"))->setValue((std::string)row["model"]);
 				staticNpc->getPropertyAs<StringObjectProperty*>(std::string("Category"))->setValue((std::string)row["category"]);
 				staticNpc->getPropertyAs<StringObjectProperty*>(std::string("Type"))->setValue((std::string)row["type"]);
@@ -103,35 +107,20 @@ void StaticNpcManager::loadStaticNpcs()
 				staticNpc->getPropertyAs<FloatObjectProperty*>(std::string("PositionY"))->setValue((float)row["position_y"]);
 				staticNpc->getPropertyAs<FloatObjectProperty*>(std::string("PositionZ"))->setValue((float)row["position_z"]);
 				staticNpc->getPropertyAs<FloatObjectProperty*>(std::string("Scale"))->setValue((float)row["scale"]);
-				staticNpc->getPropertyAs<UintObjectProperty*>(std::string("State"))->setValue((uint)row["state"]);
+				staticNpc->getPropertyAs<UintObjectProperty*>(std::string("State"))->setValue((uint32_t)row["state"]);
 				++count;
 				m_objectGrid->insert(staticNpc);
 				m_staticNpcs.push_back(staticNpc);
-			}
-        }
-        
-		   else
-        {
-            Log::getMainLog().error("Failed to load transports.");
+			});
         }
     }
-  
-	catch (const mysqlpp::BadQuery& er)
-    {
-        // handle any query errors.
-        Log::getMainLog().error("Query error: %s", er.what());
-		return;
-    }
-	
-	catch (const mysqlpp::EndOfResults&) {
-			Log::getMainLog().debug("Loaded %i static npcs.", count);
-		// Continue normally.
-	}
 	catch (const mysqlpp::Exception& er)
     {
 		// Catch-all for any other MySQL++ exceptions
-		Log::getMainLog().error("Error: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
 		return;
 	}
+
+    LOG(INFO) << "Static NPCs loaded: " << count;
 }
 

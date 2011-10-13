@@ -18,8 +18,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
+#include "osZonePreCU/precuzoneserver.h"
 
-#include <gsCore/log.h>
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/eventmanager.h>
 #include <gsCore/processmanager.h>
 #include <gsCore/sha1.h>
@@ -33,7 +38,6 @@
 #include <gsServer/serverevents.h>
 #include <gsCore/datastore.h>
 #include <Sockets/StdoutLog.h>
-#include <osZonePreCU/precuzoneserver.h>
 #include <osZonePreCU/precuzoneservereventlistener.h>
 #include <osSOEProtocol/soesocketfactory.h>
 #include <osSOEProtocol/stationidentifiermessage.h>
@@ -51,7 +55,7 @@ using namespace gsServer;
 using namespace osSOEProtocol;
 using namespace osZonePreCU;
 
-PreCUZoneServer::PreCUZoneServer(std::string serverType, uint32 serverId)
+PreCUZoneServer::PreCUZoneServer(std::string serverType, uint32_t serverId)
 : ServerApplication(serverType, serverId)
 {
 }
@@ -95,13 +99,13 @@ void PreCUZoneServer::initialize(const std::string& configFilename)
 
         if (! Datastore::getStationDB().connected())
         {
-            Log::getMainLog().error("Unable to connect to the datastore");
+            LOG(ERROR) << "Unable to connect tot he datastore";
         }
     }
     catch (const mysqlpp::ConnectionFailed& er)
     {
         // handle any query errors.
-        Log::getMainLog().error("ERROR: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
         exit(EXIT_FAILURE);
     }
 	
@@ -122,13 +126,13 @@ void PreCUZoneServer::initialize(const std::string& configFilename)
 
         if (! Datastore::getGalaxyDB().connected())
         {
-            Log::getMainLog().error("Unable to connect to the datastore");
+            LOG(ERROR) << "Unable to connect tot he datastore";
         }
     }
     catch (const mysqlpp::ConnectionFailed& er)
     {
         // handle any query errors.
-        Log::getMainLog().error("ERROR: %s", er.what());
+        LOG(ERROR) << "ERROR: " << er.what();
         exit(EXIT_FAILURE);
     }
 	

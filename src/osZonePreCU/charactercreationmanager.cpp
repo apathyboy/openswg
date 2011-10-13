@@ -17,6 +17,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
+#include "osZonePreCU/charactercreationmanager.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsServer/opcodehandler.h>
 #include <gsServer/session.h>
 #include <gsCore/datastore.h>
@@ -29,8 +36,6 @@
 #include <osSOEProtocol/objectpropertytypes.h>
 
 #include <osSOEProtocol/opcodes.h>
-
-#include <osZonePreCU/charactercreationmanager.h>
 
 using namespace gsCore;
 using namespace gsNetwork;
@@ -292,11 +297,12 @@ void CharacterCreationManager::handleCreateCharacter(gsServer::Session* session,
 
 		if (! result)
         {
-			Log::getMainLog().error("Unable to create character [%s]", creationRequest->fullname.c_str());
+            LOG(ERROR) << "Unable to create character: " << std::string(begin(creationRequest->fullname), end(creationRequest->fullname));
 			return;
         }
 
-		characterId = (uint64_t)result.insert_id;
+
+		characterId = (uint64_t)(result.insert_id());
 
 		createCharacterItems(objectId, creationRequest->profession, creationRequest->race);
 	}

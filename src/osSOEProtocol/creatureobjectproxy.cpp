@@ -17,6 +17,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
+#include "osSOEProtocol/creatureobjectproxy.h"
+
+#ifdef ERROR
+#undef ERROR
+#endif
+#include <glog/logging.h>
+
 #include <gsCore/macros.h>
 #include <gsServer/session.h>
 #include <gsCore/datastore.h>
@@ -46,7 +53,6 @@
 #include <osSOEProtocol/playlinkmessage.h>
 
 #include <osSOEProtocol/creatureobject.h>
-#include <osSOEProtocol/creatureobjectproxy.h>
 #include <osSOEProtocol/objectpropertytypes.h>
 
 using namespace gsCore;
