@@ -16,3 +16,13 @@ target_link_libraries(osZonePreCU
 	debug ${ZLIB_LIBRARY_DEBUG}
 	optimized ${ZLIB_LIBRARY_RELEASE}
 )
+
+if(WIN32)
+    configure_file(${CMAKE_SOURCE_DIR}/build-aux/windows/user_project.vcxproj.in
+        ${CMAKE_CURRENT_BINARY_DIR}/osZonePreCU.vcxproj.user @ONLY
+    )
+    
+    configure_file(${CMAKE_SOURCE_DIR}/data/config/zoneprecu.ini
+        ${CMAKE_BINARY_DIR}/config/zoneprecu.ini @COPYONLY
+    )
+endif()

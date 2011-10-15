@@ -10,7 +10,7 @@ set(OPENSWG_VERSION
 	${OPENSWG_VERSION_MAJOR}.${OPENSWG_VERSION_MINOR}.${OPENSWG_VERSION_PATCH})
 	
 # set the path for custom cmake scripts
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build-aux/cmake")
 
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
@@ -43,7 +43,6 @@ find_package(GLog REQUIRED)
 find_package(GTest REQUIRED)
 find_package(GMock REQUIRED)
 find_package(MysqlConnectorC REQUIRED)
-find_package(MysqlConnectorCpp REQUIRED)
 find_package(MYSQLPP REQUIRED)
 find_package(TBB REQUIRED)
 find_package(ZLib REQUIRED)
@@ -63,12 +62,22 @@ link_directories(
 	${Boost_LIBRARY_DIRS}
 )
 
-if(MSVC AND NOT CMAKE_GENERATOR MATCHES "Visual Studio 7")
-	ADD_DEFINITIONS(/D HAVE_OPENSSL=0)
-	ADD_DEFINITIONS(/D WIN32_LEAN_AND_MEAN /D NOGDI)
-	ADD_DEFINITIONS(/D _CRT_SECURE_NO_WARNINGS)
+if(MSVC)
+	get_filename_component(GLOG_DEBUG_DLL_PATH ${GLOG_LIBRARY_DEBUG} PATH)
+	get_filename_component(GLOG_RELEASE_DLL_PATH ${GLOG_LIBRARY_RELEASE} PATH)
+	get_filename_component(MYSQL_DLL_PATH ${MYSQL_LIB} PATH)
+	get_filename_component(MYSQLPP_DEBUG_DLL_PATH ${MYSQLPP_LIBRARY_DEBUG} PATH)
+	get_filename_component(MYSQLPP_RELEASE_DLL_PATH ${MYSQLPP_LIBRARY_RELEASE} PATH)
+	get_filename_component(ZLIB_DEBUG_DLL_PATH ${ZLIB_LIBRARY_DEBUG} PATH)
+	get_filename_component(ZLIB_RELEASE_DLL_PATH ${ZLIB_LIBRARY_RELEASE} PATH)
+
+	add_definitions(/D HAVE_OPENSSL=0)
+	add_definitions(/D WIN32_LEAN_AND_MEAN /D NOGDI)
+	add_definitions(/D _CRT_SECURE_NO_WARNINGS)
 
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244")
+	
+	file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/logs)
 endif()
 
 add_subdirectory(src/gsApplication)
