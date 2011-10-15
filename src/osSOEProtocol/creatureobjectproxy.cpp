@@ -87,309 +87,309 @@ void CreatureObjectProxy::buildPropertyMap()
 
 	addProperty(new StringObjectProperty(
 		"Appearance", "Appearance", 
-		makeFunctor((CBFunctor1<std::string>*)0, *creature, &CreatureObject::setAppearance), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *creature, &CreatureObject::getAppearance), 
+        std::bind(&CreatureObject::setAppearance, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getAppearance, creature),
 		"Appearance string of the creature object. Note that in the future this will be expanded to include modification of the individual items of the appearance string.", 
 		GROUPNAME));
 	
 	addProperty(new Uint8ObjectProperty(
 		"Posture", "Posture", 
-		makeFunctor((CBFunctor1<uint8_t>*)0, *creature, &CreatureObject::setPosture), 
-		makeFunctor((CBFunctor0wRet<uint8_t>*)0, *creature, &CreatureObject::getPosture), 
+        std::bind(&CreatureObject::setPosture, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getPosture, creature),
 		"Posture of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint64ObjectProperty(
 		"TargetId", "Target Id", 
-		makeFunctor((CBFunctor1<uint64_t>*)0, *creature, &CreatureObject::setTargetId), 
-		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *creature, &CreatureObject::getTargetId), 
+        std::bind(&CreatureObject::setTargetId, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getTargetId, creature),
 		"Target id of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxHealth", "Max Health", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxHealth), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxHealth), 
+        std::bind(&CreatureObject::setMaxHealth, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxHealth, creature),
 		"Max health of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxStrength", "Max Strength", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxStrength), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxStrength), 
+        std::bind(&CreatureObject::setMaxStrength, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxStrength, creature),
 		"Max strength of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxConstitution", "Max Constitution", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxConstitution), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxConstitution), 
+        std::bind(&CreatureObject::setMaxConstitution, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxConstitution, creature),
 		"Max constitution of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxAction", "Max Action", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxAction), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxAction), 
+        std::bind(&CreatureObject::setMaxAction, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxAction, creature),
 		"Max action of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxQuickness", "Max Quickness", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxQuickness), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxQuickness), 
+        std::bind(&CreatureObject::setMaxQuickness, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxQuickness, creature),
 		"Max quickness of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxStamina", "Max Stamina", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxStamina), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxStamina), 
+        std::bind(&CreatureObject::setMaxStamina, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxStamina, creature),
 		"Max stamina of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxMind", "Max Mind", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxMind), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxMind), 
+        std::bind(&CreatureObject::setMaxMind, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxMind, creature),
 		"Max mind of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxFocus", "Max Focus", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxFocus), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxFocus), 
+        std::bind(&CreatureObject::setMaxFocus, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxFocus, creature),
 		"Max focus of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MaxWillpower", "Max Willpower", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMaxWillpower), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMaxWillpower), 
+        std::bind(&CreatureObject::setMaxWillpower, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMaxWillpower, creature),
 		"Max willpower of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentHealth", "Current Health", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentHealth), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentHealth), 
+        std::bind(&CreatureObject::setCurrentHealth, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentHealth, creature),
 		"Current health of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentStrength", "Current Strength", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentStrength), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentStrength), 
+        std::bind(&CreatureObject::setCurrentStrength, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentStrength, creature),
 		"Current strength of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentConstitution", "Current Constitution", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentConstitution), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentConstitution), 
+        std::bind(&CreatureObject::setCurrentConstitution, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentConstitution, creature),
 		"Current constitution of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentAction", "Current Action", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentAction), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentAction), 
+        std::bind(&CreatureObject::setCurrentAction, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentAction, creature),
 		"Current action of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentQuickness", "Current Quickness", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentQuickness), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentQuickness), 
+        std::bind(&CreatureObject::setCurrentQuickness, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentQuickness, creature), 
 		"Current quickness of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentStamina", "Current Stamina", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentStamina), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentStamina), 
+        std::bind(&CreatureObject::setCurrentStamina, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentStamina, creature),
 		"Current stamina of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentMind", "Current Mind", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentMind), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentMind), 
+        std::bind(&CreatureObject::setCurrentMind, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentMind, creature),
 		"Current mind of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentFocus", "Current Focus", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentFocus), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentFocus), 
+        std::bind(&CreatureObject::setCurrentFocus, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentFocus, creature),
 		"Max focus of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CurrentWillpower", "Current Willpower", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCurrentWillpower), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCurrentWillpower), 
+        std::bind(&CreatureObject::setCurrentWillpower, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCurrentWillpower, creature),
 		"Current willpower of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"HealthWounds", "HealthWounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setHealthWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getHealthWounds), 
+        std::bind(&CreatureObject::setHealthWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getHealthWounds, creature),
 		"Health wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"StrengthWounds", "StrengthWounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setStrengthWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getStrengthWounds), 
+        std::bind(&CreatureObject::setStrengthWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getStrengthWounds, creature), 
 		"Strength wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"ConstitutionWounds", "Constitution Wounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setConstitutionWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getConstitutionWounds), 
+        std::bind(&CreatureObject::setConstitutionWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getConstitutionWounds, creature),
 		"Constitution wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"ActionWounds", "Action Wounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setActionWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getActionWounds), 
+        std::bind(&CreatureObject::setActionWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getActionWounds, creature),
 		"Action wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"QuicknessWounds", "QuicknessWounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setQuicknessWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getQuicknessWounds), 
+        std::bind(&CreatureObject::setQuicknessWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getQuicknessWounds, creature),
 		"Quickness wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"StaminaWounds", "Stamina Wounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setStaminaWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getStaminaWounds), 
+        std::bind(&CreatureObject::setStaminaWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getStaminaWounds, creature),
 		"Stamina wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MindWounds", "MindWounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMindWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMindWounds), 
+        std::bind(&CreatureObject::setMindWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMindWounds, creature),
 		"Mind wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"FocusWounds", "Focus Wounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setFocusWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getFocusWounds), 
+        std::bind(&CreatureObject::setFocusWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getFocusWounds, creature),
 		"Focus wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"WillpowerWounds", "Willpower Wounds", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setWillpowerWounds), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getWillpowerWounds), 
+        std::bind(&CreatureObject::setWillpowerWounds, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getWillpowerWounds, creature),
 		"Willpower wounds of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"HealthModifiers", "Health Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setHealthModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getHealthModifiers), 
+        std::bind(&CreatureObject::setHealthModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getHealthModifiers, creature),
 		"Health modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"StrengthModifiers", "Strength Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setStrengthModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getStrengthModifiers), 
+        std::bind(&CreatureObject::setStrengthModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getStrengthModifiers, creature),
 		"Strength modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"ConstitutionModifiers", "Constitution Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setConstitutionModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getConstitutionModifiers), 
+        std::bind(&CreatureObject::setConstitutionModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getConstitutionModifiers, creature), 
 		"Constitution modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"ActionModifiers", "Action modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setActionModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getActionModifiers), 
+        std::bind(&CreatureObject::setActionModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getActionModifiers, creature),
 		"Action modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"QuicknessModifiers", "Quickness Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setQuicknessModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getQuicknessModifiers), 
+        std::bind(&CreatureObject::setQuicknessModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getQuicknessModifiers, creature),
 		"Quickness modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"StaminaModifiers", "Stamina Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setStaminaModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getStaminaModifiers), 
+        std::bind(&CreatureObject::setStaminaModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getStaminaModifiers, creature),
 		"Stamina modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"MindModifiers", "Mind Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setMindModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getMindModifiers), 
+        std::bind(&CreatureObject::setMindModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMindModifiers, creature),
 		"Mind modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"FocusModifiers", "Focus Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setFocusModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getFocusModifiers), 
+        std::bind(&CreatureObject::setFocusModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getFocusModifiers, creature),
 		"Focus modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"WillpowerModifiers", "Willpower Modifiers", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setWillpowerModifiers), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getWillpowerModifiers), 
+        std::bind(&CreatureObject::setWillpowerModifiers, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getWillpowerModifiers, creature),
 		"Willpower modifiers of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"CreatureType", "Creature Type", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setCreatureType), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getCreatureType), 
+        std::bind(&CreatureObject::setCreatureType, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getCreatureType, creature),
 		"Creature type of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"FactionAlignment", "Faction Alignment", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setFactionAlignment), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getFactionAlignment), 
+        std::bind(&CreatureObject::setFactionAlignment, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getFactionAlignment, creature),
 		"Faction alignment of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint32ObjectProperty(
 		"BattleFatigue", "Battle Fatigue", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *creature, &CreatureObject::setBattleFatigue), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *creature, &CreatureObject::getBattleFatigue), 
+        std::bind(&CreatureObject::setBattleFatigue, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getBattleFatigue, creature),
 		"Battle fatigue of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new StringObjectProperty(
 		"Mood", "Mood", 
-		makeFunctor((CBFunctor1<std::string>*)0, *creature, &CreatureObject::setMood), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *creature, &CreatureObject::getMood), 
+        std::bind(&CreatureObject::setMood, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getMood, creature),
 		"Mood of the creature object.", 
 		GROUPNAME));
 	
 	addProperty(new StringObjectProperty(
 		"Planet", "Planet", 
-		makeFunctor((CBFunctor1<std::string>*)0, *creature, &CreatureObject::setPlanet), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *creature, &CreatureObject::getPlanet), 
+        std::bind(&CreatureObject::setPlanet, creature, std::placeholders::_1), 
+        std::bind(&CreatureObject::getPlanet, creature),
 		"Planet where the creature is currently located.", 
 		GROUPNAME));
 }

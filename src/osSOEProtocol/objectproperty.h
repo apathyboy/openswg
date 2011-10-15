@@ -29,8 +29,6 @@
 #endif
 #include <glog/logging.h>
 
-#include <gsCore/callback.h>
-
 namespace osSOEProtocol
 {
 	class ObjectProperty
@@ -84,8 +82,8 @@ namespace osSOEProtocol
 	public:
 		GenericObjectProperty(const std::string &name,
 							  const std::string &label,
-							  CBFunctor1<SetType> &set,
-							  CBFunctor0wRet<GetType> &get,
+							  std::function<void (SetType)> &set,
+							  std::function<GetType()> &get,
 							  const std::string desc,
 							  const std::string group,
 							  bool readOnly = false) 
@@ -118,8 +116,8 @@ namespace osSOEProtocol
 		virtual ~GenericObjectProperty() {}
 
 	private:
-		CBFunctor1<SetType> m_setPropertyFunctor;
-		CBFunctor0wRet<GetType> m_getPropertyFunctor;
+		std::function<void (SetType)> m_setPropertyFunctor;
+		std::function<GetType()> m_getPropertyFunctor;
 	};
 }
 

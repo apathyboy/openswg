@@ -35,8 +35,8 @@ AuthManager::AuthManager()
 
 void AuthManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &AuthManager::handleAuthRequest);	
-	factory->addOpcodeHandler(CMSG_DATA_SES_VER, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
+	factory->addOpcodeHandler(CMSG_DATA_SES_VER, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&AuthManager::handleAuthRequest, this, std::placeholders::_1, std::placeholders::_2))));
 }
 
 void AuthManager::handleAuthRequest(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) const

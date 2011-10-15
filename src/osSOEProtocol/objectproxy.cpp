@@ -109,127 +109,127 @@ void ObjectProxy::buildPropertyMap()
 
 	addProperty(new Uint64ObjectProperty(
 		"DatabaseId", "Database ID", 
-		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setDatabaseId), 
-		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getDatabaseId), 
+        std::bind(&Object::setDatabaseId, m_object, std::placeholders::_1), 
+        std::bind(&Object::getDatabaseId, m_object),
 		"A local database table id.", 
 		GROUPNAME));
 
 	addProperty(new Uint64ObjectProperty(
 		"ObjectId", "Object ID", 
-		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setObjectId), 
-		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getObjectId), 
+        std::bind(&Object::setObjectId, m_object, std::placeholders::_1), 
+        std::bind(&Object::getObjectId, m_object),
 		"A globally unique identifier assigned to every object.", 
 		GROUPNAME));
 
 	addProperty(new Uint64ObjectProperty(
 		"ParentId", "Parent ID", 
-		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setParentId), 
-		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getParentId), 
+        std::bind(&Object::setParentId, m_object, std::placeholders::_1), 
+        std::bind(&Object::getParentId, m_object), 
 		"A globally unique identifier assigned to every object.", 
 		GROUPNAME));
 
 	addProperty(new Uint64ObjectProperty(
 		"ZoneId", "Zone ID", 
-		makeFunctor((CBFunctor1<uint64_t>*)0, *m_object, &Object::setZoneId), 
-		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *m_object, &Object::getZoneId), 
+        std::bind(&Object::setZoneId, m_object, std::placeholders::_1), 
+        std::bind(&Object::getZoneId, m_object),
 		"Zone ID of the current object.", 
 		GROUPNAME));
 	
 	addProperty(new StringObjectProperty(
 		"Model", "Model", 
-		makeFunctor((CBFunctor1<std::string>*)0, *m_object, &Object::setModel), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *m_object, &Object::getModel), 
+        std::bind(&Object::setModel, m_object, std::placeholders::_1), 
+        std::bind(&Object::getModel, m_object),
 		"Model string for the object.", 
 		GROUPNAME));
 	
 	addProperty(new StringObjectProperty(
 		"Category", "Category", 
-		makeFunctor((CBFunctor1<std::string>*)0, *m_object, &Object::setCategory), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *m_object, &Object::getCategory), 
+        std::bind(&Object::setCategory, m_object, std::placeholders::_1), 
+        std::bind(&Object::getCategory, m_object),
 		"Category of the object model.", 
 		GROUPNAME));
 	
 	addProperty(new StringObjectProperty(
 		"Type", "Type", 
-		makeFunctor((CBFunctor1<std::string>*)0, *m_object, &Object::setType), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *m_object, &Object::getType), 
+        std::bind(&Object::setType, m_object, std::placeholders::_1), 
+        std::bind(&Object::getType, m_object),
 		"Type of the object model.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"QuaternionX", "Quaternion X", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setQuaternionX), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getQuaternionX), 
+        std::bind(&Object::setQuaternionX, m_object, std::placeholders::_1), 
+        std::bind(&Object::getQuaternionX, m_object),
 		"Quaternion X.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"QuaternionY", "Quaternion Y", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setQuaternionY), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getQuaternionY), 
+        std::bind(&Object::setQuaternionY, m_object, std::placeholders::_1), 
+        std::bind(&Object::getQuaternionY, m_object),
 		"Quaternion Y.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"QuaternionZ", "Quaternion Z", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setQuaternionZ), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getQuaternionZ), 
+        std::bind(&Object::setQuaternionZ, m_object, std::placeholders::_1), 
+        std::bind(&Object::getQuaternionZ, m_object),
 		"Quaternion X.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"QuaternionW", "QuaternionW", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setQuaternionW), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getQuaternionW), 
+        std::bind(&Object::setQuaternionW, m_object, std::placeholders::_1), 
+        std::bind(&Object::getQuaternionW, m_object),
 		"Quaternion W.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"PositionX", "Position X", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setPositionX), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getPositionX), 
+        std::bind(&Object::setPositionX, m_object, std::placeholders::_1), 
+        std::bind(&Object::getPositionX, m_object),
 		"Position X.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"PositionY", "Position Y", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setPositionY), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getPositionY), 
+        std::bind(&Object::setPositionY, m_object, std::placeholders::_1), 
+        std::bind(&Object::getPositionY, m_object),
 		"Position Y.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"PositionZ", "Position Z", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setPositionZ), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getPositionZ), 
+        std::bind(&Object::setPositionZ, m_object, std::placeholders::_1), 
+        std::bind(&Object::getPositionZ, m_object),
 		"Position Z.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"Scale", "Scale", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setScale), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getScale), 
+        std::bind(&Object::setScale, m_object, std::placeholders::_1), 
+        std::bind(&Object::getScale, m_object),
 		"Scale of the object.", 
 		GROUPNAME));
 	
 	addProperty(new FloatObjectProperty(
 		"Orientation", "Orientation", 
-		makeFunctor((CBFunctor1<float>*)0, *m_object, &Object::setOrientation), 
-		makeFunctor((CBFunctor0wRet<float>*)0, *m_object, &Object::getOrientation), 
+        std::bind(&Object::setOrientation, m_object, std::placeholders::_1), 
+        std::bind(&Object::getOrientation, m_object),
 		"Orientation of the object.", 
 		GROUPNAME));
 	
 	addProperty(new Uint8ObjectProperty(
 		"Direction", "Direction", 
-		makeFunctor((CBFunctor1<uint8_t>*)0, *m_object, &Object::setDirection), 
-		makeFunctor((CBFunctor0wRet<uint8_t>*)0, *m_object, &Object::getDirection), 
+        std::bind(&Object::setDirection, m_object, std::placeholders::_1), 
+        std::bind(&Object::getDirection, m_object),
 		"Directional facing of the object.", 
 		GROUPNAME));
 
 	addProperty(new UintObjectProperty(
 		"State", "State", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *m_object, &Object::setState), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *m_object, &Object::getState), 
+        std::bind(&Object::setState, m_object, std::placeholders::_1), 
+        std::bind(&Object::getState, m_object),
 		"State.", 
 		GROUPNAME));
 }

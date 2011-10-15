@@ -63,22 +63,22 @@ void TangibleObjectProxy::buildPropertyMap()
 
 	addProperty(new StringObjectProperty(
 		"CustomName", "Custom Name", 
-		makeFunctor((CBFunctor1<std::string>*)0, *tangible, &TangibleObject::setCustomName), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *tangible, &TangibleObject::getCustomName), 
+        std::bind(&TangibleObject::setCustomName, tangible, std::placeholders::_1), 
+        std::bind(&TangibleObject::getCustomName, tangible),
 		"Custom name of the tangible object.", 
 		GROUPNAME));
 	
 	addProperty(new StringObjectProperty(
 		"Color", "Color", 
-		makeFunctor((CBFunctor1<std::string>*)0, *tangible, &TangibleObject::setColor), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *tangible, &TangibleObject::getColor), 
+        std::bind(&TangibleObject::setColor, tangible, std::placeholders::_1), 
+        std::bind(&TangibleObject::getColor, tangible), 
 		"Custom color of the tangible object.", 
 		GROUPNAME));
 	
 	addProperty(new BooleanObjectProperty(
-		"Equipped", "Equipped", 
-		makeFunctor((CBFunctor1<bool>*)0, *tangible, &TangibleObject::setEquipped), 
-		makeFunctor((CBFunctor0wRet<bool>*)0, *tangible, &TangibleObject::getEquipped), 
+		"Equipped", "Equipped",
+        std::bind(&TangibleObject::setEquipped, tangible, std::placeholders::_1), 
+        std::bind(&TangibleObject::getEquipped, tangible), 
 		"Signals whether the item is equipped or not.", 
 		GROUPNAME));
 }

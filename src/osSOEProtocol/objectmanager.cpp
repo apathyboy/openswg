@@ -92,29 +92,23 @@ void ObjectManager::initialize()
 
 void ObjectManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleLoginCharacter);	
-	factory->addOpcodeHandler(CMSG_LOGIN_CHAR, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
-
-	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleObjectPreload);	
-	factory->addOpcodeHandler(CMSG_OBJ_PRELOAD, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
-
-	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleUnknown);	
-	factory->addOpcodeHandler(0x0f5d5325, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
+	factory->addOpcodeHandler(CMSG_LOGIN_CHAR, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&ObjectManager::handleLoginCharacter, this, std::placeholders::_1, std::placeholders::_2))));
+    
+	factory->addOpcodeHandler(CMSG_OBJ_PRELOAD, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&ObjectManager::handleObjectPreload, this, std::placeholders::_1, std::placeholders::_2))));
+    
+    auto unknown_handler = bind(&ObjectManager::handleUnknown, this, std::placeholders::_1, std::placeholders::_2);
+	factory->addOpcodeHandler(0x0f5d5325, OpcodeHandlerPtr(GS_NEW OpcodeHandler(unknown_handler)));
+	factory->addOpcodeHandler(0x4c3d2cfa, OpcodeHandlerPtr(GS_NEW OpcodeHandler(unknown_handler)));
+	factory->addOpcodeHandler(0x48f493c5, OpcodeHandlerPtr(GS_NEW OpcodeHandler(unknown_handler)));
+    factory->addOpcodeHandler(0xca88fbad, OpcodeHandlerPtr(GS_NEW OpcodeHandler(unknown_handler)));
+    
+	factory->addOpcodeHandler(0x80CE5E46, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&ObjectManager::handleCommand, this, std::placeholders::_1, std::placeholders::_2))));
 	
-	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleUnknown);	
-	factory->addOpcodeHandler(0x4c3d2cfa, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
-	
-	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleUnknown);	
-	factory->addOpcodeHandler(0x48f493c5, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
-
-	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleUnknown);	
-	factory->addOpcodeHandler(0xca88fbad, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
-
-	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleCommand);	
-	factory->addOpcodeHandler(0x80CE5E46, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
-	
-	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleLoadReady);	
-	factory->addOpcodeHandler(CMSG_LOAD_READY, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
+	factory->addOpcodeHandler(CMSG_LOAD_READY, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&ObjectManager::handleLoadReady, this, std::placeholders::_1, std::placeholders::_2))));
 
 	m_radialMenuManager->registerOpcodes(factory);
 }

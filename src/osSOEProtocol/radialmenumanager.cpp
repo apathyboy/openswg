@@ -19,7 +19,6 @@
 
 #include <osSOEProtocol/radialmenumanager.h>
 #include <osSOEProtocol/soelayermessages.h>
-#include <gsCore/callback.h>
 #include <gsNetwork/binarypacket.h>
 #include <gsServer/session.h>
 
@@ -36,7 +35,7 @@ RadialMenuManager::~RadialMenuManager()
 
 void RadialMenuManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &RadialMenuManager::handleRadialSelection);	
+    auto handler = std::bind(&RadialMenuManager::handleRadialSelection, this, std::placeholders::_1, std::placeholders::_2);	
 	factory->addOpcodeHandler(0x7ca18726, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
 }
 

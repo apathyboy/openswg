@@ -20,7 +20,8 @@
 #ifndef OPENSWG_SOEPROTOCOL_OBJECTPROPERTYTYPES
 #define OPENSWG_SOEPROTOCOL_OBJECTPROPERTYTYPES
 
-#include <gsCore/callback.h>
+#include <functional>
+
 #include <osSOEProtocol/objectproperty.h>
 
 namespace osSOEProtocol
@@ -42,7 +43,7 @@ namespace osSOEProtocol
 	{
 	public:
 		FloatObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<float> set, CBFunctor0wRet<float> get,
+			std::function<void (float)> set, std::function<float()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<float,float>(name, label, set, get, description, group)
 		{
@@ -57,7 +58,7 @@ namespace osSOEProtocol
 	{
 	public:
 		UintObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<uint32_t> set, CBFunctor0wRet<uint32_t> get,
+			std::function<void (uint32_t)> set, std::function<uint32_t()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<uint32_t,uint32_t>(name, label, set, get, description, group)
 		{
@@ -72,7 +73,7 @@ namespace osSOEProtocol
 	{
 	public:
 		Uint8ObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<uint8_t> set, CBFunctor0wRet<uint8_t> get,
+			std::function<void (uint8_t)> set, std::function<uint8_t()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<uint8_t,uint8_t>(name, label, set, get, description, group)
 		{
@@ -87,7 +88,7 @@ namespace osSOEProtocol
 	{
 	public:
 		Uint16ObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<uint16_t> set, CBFunctor0wRet<uint16_t> get,
+			std::function<void (uint16_t)> set, std::function<uint16_t()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<uint16_t,uint16_t>(name, label, set, get, description, group)
 		{
@@ -102,7 +103,7 @@ namespace osSOEProtocol
 	{
 	public:
 		Uint32ObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<uint32_t> set, CBFunctor0wRet<uint32_t> get,
+			std::function<void (uint32_t)> set, std::function<uint32_t()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<uint32_t,uint32_t>(name, label, set, get, description, group)
 		{
@@ -117,7 +118,7 @@ namespace osSOEProtocol
 	{
 	public:
 		Uint64ObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<uint64_t> set, CBFunctor0wRet<uint64_t> get,
+			std::function<void (uint64_t)> set, std::function<uint64_t()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<uint64_t,uint64_t>(name, label, set, get, description, group)
 		{
@@ -132,7 +133,7 @@ namespace osSOEProtocol
 	{
 	public:
 		StringObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<std::string> set, CBFunctor0wRet<std::string> get,
+			std::function<void (std::string)> set, std::function<std::string()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<std::string,std::string>(name, label, set, get, description, group)
 		{
@@ -147,7 +148,7 @@ namespace osSOEProtocol
 	{
 	public:
 		UnicodeObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<std::wstring> set, CBFunctor0wRet<std::wstring> get,
+			std::function<void (std::wstring)> set, std::function<std::wstring()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<std::wstring,std::wstring>(name, label, set, get, description, group)
 		{
@@ -162,7 +163,7 @@ namespace osSOEProtocol
 	{
 	public:
 		BooleanObjectProperty(const std::string& name, const std::string& label,
-			CBFunctor1<bool> set, CBFunctor0wRet<bool> get,
+			std::function<void (bool)> set, std::function<bool()> get,
 			const std::string &description = "", const std::string &group = "")
 		: GenericObjectProperty<bool,bool>(name, label, set, get, description, group)
 		{

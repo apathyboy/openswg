@@ -197,14 +197,14 @@ void CharacterCreationManager::initialize()
 
 void CharacterCreationManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &CharacterCreationManager::handleCharacterCreationRequest);	
-	factory->addOpcodeHandler(CMSG_NOTIFY_SESSION, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
+	factory->addOpcodeHandler(CMSG_NOTIFY_SESSION, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&CharacterCreationManager::handleCharacterCreationRequest, this, std::placeholders::_1, std::placeholders::_2))));
 
-	handler = makeFunctor((HandlerFunctor)0, *this, &CharacterCreationManager::handleCharacterOptionsValidation);	
-	factory->addOpcodeHandler(CMSG_GEN_CHAR_NAME, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
+	factory->addOpcodeHandler(CMSG_GEN_CHAR_NAME, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&CharacterCreationManager::handleCharacterOptionsValidation, this, std::placeholders::_1, std::placeholders::_2))));
 
-	handler = makeFunctor((HandlerFunctor)0, *this, &CharacterCreationManager::handleCreateCharacter);	
-	factory->addOpcodeHandler(CMSG_CREATE_CHAR, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
+	factory->addOpcodeHandler(CMSG_CREATE_CHAR, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+        bind(&CharacterCreationManager::handleCreateCharacter, this, std::placeholders::_1, std::placeholders::_2))));
 }
 
 

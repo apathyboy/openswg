@@ -87,57 +87,57 @@ void PlayerCreatureObjectProxy::buildPropertyMap()
 
 	addProperty(new Uint64ObjectProperty(
 		"GalaxyId", "Galaxy ID", 
-		makeFunctor((CBFunctor1<uint64_t>*)0, *playerCreature, &PlayerCreatureObject::setGalaxyId), 
-		makeFunctor((CBFunctor0wRet<uint64_t>*)0, *playerCreature, &PlayerCreatureObject::getGalaxyId), 
+        std::bind(&PlayerCreatureObject::setGalaxyId, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getGalaxyId, playerCreature),
 		"Galaxy Id.", 
 		GROUPNAME));
 
 	addProperty(new StringObjectProperty(
 		"Firstname", "Firstname", 
-		makeFunctor((CBFunctor1<std::string>*)0, *playerCreature, &PlayerCreatureObject::setFirstname), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *playerCreature, &PlayerCreatureObject::getFirstname), 
+        std::bind(&PlayerCreatureObject::setFirstname, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getFirstname, playerCreature),
 		"Firstname of the player.", 
 		GROUPNAME));
 
 	addProperty(new StringObjectProperty(
 		"Surname", "Surname", 
-		makeFunctor((CBFunctor1<std::string>*)0, *playerCreature, &PlayerCreatureObject::setSurname), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *playerCreature, &PlayerCreatureObject::getSurname), 
+        std::bind(&PlayerCreatureObject::setSurname, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getSurname, playerCreature), 
 		"Surname of the player.", 
 		GROUPNAME));
 
 	addProperty(new StringObjectProperty(
 		"Hair", "Hair", 
-		makeFunctor((CBFunctor1<std::string>*)0, *playerCreature, &PlayerCreatureObject::setHair), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *playerCreature, &PlayerCreatureObject::getHair), 
+        std::bind(&PlayerCreatureObject::setHair, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getHair, playerCreature), 
 		"Hair string.", 
 		GROUPNAME));
 
 	addProperty(new StringObjectProperty(
 		"HairData", "HairData", 
-		makeFunctor((CBFunctor1<std::string>*)0, *playerCreature, &PlayerCreatureObject::setHairData), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *playerCreature, &PlayerCreatureObject::getHairData), 
+        std::bind(&PlayerCreatureObject::setHairData, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getHairData, playerCreature),
 		"Hair data string.", 
 		GROUPNAME));
 
 	addProperty(new StringObjectProperty(
 		"Biography", "Biography", 
-		makeFunctor((CBFunctor1<std::string>*)0, *playerCreature, &PlayerCreatureObject::setBiography), 
-		makeFunctor((CBFunctor0wRet<std::string>*)0, *playerCreature, &PlayerCreatureObject::getBiography), 
+        std::bind(&PlayerCreatureObject::setBiography, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getBiography, playerCreature),
 		"Biography string.", 
 		GROUPNAME));
 
 	addProperty(new Uint32ObjectProperty(
 		"BankCredits", "Bank Credits", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::setBankCredits), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::getBankCredits), 
+        std::bind(&PlayerCreatureObject::setBankCredits, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getBankCredits, playerCreature),
 		"Amount of credits in the objects bank.", 
 		GROUPNAME));
 
 	addProperty(new Uint32ObjectProperty(
 		"InventoryCredits", "Inventory Credits", 
-		makeFunctor((CBFunctor1<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::setInventoryCredits), 
-		makeFunctor((CBFunctor0wRet<uint32_t>*)0, *playerCreature, &PlayerCreatureObject::getInventoryCredits), 
+        std::bind(&PlayerCreatureObject::setInventoryCredits, playerCreature, std::placeholders::_1), 
+        std::bind(&PlayerCreatureObject::getInventoryCredits, playerCreature), 
 		"Amount of credits in the objects inventory.", 
 		GROUPNAME));
 }

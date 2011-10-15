@@ -22,7 +22,8 @@
 
 #include <cstdint>
 
-#include <gsCore/callback.h>
+#include <functional>
+
 #include <gsNetwork/binarypacket.h>
 
 #include <memory>
@@ -33,14 +34,14 @@
 namespace gsServer
 {
 	class Session;
-	typedef CBFunctor2<Session*, std::shared_ptr<gsNetwork::BinaryPacket>> *HandlerFunctor;
+	typedef std::function<void (Session*, std::shared_ptr<gsNetwork::BinaryPacket>)> HandlerFunctor;
 
 	/** Define our handler function type.
 	 */
 	class OpcodeHandler
 	{
 	public:
-		OpcodeHandler(const CBFunctor2<Session*, std::shared_ptr<gsNetwork::BinaryPacket>> &inHandler)
+		OpcodeHandler(const HandlerFunctor &inHandler)
 			: m_handler(inHandler)
 		{}
 
@@ -50,7 +51,7 @@ namespace gsServer
 		}
 		
 	protected:
-		CBFunctor2<Session*, std::shared_ptr<gsNetwork::BinaryPacket>> m_handler;
+		HandlerFunctor m_handler;
 	};
 
 	typedef std::shared_ptr<OpcodeHandler> OpcodeHandlerPtr;
