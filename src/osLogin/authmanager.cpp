@@ -103,9 +103,12 @@ bool AuthManager::authenticate(gsServer::Session* session, std::string username,
 			std::string dbPassword = (std::string)result[0]["password"];
 			std::string salt = (std::string)result[0]["salt"];
 			
-			md5wrapper wrapper;
-			std::string md5 = wrapper.getHashFromString(password);
-			std::string md5WithSalt = wrapper.getHashFromString(md5+salt);
+            LOG(WARNING) << "DB Password: " << dbPassword << " Salt: " << salt;
+
+			std::string md5pass = md5(password);
+			std::string md5WithSalt = md5(md5pass+salt);
+
+            LOG(WARNING) << "DB Password: " << dbPassword << " Salt: " << salt << " MD5: " << md5pass << " MD5+salt: " << md5WithSalt;
 
 			if (dbPassword.compare(md5WithSalt) == 0)
 			{
