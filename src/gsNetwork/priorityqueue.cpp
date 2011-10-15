@@ -39,7 +39,7 @@ void PriorityQueue::queue(NetworkMessagePtr message)
 	m_messages.push_back(message);
 }
 
-void PriorityQueue::resend(uint16_t sequence, GameSocket* socket, NetworkAddressPtr address)
+void PriorityQueue::resend(uint16_t sequence, GameSocket* socket, std::shared_ptr<NetworkAddress> address)
 {
 	SentQueue::iterator i = m_sentMessages.find(sequence);
 
@@ -52,7 +52,7 @@ void PriorityQueue::resend(uint16_t sequence, GameSocket* socket, NetworkAddress
 	}
 }
 
-void PriorityQueue::sendQueue(GameSocket* socket, NetworkAddressPtr address)
+void PriorityQueue::sendQueue(GameSocket* socket, std::shared_ptr<NetworkAddress> address)
 {
 	if (m_messages.size() < 1) return;
 

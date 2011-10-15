@@ -32,10 +32,10 @@ namespace osSOEProtocol
 		std::list<GalaxyCluster*> galaxies;
 
 		GalaxyListMessage();
-		GalaxyListMessage(gsNetwork::BinaryPacketPtr packet);
+		GalaxyListMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~GalaxyListMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

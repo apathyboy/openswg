@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint32_t connectionId;
 
 		DisconnectMessage();
-		DisconnectMessage(gsNetwork::BinaryPacketPtr packet);
+		DisconnectMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~DisconnectMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

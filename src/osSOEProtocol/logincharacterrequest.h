@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint64_t characterId;
 
 		LoginCharacterRequest();
-		LoginCharacterRequest(gsNetwork::BinaryPacketPtr packet);
+		LoginCharacterRequest(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~LoginCharacterRequest();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

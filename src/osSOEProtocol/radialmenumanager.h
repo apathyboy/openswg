@@ -46,7 +46,7 @@ namespace osSOEProtocol
         
 	public: // OPCODE HANDLING
 		virtual void registerOpcodes(gsServer::OpcodeFactory* factory);
-		void handleRadialSelection(gsServer::Session* session, gsNetwork::BinaryPacketPtr packet) ;
+		void handleRadialSelection(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet) ;
 	};
 }
 

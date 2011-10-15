@@ -32,7 +32,7 @@ OkMessage::OkMessage()
 	setCrc(true);
 }
 
-OkMessage::OkMessage(BinaryPacketPtr packet)
+OkMessage::OkMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -44,9 +44,9 @@ OkMessage::OkMessage(BinaryPacketPtr packet)
 OkMessage::~OkMessage()
 {}
 
-BinaryPacketPtr OkMessage::serialize()
+std::shared_ptr<BinaryPacket> OkMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_MULTI_PKT;
     *packet << (uint8_t)4;
     *packet << (uint16_t)SOE_ACK_A;

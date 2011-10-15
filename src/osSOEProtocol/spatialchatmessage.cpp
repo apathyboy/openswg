@@ -33,7 +33,7 @@ SpatialChatMessage::SpatialChatMessage()
 	setCrc(true);
 }
 
-SpatialChatMessage::SpatialChatMessage(BinaryPacketPtr packet)
+SpatialChatMessage::SpatialChatMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ SpatialChatMessage::SpatialChatMessage(BinaryPacketPtr packet)
 SpatialChatMessage::~SpatialChatMessage()
 {}
 		
-boost::shared_ptr<NetworkMessage> SpatialChatMessage::clone()
+std::shared_ptr<NetworkMessage> SpatialChatMessage::clone()
 {
-	boost::shared_ptr<SpatialChatMessage> clone(GS_NEW SpatialChatMessage);
+	std::shared_ptr<SpatialChatMessage> clone(GS_NEW SpatialChatMessage);
 	clone->message = this->message;
 	clone->targetId = this->targetId;
 	clone->moods = this->moods;	
@@ -57,9 +57,9 @@ boost::shared_ptr<NetworkMessage> SpatialChatMessage::clone()
 }
 
 
-BinaryPacketPtr SpatialChatMessage::serialize()
+std::shared_ptr<BinaryPacket> SpatialChatMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)5;

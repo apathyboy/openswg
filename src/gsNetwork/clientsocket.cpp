@@ -30,9 +30,9 @@ ClientSocket::ClientSocket(ISocketHandler &h)
 : GameSocket(h)
 {}
 
-boost::optional<BinaryPacketPtr> ClientSocket::processPacketData(BinaryPacketPtr packet, NetworkAddressPtr address)
+boost::optional<std::shared_ptr<BinaryPacket>> ClientSocket::processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
 {
-    boost::optional<BinaryPacketPtr> processed;
+    boost::optional<std::shared_ptr<BinaryPacket>> processed;
     
     processed = packet;
 

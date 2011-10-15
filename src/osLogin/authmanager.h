@@ -41,7 +41,7 @@ namespace osLogin
 	public: // OPCODE HANDLING
 		virtual void registerOpcodes(gsServer::OpcodeFactory* factory);
 
-		void handleAuthRequest(gsServer::Session* session, gsNetwork::BinaryPacketPtr packet) const;
+		void handleAuthRequest(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet) const;
 	};
 }
 

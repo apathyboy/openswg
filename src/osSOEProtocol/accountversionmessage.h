@@ -34,10 +34,10 @@ namespace osSOEProtocol
 		std::string version;
 
 		AccountVersionMessage();
-		AccountVersionMessage(gsNetwork::BinaryPacketPtr packet);
+		AccountVersionMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~AccountVersionMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

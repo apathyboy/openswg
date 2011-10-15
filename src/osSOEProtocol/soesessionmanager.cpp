@@ -53,7 +53,7 @@ void SOESessionManager::initialize()
     safeAddListener(listener, EventType(Event_DisconnectRequested::gkName));
 }
 
-boost::optional<SessionPtr> SOESessionManager::createSession(gsNetwork::NetworkMessagePtr message, gsNetwork::NetworkAddressPtr address, GameSocket *socket)
+boost::optional<SessionPtr> SOESessionManager::createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, GameSocket *socket)
 {
 	SessionMap::iterator i = m_sessions.find(address->getAddressString());
 	
@@ -63,7 +63,7 @@ boost::optional<SessionPtr> SOESessionManager::createSession(gsNetwork::NetworkM
 		return NULL;
 	}
 
-	boost::shared_ptr<SessionRequestMessage> sessionRequest = boost::shared_dynamic_cast<SessionRequestMessage>(message);
+    std::shared_ptr<SessionRequestMessage> sessionRequest = std::dynamic_pointer_cast<SessionRequestMessage>(message);
 	
 	SOESessionPtr session(GS_NEW SOESession(address, socket));
 	session->setCrcSeed(generateRandomCrcSeed());
@@ -74,7 +74,7 @@ boost::optional<SessionPtr> SOESessionManager::createSession(gsNetwork::NetworkM
 
 	addSession(session);
 
-	boost::shared_ptr<SessionResponseMessage> sessionResponse(GS_NEW SessionResponseMessage);
+	std::shared_ptr<SessionResponseMessage> sessionResponse(GS_NEW SessionResponseMessage);
 	sessionResponse->connectionId = session->getConnectionId();
 	sessionResponse->crcSeed = session->getCrcSeed();
 	sessionResponse->maxPacketSize = session->getMaxPacketSize();

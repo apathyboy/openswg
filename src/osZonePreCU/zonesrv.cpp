@@ -38,7 +38,7 @@
 
 #include <osZonePreCU/precuzoneserver.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 // Global constants.
 char const * const kpAppName = "OpenSWG PreCU Zone Server";

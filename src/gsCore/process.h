@@ -22,7 +22,7 @@
 
 #include <cstdint>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace gsCore
 {
@@ -44,7 +44,7 @@ namespace gsCore
 
     
     class Process;
-    typedef boost::shared_ptr<Process> ProcessPtr;
+    typedef std::shared_ptr<Process> ProcessPtr;
 
     class Process
     {

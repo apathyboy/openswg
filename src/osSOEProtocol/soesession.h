@@ -24,7 +24,7 @@
 #include <gsNetwork/networkaddress.h>
 #include <gsServer/session.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <map>
 
@@ -33,10 +33,10 @@ namespace osSOEProtocol
 	class SOESession : public gsServer::Session
     {
     public:
-		SOESession(gsNetwork::NetworkAddressPtr address, gsNetwork::GameSocket* socket);
+		SOESession(std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
 
-		void handleSOELayer(gsNetwork::BinaryPacketPtr packet);
-		void processClientCommand(gsNetwork::BinaryPacketPtr packet);
+		void handleSOELayer(std::shared_ptr<gsNetwork::BinaryPacket> packet);
+		void processClientCommand(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		
 		uint32_t getConnectionId() { return m_connectionId; }
 		void setConnectionId(uint32_t connectionId) { m_connectionId = connectionId; }
@@ -52,7 +52,7 @@ namespace osSOEProtocol
 		uint32_t m_maxPacketSize;
     };
 
-	typedef boost::shared_ptr<SOESession> SOESessionPtr;
+	typedef std::shared_ptr<SOESession> SOESessionPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_SOESESSION

@@ -37,10 +37,10 @@ namespace osSOEProtocol
 		float positionZ;
 
 		LoadTerrainMessage();
-		LoadTerrainMessage(gsNetwork::BinaryPacketPtr packet);
+		LoadTerrainMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~LoadTerrainMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

@@ -39,7 +39,7 @@ namespace osSOEProtocol
 		virtual void createObject();
 	};
 
-	typedef OS_SOEPROTOCOL_EXPORT boost::shared_ptr<TicketCollectorProxy> TicketCollectorProxyPtr;
+	typedef OS_SOEPROTOCOL_EXPORT std::shared_ptr<TicketCollectorProxy> TicketCollectorProxyPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_TICKETCOLLECTORPROXY

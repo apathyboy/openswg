@@ -29,7 +29,7 @@ SessionResponseMessage::SessionResponseMessage()
 	setPriority(0);
 }
 
-SessionResponseMessage::SessionResponseMessage(BinaryPacketPtr packet)
+SessionResponseMessage::SessionResponseMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -39,9 +39,9 @@ SessionResponseMessage::SessionResponseMessage(BinaryPacketPtr packet)
 SessionResponseMessage::~SessionResponseMessage()
 {}
 
-BinaryPacketPtr SessionResponseMessage::serialize()
+std::shared_ptr<BinaryPacket> SessionResponseMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_SESSION_RESPONSE;
     *packet << (uint32_t)this->connectionId;
     *packet << (uint32_t)htonl(this->crcSeed);

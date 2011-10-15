@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <string>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #ifdef ERROR
 #undef ERROR
 #endif

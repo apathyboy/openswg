@@ -92,7 +92,7 @@ void ObjectManager::initialize()
 
 void ObjectManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, BinaryPacketPtr> handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleLoginCharacter);	
+	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleLoginCharacter);	
 	factory->addOpcodeHandler(CMSG_LOGIN_CHAR, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
 
 	handler = makeFunctor((HandlerFunctor)0, *this, &ObjectManager::handleObjectPreload);	
@@ -119,41 +119,41 @@ void ObjectManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 	m_radialMenuManager->registerOpcodes(factory);
 }
 
-void ObjectManager::handleUnknown(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void ObjectManager::handleUnknown(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 }
 
-void ObjectManager::handleObjectPreload(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void ObjectManager::handleObjectPreload(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
-	boost::shared_ptr<AcknowledgeMessage> ack(GS_NEW AcknowledgeMessage());
+	std::shared_ptr<AcknowledgeMessage> ack(GS_NEW AcknowledgeMessage());
 	ack->sequence = session->getClientSequence();
 	session->sendToRemote(ack);
 }
 
-void ObjectManager::handleLoadReady(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void ObjectManager::handleLoadReady(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 
-	boost::shared_ptr<LoadReadyMessage> loadReady(GS_NEW LoadReadyMessage());
+	std::shared_ptr<LoadReadyMessage> loadReady(GS_NEW LoadReadyMessage());
 	session->sendToRemote(loadReady);
 }
 
-void ObjectManager::handleLoginCharacter(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void ObjectManager::handleLoginCharacter(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
 	if (session->isLoggedIn())
 		return;
 
 	session->setLoggedIn(true);
 
-	boost::shared_ptr<LoginCharacterRequest> loginRequest(GS_NEW LoginCharacterRequest(message));
+	std::shared_ptr<LoginCharacterRequest> loginRequest(GS_NEW LoginCharacterRequest(message));
 	loginRequest->unserialize();
 
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 
@@ -166,7 +166,7 @@ void ObjectManager::handleLoginCharacter(gsServer::Session* session, gsNetwork::
 	m_objectGrid->insert(proxy);
 }
 
-void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void ObjectManager::handleCommand(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
     uint32_t header = message->read<uint32_t>();
 
@@ -182,7 +182,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
             {
             case 0x00000126:
 				{					
-					boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+					std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
 					
@@ -203,7 +203,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 				break;
             case 0x00000146:
                 {
-					boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+					std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
 					
@@ -242,7 +242,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                     uint8_t defaultOption = message->read<uint8_t>();
 					printf("Radial Response: Target: %i Object: %i\n", targetId, objectId);
 
-					boost::shared_ptr<RadialResponseMessage> radialResponse(GS_NEW RadialResponseMessage());
+					std::shared_ptr<RadialResponseMessage> radialResponse(GS_NEW RadialResponseMessage());
 					radialResponse->objectId = objectId;
 					radialResponse->targetId = targetId;
 					radialResponse->radialMap = map;
@@ -255,7 +255,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                 }
             case 0x00000116:
                 {
-					boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+					std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
 
@@ -277,12 +277,12 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 
 							(*object)->getPropertyAs<Uint8ObjectProperty*>(std::string("Posture"))->setValue(8);
 							
-							boost::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
+							std::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
 							selfPostureUpdate->objectId = target;
 							selfPostureUpdate->posture = 8;
 							m_objectGrid->sendInRange(target,	selfPostureUpdate);
 //
-							boost::shared_ptr<PostureUpdateMessage> postureUpdate(GS_NEW PostureUpdateMessage);
+							std::shared_ptr<PostureUpdateMessage> postureUpdate(GS_NEW PostureUpdateMessage);
 							postureUpdate->objectId = target;
 							postureUpdate->posture = 8;
 							m_objectGrid->sendInRange(target, postureUpdate);
@@ -298,12 +298,12 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 
 							(*object)->getPropertyAs<Uint8ObjectProperty*>(std::string("Posture"))->setValue(0);
 							
-							boost::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
+							std::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
 							selfPostureUpdate->objectId = target;
 							selfPostureUpdate->posture = 0;
 							m_objectGrid->sendInRange(target, selfPostureUpdate);
 
-							boost::shared_ptr<PostureUpdateMessage> postureUpdate(GS_NEW PostureUpdateMessage);
+							std::shared_ptr<PostureUpdateMessage> postureUpdate(GS_NEW PostureUpdateMessage);
 							postureUpdate->objectId = target;
 							postureUpdate->posture = 0;
 							m_objectGrid->sendInRange(target, postureUpdate);
@@ -332,7 +332,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 
 							uint32_t emoteId = atoi(emoteString.str().c_str());
        
-							boost::shared_ptr<EmoteMessage> emoteMessage(GS_NEW EmoteMessage);
+							std::shared_ptr<EmoteMessage> emoteMessage(GS_NEW EmoteMessage);
 							emoteMessage->objectId = target;
 							emoteMessage->targetId = (*object)->getPropertyAs<Uint64ObjectProperty*>(std::string("TargetId"))->getValue();
 							emoteMessage->emoteId = emoteId;
@@ -371,7 +371,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 						break;
                     case 0x7C8d63d4: // SPATIAL CHAT
                         {                  
-							boost::shared_ptr<SpatialChatMessage> spatialChat(GS_NEW SpatialChatMessage);
+							std::shared_ptr<SpatialChatMessage> spatialChat(GS_NEW SpatialChatMessage);
 							                  
                             message->read<uint64_t>();
                             uint32_t size = message->read<uint32_t>();
@@ -439,11 +439,11 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                 }
             case 0x00000071:
                 {
-					boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+					std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
                     
-					boost::shared_ptr<MovementMessage> movement(GS_NEW MovementMessage(message));
+					std::shared_ptr<MovementMessage> movement(GS_NEW MovementMessage(message));
 					movement->unserialize();
 
 					m_objectGrid->moveObject(movement);
@@ -453,11 +453,11 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
                 
             case 0x000000f1:
                 {                
-					boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+					std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
 
-					boost::shared_ptr<CellMovementMessage> movement(GS_NEW CellMovementMessage(message));
+					std::shared_ptr<CellMovementMessage> movement(GS_NEW CellMovementMessage(message));
 					movement->unserialize();
 
 					m_objectGrid->moveCellObject(movement);
@@ -467,7 +467,7 @@ void ObjectManager::handleCommand(gsServer::Session* session, gsNetwork::BinaryP
 
             default:
                 {
-					boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+					std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 					ok->sequence = session->getClientSequence();
 					session->sendToRemote(ok);
                     LOG(ERROR) << "Unhandled sub-opcode: " << std::hex << header;

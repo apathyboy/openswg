@@ -63,7 +63,7 @@ PlayerCreatureObjectProxy::PlayerCreatureObjectProxy()
 
 void PlayerCreatureObjectProxy::update(uint64_t updateTimestamp) 
 {
-	for (std::vector<boost::shared_ptr<ObjectProxy> >::iterator itor = m_inRange.begin();
+	for (std::vector<std::shared_ptr<ObjectProxy> >::iterator itor = m_inRange.begin();
 		itor != m_inRange.end(); ++itor)
 	{
 		if ((*itor)->hasMoved())
@@ -83,7 +83,7 @@ void PlayerCreatureObjectProxy::buildPropertyMap()
 
 	CreatureObjectProxy::buildPropertyMap();
 
-	boost::shared_ptr<PlayerCreatureObject> playerCreature = boost::shared_dynamic_cast<PlayerCreatureObject>(m_object);
+    std::shared_ptr<PlayerCreatureObject> playerCreature = std::dynamic_pointer_cast<PlayerCreatureObject>(m_object);
 
 	addProperty(new Uint64ObjectProperty(
 		"GalaxyId", "Galaxy ID", 
@@ -144,13 +144,13 @@ void PlayerCreatureObjectProxy::buildPropertyMap()
 
 void PlayerCreatureObjectProxy::createObject()
 {
-	boost::shared_ptr<PlayerCreatureObject> playerCreature(GS_NEW PlayerCreatureObject);
+	std::shared_ptr<PlayerCreatureObject> playerCreature(GS_NEW PlayerCreatureObject);
 	m_object = playerCreature;
 
 	buildPropertyMap();
 }
 
-void PlayerCreatureObjectProxy::addInRange(boost::shared_ptr<ObjectProxy> object)
+void PlayerCreatureObjectProxy::addInRange(std::shared_ptr<ObjectProxy> object)
 {
 	ObjectProxy::addInRange(object);
 	object->sendReliableUpdate(m_session);
@@ -159,7 +159,7 @@ void PlayerCreatureObjectProxy::addInRange(boost::shared_ptr<ObjectProxy> object
 
 void PlayerCreatureObjectProxy::sendInRange(NetworkMessagePtr message)
 {
-	for (std::vector<boost::shared_ptr<ObjectProxy> >::iterator itor = m_inRange.begin();
+	for (std::vector<std::shared_ptr<ObjectProxy> >::iterator itor = m_inRange.begin();
 		itor != m_inRange.end(); ++itor)
 	{
 		if ((*itor)->hasSession())
@@ -172,7 +172,7 @@ void PlayerCreatureObjectProxy::sendInRange(NetworkMessagePtr message)
 
 void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 {
-	boost::shared_ptr<CreoInitMessage> creoInit(GS_NEW CreoInitMessage());
+	std::shared_ptr<CreoInitMessage> creoInit(GS_NEW CreoInitMessage());
 	creoInit->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	creoInit->quaternionX = getPropertyAs<FloatObjectProperty*>(std::string("QuaternionX"))->getValue();
 	creoInit->quaternionY = getPropertyAs<FloatObjectProperty*>(std::string("QuaternionY"))->getValue();
@@ -185,7 +185,7 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 	session->sendToRemote(creoInit);
 	
 	// Send Obj Link
-	boost::shared_ptr<ObjLinkMessage> objLink(GS_NEW ObjLinkMessage());
+	std::shared_ptr<ObjLinkMessage> objLink(GS_NEW ObjLinkMessage());
 	objLink->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	objLink->parentId = getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->getValue();
 	objLink->linkType = ObjLinkMessage::WORLD_LINK;
@@ -193,7 +193,7 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 
 	if (session == m_session)
 	{
-		boost::shared_ptr<Creo1Message> creo1(GS_NEW Creo1Message());
+		std::shared_ptr<Creo1Message> creo1(GS_NEW Creo1Message());
 		creo1->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		creo1->bankCredits = getPropertyAs<Uint32ObjectProperty*>(std::string("BankCredits"))->getValue();
 		creo1->inventoryCredits = getPropertyAs<Uint32ObjectProperty*>(std::string("InventoryCredits"))->getValue();
@@ -210,12 +210,12 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 
 		session->sendToRemote(creo1);
 		
-		boost::shared_ptr<Creo4Message> creo4(GS_NEW Creo4Message());
+		std::shared_ptr<Creo4Message> creo4(GS_NEW Creo4Message());
 		creo4->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(creo4);
 	}
 
-	boost::shared_ptr<Creo3Message> creo3(GS_NEW Creo3Message());
+	std::shared_ptr<Creo3Message> creo3(GS_NEW Creo3Message());
 	creo3->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	creo3->targetId = getPropertyAs<Uint64ObjectProperty*>(std::string("TargetId"))->getValue();
 
@@ -246,7 +246,7 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 
 	session->sendToRemote(creo3);
 
-	boost::shared_ptr<Creo6Message> creo6(GS_NEW Creo6Message());
+	std::shared_ptr<Creo6Message> creo6(GS_NEW Creo6Message());
 	creo6->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	creo6->mood = getPropertyAs<StringObjectProperty*>(std::string("Mood"))->getValue();
 	creo6->hair = getPropertyAs<StringObjectProperty*>(std::string("Hair"))->getValue();
@@ -274,50 +274,50 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 
 	if (session == m_session)
 	{
-		boost::shared_ptr<PlayInitMessage> playInit(GS_NEW PlayInitMessage());
+		std::shared_ptr<PlayInitMessage> playInit(GS_NEW PlayInitMessage());
 		playInit->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(playInit);
 
-		boost::shared_ptr<PlayLinkMessage> playLink(GS_NEW PlayLinkMessage());
+		std::shared_ptr<PlayLinkMessage> playLink(GS_NEW PlayLinkMessage());
 		playLink->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(playLink);
 
-		boost::shared_ptr<Play3Message> play3(GS_NEW Play3Message());
+		std::shared_ptr<Play3Message> play3(GS_NEW Play3Message());
 		play3->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(play3);
 
-		boost::shared_ptr<Play6Message> play6(GS_NEW Play6Message());
+		std::shared_ptr<Play6Message> play6(GS_NEW Play6Message());
 		play6->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(play6);
 
-		boost::shared_ptr<Play8Message> play8(GS_NEW Play8Message());
+		std::shared_ptr<Play8Message> play8(GS_NEW Play8Message());
 		play8->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(play8);
 
-		boost::shared_ptr<Play9Message> play9(GS_NEW Play9Message());
+		std::shared_ptr<Play9Message> play9(GS_NEW Play9Message());
 		play9->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(play9);
 
-		boost::shared_ptr<PlayCloseMessage> playClose(GS_NEW PlayCloseMessage());
+		std::shared_ptr<PlayCloseMessage> playClose(GS_NEW PlayCloseMessage());
 		playClose->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(playClose);
 
-		boost::shared_ptr<Play9UpdateMessage> play9Update(GS_NEW Play9UpdateMessage());
+		std::shared_ptr<Play9UpdateMessage> play9Update(GS_NEW Play9UpdateMessage());
 		play9Update->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 		session->sendToRemote(play9Update);
 	}
 
-	boost::shared_ptr<ObjPreCloseMessage> objPreClose(GS_NEW ObjPreCloseMessage());
+	std::shared_ptr<ObjPreCloseMessage> objPreClose(GS_NEW ObjPreCloseMessage());
 	objPreClose->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(objPreClose);
 
-	boost::shared_ptr<ObjCloseMessage> objClose(GS_NEW ObjCloseMessage());
+	std::shared_ptr<ObjCloseMessage> objClose(GS_NEW ObjCloseMessage());
 	objClose->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(objClose);
 
 	if (session == m_session)
 	{
-		boost::shared_ptr<TangibleObjectProxy> inventory(GS_NEW TangibleObjectProxy);
+		std::shared_ptr<TangibleObjectProxy> inventory(GS_NEW TangibleObjectProxy);
 		inventory->createTemplate();
 
 		inventory->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue(getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue()+1);
@@ -331,7 +331,7 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 		inventory->sendReliableUpdate(session);
 
 		
-		boost::shared_ptr<TangibleObjectProxy> bank(GS_NEW TangibleObjectProxy);
+		std::shared_ptr<TangibleObjectProxy> bank(GS_NEW TangibleObjectProxy);
 		bank->createTemplate();
 
 		bank->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue(getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue()+4);
@@ -345,7 +345,7 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 		bank->sendReliableUpdate(session);
 
 		
-		boost::shared_ptr<TangibleObjectProxy> datapad(GS_NEW TangibleObjectProxy);
+		std::shared_ptr<TangibleObjectProxy> datapad(GS_NEW TangibleObjectProxy);
 		datapad->createTemplate();
 
 		datapad->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue(getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue()+3);
@@ -359,7 +359,7 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 		datapad->sendReliableUpdate(session);
 	}
 
-	boost::shared_ptr<TangibleObjectProxy> hair(GS_NEW TangibleObjectProxy);
+	std::shared_ptr<TangibleObjectProxy> hair(GS_NEW TangibleObjectProxy);
 	hair->createTemplate();
 	
 	hair->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue(getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue()+8);
@@ -373,7 +373,7 @@ void PlayerCreatureObjectProxy::sendReliableUpdate(Session* session)
 	hair->setLinkType(ObjLinkMessage::PLAYER_LINK);
 	hair->sendReliableUpdate(session);
 
-	for (std::vector<boost::shared_ptr<TangibleObjectProxy> >::iterator i = m_items.begin();
+	for (std::vector<std::shared_ptr<TangibleObjectProxy> >::iterator i = m_items.begin();
 		i != m_items.end(); ++i)
 	{
 		if ((*i)->getPropertyAs<BooleanObjectProperty*>(std::string("Equipped"))->getValue())
@@ -704,7 +704,7 @@ void PlayerCreatureObjectProxy::loadItems()
         { 
             std::for_each(begin(result), end(result), [this] (const mysqlpp::Row& row) 
             { 
-				boost::shared_ptr<TangibleObjectProxy> item(GS_NEW TangibleObjectProxy);
+				std::shared_ptr<TangibleObjectProxy> item(GS_NEW TangibleObjectProxy);
 				item->loadFromDatabaseId((uint32_t)row["id"]);
 				item->setLinkType(ObjLinkMessage::PLAYER_LINK);
 				m_items.push_back(item);
@@ -722,13 +722,13 @@ void PlayerCreatureObjectProxy::setPlayerSession(gsServer::Session* session)
 {
 	m_session = session;
 
-	boost::shared_ptr<SettingUnk1Message> settingUnk1(GS_NEW SettingUnk1Message());
+	std::shared_ptr<SettingUnk1Message> settingUnk1(GS_NEW SettingUnk1Message());
 	session->sendToRemote(settingUnk1);
 
-	boost::shared_ptr<UnkInt900Message> unkint900(GS_NEW UnkInt900Message());
+	std::shared_ptr<UnkInt900Message> unkint900(GS_NEW UnkInt900Message());
 	session->sendToRemote(unkint900);
 
-	boost::shared_ptr<LoadTerrainMessage> loadTerrain(GS_NEW LoadTerrainMessage());
+	std::shared_ptr<LoadTerrainMessage> loadTerrain(GS_NEW LoadTerrainMessage());
 	loadTerrain->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	loadTerrain->terrain = std::string("terrain/"+getPropertyAs<StringObjectProperty*>(std::string("Planet"))->getValue()+".trn");
 	loadTerrain->positionX = getPropertyAs<FloatObjectProperty*>(std::string("PositionX"))->getValue();
@@ -738,7 +738,7 @@ void PlayerCreatureObjectProxy::setPlayerSession(gsServer::Session* session)
 	loadTerrain->zoneId = getPropertyAs<Uint64ObjectProperty*>(std::string("ZoneId"))->getValue();
 	session->sendToRemote(loadTerrain);
 
-	boost::shared_ptr<TimeUpdateMessage> timeUpdate(GS_NEW TimeUpdateMessage());
+	std::shared_ptr<TimeUpdateMessage> timeUpdate(GS_NEW TimeUpdateMessage());
 	//timeUpdate->time = time(0);
 	session->sendToRemote(timeUpdate);
 

@@ -30,7 +30,7 @@ AcknowledgeMessage::AcknowledgeMessage()
 	setPriority(0);
 }
 
-AcknowledgeMessage::AcknowledgeMessage(BinaryPacketPtr packet)
+AcknowledgeMessage::AcknowledgeMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -41,9 +41,9 @@ AcknowledgeMessage::AcknowledgeMessage(BinaryPacketPtr packet)
 AcknowledgeMessage::~AcknowledgeMessage()
 {}
 
-BinaryPacketPtr AcknowledgeMessage::serialize()
+std::shared_ptr<BinaryPacket> AcknowledgeMessage::serialize()
 {
-    BinaryPacketPtr packet(GS_NEW BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
     *packet << (uint16_t)SOE_ACK_A;
     *packet << (uint16_t)sequence;
     *packet << (uint8_t)0 << (uint16_t)0;

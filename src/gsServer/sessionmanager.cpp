@@ -81,12 +81,12 @@ void SessionManager::removeDeadSessions(const uint64_t updateTimestamp)
 	}
 }
 
-boost::optional<SessionPtr> SessionManager::createSession(gsNetwork::NetworkMessagePtr message, gsNetwork::NetworkAddressPtr address, GameSocket *socket)
+boost::optional<SessionPtr> SessionManager::createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, GameSocket *socket)
 {
 	return NULL;
 }
 		
-void SessionManager::queueRemoteMessage(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address)
+void SessionManager::queueRemoteMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address)
 {
 }
 

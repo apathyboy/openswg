@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <map>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <gsCore/process.h>
 #include <gsNetwork/gamesocket.h>
@@ -47,7 +47,7 @@ namespace gsServer
 			READY,
 			DEAD
 		};
-		Session(gsNetwork::NetworkAddressPtr address, gsNetwork::GameSocket* socket);
+		Session(std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
 
         bool isValid();
         void setValid(bool valid);
@@ -64,10 +64,10 @@ namespace gsServer
 		virtual void update();
 
 		virtual void sendToRemote(gsNetwork::NetworkMessagePtr message);
-		virtual void handleIncoming(gsNetwork::BinaryPacketPtr packet);
+		virtual void handleIncoming(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 
-        void setRemoteAddress(gsNetwork::NetworkAddressPtr address);
-        gsNetwork::NetworkAddressPtr getRemoteAddress();
+        void setRemoteAddress(std::shared_ptr<gsNetwork::NetworkAddress> address);
+        std::shared_ptr<gsNetwork::NetworkAddress> getRemoteAddress();
 		
 		void setOpcodeFactory(OpcodeFactory* opcodeFactory) { m_opcodeFactory = opcodeFactory; }
 		OpcodeFactory* getOpcodeFactory() { return m_opcodeFactory; }
@@ -99,15 +99,15 @@ namespace gsServer
 		uint16_t m_clientSequence;
 		OpcodeFactory* m_opcodeFactory;
 		std::string m_username;
-		std::list<gsNetwork::BinaryPacketPtr> m_incomingQueue;
+		std::list<std::shared_ptr<gsNetwork::BinaryPacket>> m_incomingQueue;
 		gsNetwork::PriorityQueue* m_remoteMessageQueue;
 
 		gsNetwork::GameSocket* m_remoteSocket;
 
-        gsNetwork::NetworkAddressPtr m_remoteAddress;
+        std::shared_ptr<gsNetwork::NetworkAddress> m_remoteAddress;
     };
 
-    typedef boost::shared_ptr<Session> SessionPtr;
+    typedef std::shared_ptr<Session> SessionPtr;
 }
 
 #endif // GALAXY_SERVER_SESSION

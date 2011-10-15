@@ -24,7 +24,7 @@
 #include <gsServer/sessionmanager.h>
 
 #include <boost/optional.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <list>
 #include <map>
@@ -39,7 +39,7 @@ namespace osSOEProtocol
     public: // gsCore::Process virtual overrides
 		virtual void initialize();
         virtual void update(const uint64_t updateTimestamp);		
-		virtual boost::optional<gsServer::SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, gsNetwork::NetworkAddressPtr address, gsNetwork::GameSocket* socket);
+		virtual boost::optional<gsServer::SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
 
         inline uint32_t generateRandomCrcSeed() {
             uint32_t crcSeed;

@@ -33,7 +33,7 @@ ServerHeaderMessage::ServerHeaderMessage()
 	setCrc(true);
 }
 
-ServerHeaderMessage::ServerHeaderMessage(BinaryPacketPtr packet)
+ServerHeaderMessage::ServerHeaderMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ ServerHeaderMessage::ServerHeaderMessage(BinaryPacketPtr packet)
 ServerHeaderMessage::~ServerHeaderMessage()
 {}
 
-BinaryPacketPtr ServerHeaderMessage::serialize()
+std::shared_ptr<BinaryPacket> ServerHeaderMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << htons(25);

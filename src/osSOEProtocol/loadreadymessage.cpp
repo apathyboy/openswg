@@ -33,7 +33,7 @@ LoadReadyMessage::LoadReadyMessage()
 	setCrc(true);
 }
 
-LoadReadyMessage::LoadReadyMessage(BinaryPacketPtr packet)
+LoadReadyMessage::LoadReadyMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ LoadReadyMessage::LoadReadyMessage(BinaryPacketPtr packet)
 LoadReadyMessage::~LoadReadyMessage()
 {}
 
-BinaryPacketPtr LoadReadyMessage::serialize()
+std::shared_ptr<BinaryPacket> LoadReadyMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

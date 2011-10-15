@@ -33,7 +33,7 @@ RadialResponseMessage::RadialResponseMessage()
 	setCrc(true);
 }
 
-RadialResponseMessage::RadialResponseMessage(BinaryPacketPtr packet)
+RadialResponseMessage::RadialResponseMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ RadialResponseMessage::RadialResponseMessage(BinaryPacketPtr packet)
 RadialResponseMessage::~RadialResponseMessage()
 {}
 
-BinaryPacketPtr RadialResponseMessage::serialize()
+std::shared_ptr<BinaryPacket> RadialResponseMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

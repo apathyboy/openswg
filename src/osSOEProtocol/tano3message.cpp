@@ -33,7 +33,7 @@ Tano3Message::Tano3Message()
 	setCrc(true);
 }
 
-Tano3Message::Tano3Message(BinaryPacketPtr packet)
+Tano3Message::Tano3Message(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ Tano3Message::Tano3Message(BinaryPacketPtr packet)
 Tano3Message::~Tano3Message()
 {}
 
-BinaryPacketPtr Tano3Message::serialize()
+std::shared_ptr<BinaryPacket> Tano3Message::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

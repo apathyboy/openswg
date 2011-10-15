@@ -44,17 +44,17 @@ bool GalaxyManagerListener::handleEvent(Event const & event)
     {		
 		EventData_AccountAuthenticated * eventData = event.getDataPtr<EventData_AccountAuthenticated>();
 
-		boost::shared_ptr<GalaxyListMessage> galaxyList(GS_NEW GalaxyListMessage);
+		std::shared_ptr<GalaxyListMessage> galaxyList(GS_NEW GalaxyListMessage);
 		galaxyList->galaxies = m_galaxyManager->getGalaxyList();
 
 		eventData->session->sendToRemote(galaxyList);
 
-		boost::shared_ptr<ConnectionServerListMessage> connectionServerList(GS_NEW ConnectionServerListMessage);
+		std::shared_ptr<ConnectionServerListMessage> connectionServerList(GS_NEW ConnectionServerListMessage);
 		connectionServerList->connectionServers = m_galaxyManager->getConnectionServerList();
 
 		eventData->session->sendToRemote(connectionServerList);
 
-		boost::shared_ptr<CharacterListMessage> characterList(GS_NEW CharacterListMessage);
+		std::shared_ptr<CharacterListMessage> characterList(GS_NEW CharacterListMessage);
 		characterList->characters = m_galaxyManager->getCharacterList(eventData->session->getAccountId());
 
 		eventData->session->sendToRemote(characterList);

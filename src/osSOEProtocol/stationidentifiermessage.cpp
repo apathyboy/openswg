@@ -33,7 +33,7 @@ StationIdentifierMessage::StationIdentifierMessage()
 	setCrc(true);
 }
 
-StationIdentifierMessage::StationIdentifierMessage(BinaryPacketPtr packet)
+StationIdentifierMessage::StationIdentifierMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,7 +46,7 @@ StationIdentifierMessage::StationIdentifierMessage(BinaryPacketPtr packet)
 StationIdentifierMessage::~StationIdentifierMessage()
 {}
 
-BinaryPacketPtr StationIdentifierMessage::serialize()
+std::shared_ptr<BinaryPacket> StationIdentifierMessage::serialize()
 {
     unsigned const char station_head[56] = { //june 05
         0x20, 0x00,
@@ -59,7 +59,7 @@ BinaryPacketPtr StationIdentifierMessage::serialize()
         0xFF, 0x9F, 0xA5, 0x62,	0x5A, 0x29
     };
 
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)4;

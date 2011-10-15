@@ -32,10 +32,10 @@ namespace osSOEProtocol
 		std::list<GalaxyServer*> connectionServers;
 
 		ConnectionServerListMessage();
-		ConnectionServerListMessage(gsNetwork::BinaryPacketPtr packet);
+		ConnectionServerListMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~ConnectionServerListMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

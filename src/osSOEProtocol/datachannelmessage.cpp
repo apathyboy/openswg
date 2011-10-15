@@ -33,7 +33,7 @@ DataChannelMessage::DataChannelMessage()
 	setCrc(true);
 }
 
-DataChannelMessage::DataChannelMessage(BinaryPacketPtr packet)
+DataChannelMessage::DataChannelMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -45,9 +45,9 @@ DataChannelMessage::DataChannelMessage(BinaryPacketPtr packet)
 DataChannelMessage::~DataChannelMessage()
 {}
 
-BinaryPacketPtr DataChannelMessage::serialize()
+std::shared_ptr<BinaryPacket> DataChannelMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
 	return packet;
 }
@@ -78,7 +78,7 @@ void DataChannelMessage::unserialize()
 			else if (size < 6 ) // Minimum datachannel packet size
 				return;
 
-			BinaryPacketPtr segment(GS_NEW BinaryPacket);
+			std::shared_ptr<BinaryPacket> segment(GS_NEW BinaryPacket);
 
 			uint16_t group = m_serializedData->read<uint16_t>();
 			for (uint32_t j = 0; j < (size-(uint32_t)2); ++j)
@@ -92,7 +92,7 @@ void DataChannelMessage::unserialize()
 
 	else
 	{
-		BinaryPacketPtr segment(GS_NEW BinaryPacket);
+		std::shared_ptr<BinaryPacket> segment(GS_NEW BinaryPacket);
 
 		for (uint32_t i = m_serializedData->getReadPosition(); i < m_serializedData->getLength(); ++i)
 			segment->append<char>(m_serializedData->read<char>());

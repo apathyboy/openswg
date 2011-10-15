@@ -40,9 +40,9 @@ namespace osSOEProtocol
 		 * in the session associated with the senders address. These 
 		 * messages are then processed during the main game loop.
 		 */
-        virtual bool handleRemoteIncoming(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address);
+        virtual bool handleRemoteIncoming(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address);
 
-		void sendPacket(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address, bool encrypt, bool compress, bool crc);
+		void sendPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address, bool encrypt, bool compress, bool crc);
 
     protected:
 

@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint64_t objectId;
 
 		Creo4Message();
-		Creo4Message(gsNetwork::BinaryPacketPtr packet);
+		Creo4Message(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~Creo4Message();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

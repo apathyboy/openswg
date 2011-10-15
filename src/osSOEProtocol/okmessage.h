@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint16_t sequence;
 
 		OkMessage();
-		OkMessage(gsNetwork::BinaryPacketPtr packet);
+		OkMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~OkMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

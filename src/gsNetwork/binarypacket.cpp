@@ -33,7 +33,7 @@ using namespace gsNetwork;
         m_timestamp = 0;
     }
 
-    BinaryPacket::BinaryPacket(const char *data, size_t length)
+    BinaryPacket::BinaryPacket(const unsigned char *data, size_t length)
     : m_readPosition(0), m_writePosition(0)
     {
         m_packetData.reserve(DEFAULT_SIZE);

@@ -24,7 +24,7 @@
 using namespace gsNetwork;
 using namespace osSOEProtocol;
 
-void Compression::compress(gsNetwork::BinaryPacketPtr packet)
+void Compression::compress(std::shared_ptr<gsNetwork::BinaryPacket> packet)
 {
     char* data = packet->getData();
     uint32_t length = packet->getLength();
@@ -43,7 +43,7 @@ void Compression::compress(gsNetwork::BinaryPacketPtr packet)
         packet->append<char>(data[i]);
 }
 
-void Compression::decompress(gsNetwork::BinaryPacketPtr packet)
+void Compression::decompress(std::shared_ptr<gsNetwork::BinaryPacket> packet)
 {
     char* data = packet->getData();
     uint32_t length = packet->getLength();

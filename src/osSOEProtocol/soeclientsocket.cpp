@@ -40,7 +40,7 @@ SOEClientSocket::SOEClientSocket(SessionManager* sessionManager, ISocketHandler 
 , ClientSocket(h)
 {}
 
-bool SOEClientSocket::handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddressPtr address)
+bool SOEClientSocket::handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
 {
 	// Lookup the session in the session manager.
 	boost::optional<SessionPtr> sessionLookup 
@@ -59,13 +59,13 @@ bool SOEClientSocket::handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddres
     return false;
 }
 
-void SOEClientSocket::sendPacket(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address, bool encrypt, bool compress, bool crc)
+void SOEClientSocket::sendPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address, bool encrypt, bool compress, bool crc)
 {
 	boost::optional<SessionPtr> sessionLookup = m_sessionManager->findSession(address->getAddressString());
 
 	if (sessionLookup && (*sessionLookup)->isValid())
 	{
-		SOESessionPtr session(boost::shared_dynamic_cast<SOESession>(*sessionLookup));
+        SOESessionPtr session(std::dynamic_pointer_cast<SOESession>(*sessionLookup));
         
 		PrepareSOEPacket(packet, session, encrypt, compress, crc);
 

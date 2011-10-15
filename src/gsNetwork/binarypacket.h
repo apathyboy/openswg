@@ -20,24 +20,22 @@
 #ifndef GALAXY_NETWORK_BINARYPACKET
 #define GALAXY_NETWORK_BINARYPACKET
 
+#include <cassert>
 #include <cstdint>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace gsNetwork
 {
-    class BinaryPacket;
-    typedef boost::shared_ptr<BinaryPacket> BinaryPacketPtr;
-
     class BinaryPacket
     {
     public:
         const static size_t DEFAULT_SIZE = 0x400;
 
         BinaryPacket();
-        BinaryPacket(const char *data, size_t length);
+        BinaryPacket(const unsigned char *data, size_t length);
         virtual ~BinaryPacket();
 
         virtual char * getData() const;
@@ -169,7 +167,7 @@ namespace gsNetwork
             m_writePosition += length;
         }
 
-        void append(BinaryPacketPtr packet)
+        void append(std::shared_ptr<BinaryPacket> packet)
         {
             if (m_packetData.size() < m_writePosition + packet->getLength())
                 m_packetData.resize(m_writePosition + packet->getLength());

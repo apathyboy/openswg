@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint64_t characterId;
 
 		AssignCharacterIdMessage();
-		AssignCharacterIdMessage(gsNetwork::BinaryPacketPtr packet);
+		AssignCharacterIdMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~AssignCharacterIdMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

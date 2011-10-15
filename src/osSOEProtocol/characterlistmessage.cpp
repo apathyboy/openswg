@@ -33,7 +33,7 @@ CharacterListMessage::CharacterListMessage()
 	setCrc(true);
 }
 
-CharacterListMessage::CharacterListMessage(BinaryPacketPtr packet)
+CharacterListMessage::CharacterListMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ CharacterListMessage::CharacterListMessage(BinaryPacketPtr packet)
 CharacterListMessage::~CharacterListMessage()
 {}
 
-BinaryPacketPtr CharacterListMessage::serialize()
+std::shared_ptr<BinaryPacket> CharacterListMessage::serialize()
 {
-    BinaryPacketPtr packet(GS_NEW BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)2;

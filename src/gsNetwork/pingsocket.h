@@ -34,7 +34,7 @@ namespace gsNetwork
         PingSocket(ISocketHandler &h);
 
     public:
-        virtual bool handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddressPtr address);
+        virtual bool handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
     };
 }
 

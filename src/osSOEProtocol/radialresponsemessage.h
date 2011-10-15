@@ -35,10 +35,10 @@ namespace osSOEProtocol
 		uint8_t defaultOption;
 		
 		RadialResponseMessage();
-		RadialResponseMessage(gsNetwork::BinaryPacketPtr packet);
+		RadialResponseMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~RadialResponseMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

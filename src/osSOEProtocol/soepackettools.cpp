@@ -237,9 +237,9 @@ long osSOEProtocol::SWGCRC(const char* buffer)
    return ~CRC;
 }
 
-void osSOEProtocol::PrepareSOEPacket(BinaryPacketPtr packet, SessionPtr session, bool encrypt, bool compress, bool crc)
+void osSOEProtocol::PrepareSOEPacket(std::shared_ptr<BinaryPacket> packet, SessionPtr session, bool encrypt, bool compress, bool crc)
 {
-	boost::shared_ptr<SOESession> soeSession = boost::shared_dynamic_cast<SOESession>(session);
+    std::shared_ptr<SOESession> soeSession = std::dynamic_pointer_cast<SOESession>(session);
 
     // Trigger an event for this? not sure how this should be handled 
     // for outgoing messages just yet.

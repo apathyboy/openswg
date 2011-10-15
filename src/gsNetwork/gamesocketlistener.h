@@ -35,7 +35,7 @@ namespace gsNetwork
         char const * getName(void) { return "GameSocketListener"; }
         bool handleEvent(gsCore::Event const & event);
 
-		static void registerEvents(gsCore::EventListenerPtr listener);
+		void registerEvents(gsCore::EventListenerPtr listener);
 
     public:
         virtual void run();

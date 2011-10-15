@@ -42,7 +42,7 @@ namespace osSOEProtocol
 
 		void loadItems();
 
-		virtual void addInRange(boost::shared_ptr<ObjectProxy> object);
+		virtual void addInRange(std::shared_ptr<ObjectProxy> object);
 		virtual void sendReliableUpdate(gsServer::Session* session);
 		virtual void sendInRange(gsNetwork::NetworkMessagePtr message);
 	public:
@@ -50,10 +50,10 @@ namespace osSOEProtocol
 	protected:
 		virtual void createObject();
 
-		std::vector<boost::shared_ptr<TangibleObjectProxy> > m_items;
+		std::vector<std::shared_ptr<TangibleObjectProxy> > m_items;
 	};
 
-	typedef boost::shared_ptr<PlayerCreatureObjectProxy> PlayerCreatureObjectProxyPtr;
+	typedef std::shared_ptr<PlayerCreatureObjectProxy> PlayerCreatureObjectProxyPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_PLAYERCREATUREOBJECTPROXY

@@ -35,11 +35,11 @@ AuthManager::AuthManager()
 
 void AuthManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, BinaryPacketPtr> handler = makeFunctor((HandlerFunctor)0, *this, &AuthManager::handleAuthRequest);	
+	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &AuthManager::handleAuthRequest);	
 	factory->addOpcodeHandler(CMSG_DATA_SES_VER, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
 }
 
-void AuthManager::handleAuthRequest(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) const
+void AuthManager::handleAuthRequest(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) const
 {
     message->read<uint32_t>();
     uint32_t length = message->read<uint32_t>();

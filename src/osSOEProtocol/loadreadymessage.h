@@ -29,10 +29,10 @@ namespace osSOEProtocol
 	{
 	public:
 		LoadReadyMessage();
-		LoadReadyMessage(gsNetwork::BinaryPacketPtr packet);
+		LoadReadyMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~LoadReadyMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

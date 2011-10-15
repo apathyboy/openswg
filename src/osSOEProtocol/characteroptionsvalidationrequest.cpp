@@ -33,7 +33,7 @@ CharacterOptionsValidationRequest::CharacterOptionsValidationRequest()
 	setCrc(true);
 }
 
-CharacterOptionsValidationRequest::CharacterOptionsValidationRequest(BinaryPacketPtr packet)
+CharacterOptionsValidationRequest::CharacterOptionsValidationRequest(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ CharacterOptionsValidationRequest::CharacterOptionsValidationRequest(BinaryPacke
 CharacterOptionsValidationRequest::~CharacterOptionsValidationRequest()
 {}
 
-BinaryPacketPtr CharacterOptionsValidationRequest::serialize()
+std::shared_ptr<BinaryPacket> CharacterOptionsValidationRequest::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
 	return packet;
 }

@@ -32,7 +32,7 @@ PingMessage::PingMessage()
 	setCrc(false);
 }
 
-PingMessage::PingMessage(BinaryPacketPtr packet)
+PingMessage::PingMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -44,9 +44,9 @@ PingMessage::PingMessage(BinaryPacketPtr packet)
 PingMessage::~PingMessage()
 {}
 
-BinaryPacketPtr PingMessage::serialize()
+std::shared_ptr<BinaryPacket> PingMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_SESSION_RESPONSE;
     *packet << (uint8_t)0 << (uint16_t)0;
 

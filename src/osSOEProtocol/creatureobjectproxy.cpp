@@ -71,7 +71,7 @@ void CreatureObjectProxy::createTemplate()
 
 void CreatureObjectProxy::createObject()
 {
-	boost::shared_ptr<CreatureObject> creature(GS_NEW CreatureObject);
+	std::shared_ptr<CreatureObject> creature(GS_NEW CreatureObject);
 	m_object = creature;
 
 	buildPropertyMap();
@@ -83,7 +83,7 @@ void CreatureObjectProxy::buildPropertyMap()
 
     const std::string GROUPNAME = "Creature";
 
-	boost::shared_ptr<CreatureObject> creature = boost::shared_dynamic_cast<CreatureObject>(m_object);
+    std::shared_ptr<CreatureObject> creature = std::dynamic_pointer_cast<CreatureObject>(m_object);
 
 	addProperty(new StringObjectProperty(
 		"Appearance", "Appearance", 
@@ -396,7 +396,7 @@ void CreatureObjectProxy::buildPropertyMap()
 
 void CreatureObjectProxy::sendReliableUpdate(Session* session)
 {
-	boost::shared_ptr<CreoInitMessage> creoInit(GS_NEW CreoInitMessage());
+	std::shared_ptr<CreoInitMessage> creoInit(GS_NEW CreoInitMessage());
 	creoInit->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	creoInit->quaternionX = getPropertyAs<FloatObjectProperty*>(std::string("QuaternionX"))->getValue();
 	creoInit->quaternionY = getPropertyAs<FloatObjectProperty*>(std::string("QuaternionY"))->getValue();
@@ -409,13 +409,13 @@ void CreatureObjectProxy::sendReliableUpdate(Session* session)
 	session->sendToRemote(creoInit);
 	
 	// Send Obj Link
-	boost::shared_ptr<ObjLinkMessage> objLink(GS_NEW ObjLinkMessage());
+	std::shared_ptr<ObjLinkMessage> objLink(GS_NEW ObjLinkMessage());
 	objLink->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	objLink->parentId = getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->getValue();
 	objLink->linkType = ObjLinkMessage::WORLD_LINK;
 	session->sendToRemote(objLink);
 
-	boost::shared_ptr<Creo3Message> creo3(GS_NEW Creo3Message());
+	std::shared_ptr<Creo3Message> creo3(GS_NEW Creo3Message());
 	creo3->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 
 //	std::string firstname = getPropertyAs<StringObjectProperty*>(std::string("Firstname"))->getValue();
@@ -433,17 +433,17 @@ void CreatureObjectProxy::sendReliableUpdate(Session* session)
 	creo3->posture = getPropertyAs<Uint8ObjectProperty*>(std::string("Posture"))->getValue();
 	session->sendToRemote(creo3);
 
-	boost::shared_ptr<Creo6Message> creo6(GS_NEW Creo6Message());
+	std::shared_ptr<Creo6Message> creo6(GS_NEW Creo6Message());
 	creo6->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	creo6->mood = std::string("none");
 //	creo6->hair = getPropertyAs<StringObjectProperty*>(std::string("Hair"))->getValue();
 	session->sendToRemote(creo6);
 
-	boost::shared_ptr<ObjPreCloseMessage> objPreClose(GS_NEW ObjPreCloseMessage());
+	std::shared_ptr<ObjPreCloseMessage> objPreClose(GS_NEW ObjPreCloseMessage());
 	objPreClose->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(objPreClose);
 
-	boost::shared_ptr<ObjCloseMessage> objClose(GS_NEW ObjCloseMessage());
+	std::shared_ptr<ObjCloseMessage> objClose(GS_NEW ObjCloseMessage());
 	objClose->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(objClose);
 

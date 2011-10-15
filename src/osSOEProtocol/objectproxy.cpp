@@ -51,7 +51,7 @@ void ObjectProxy::notifyInRange(bool sendToSelf)
 	if(sendToSelf)
 		sendReliableUpdate(m_session);
 
-	for (std::vector<boost::shared_ptr<ObjectProxy> >::iterator itor = m_inRange.begin();
+	for (std::vector<std::shared_ptr<ObjectProxy> >::iterator itor = m_inRange.begin();
 		itor != m_inRange.end(); ++itor)
 	{
 		if ((*itor)->hasSession())
@@ -68,7 +68,7 @@ void ObjectProxy::radialSelection(uint8_t option, gsServer::Session* session)
 		
 void ObjectProxy::sendMovementUpdate(gsServer::Session* session)
 {
-	boost::shared_ptr<MovementMessage> message(GS_NEW MovementMessage);
+	std::shared_ptr<MovementMessage> message(GS_NEW MovementMessage);
 
 	message->objectId; // Target (this is the character moving)
     message->ticks; // Ticks?
@@ -86,9 +86,9 @@ void ObjectProxy::sendMovementUpdate(gsServer::Session* session)
 	
 }
 
-void ObjectProxy::addInRange(boost::shared_ptr<ObjectProxy> object)
+void ObjectProxy::addInRange(std::shared_ptr<ObjectProxy> object)
 {
-	std::vector<boost::shared_ptr<ObjectProxy> >::iterator itor = 
+	std::vector<std::shared_ptr<ObjectProxy> >::iterator itor = 
 		m_inRange.begin();
 
 	for (; itor != m_inRange.end(); ++itor)
@@ -241,7 +241,7 @@ void ObjectProxy::addProperty(ObjectProperty* newProperty)
 		// Throw exception here.
 	}
 
-	std::map<std::string, boost::shared_ptr<ObjectProperty> >::iterator itor =
+	std::map<std::string, std::shared_ptr<ObjectProperty> >::iterator itor =
 		m_propertyMap.find(newProperty->getName());
 	if (itor != m_propertyMap.end())
 	{
@@ -249,7 +249,7 @@ void ObjectProxy::addProperty(ObjectProperty* newProperty)
 	}
 	else
 	{
-		boost::shared_ptr<ObjectProperty> propertyPtr(newProperty);
+		std::shared_ptr<ObjectProperty> propertyPtr(newProperty);
 		m_propertyMap.insert(std::make_pair(newProperty->getName(), propertyPtr));
 		m_properties.push_back(propertyPtr);
 	}
@@ -257,7 +257,7 @@ void ObjectProxy::addProperty(ObjectProperty* newProperty)
 		
 void ObjectProxy::removeProperty(const std::string& name)
 {
-	std::map<std::string, boost::shared_ptr<ObjectProperty> >::iterator itor =
+	std::map<std::string, std::shared_ptr<ObjectProperty> >::iterator itor =
 		m_propertyMap.find(name);
 	if (itor != m_propertyMap.end())
 	{
@@ -279,7 +279,7 @@ void ObjectProxy::removeProperty(const std::string& name)
 		
 ObjectProperty* ObjectProxy::getProperty(const std::string& name)
 {
-	std::map<std::string, boost::shared_ptr<ObjectProperty> >::iterator itor =
+	std::map<std::string, std::shared_ptr<ObjectProperty> >::iterator itor =
 		m_propertyMap.find(name);
 	
 	if (itor == m_propertyMap.end())

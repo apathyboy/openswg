@@ -31,9 +31,9 @@ AdminSocket::AdminSocket(ISocketHandler &h)
 : GameSocket(h)
 {}
 
-boost::optional<BinaryPacketPtr> AdminSocket::processPacketData(BinaryPacketPtr packet, NetworkAddressPtr address)
+boost::optional<std::shared_ptr<BinaryPacket>> AdminSocket::processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
 {
-    boost::optional<BinaryPacketPtr> processed;
+    boost::optional<std::shared_ptr<BinaryPacket>> processed;
     
     processed = packet;
 

@@ -22,7 +22,7 @@
 using namespace gsNetwork;
 using namespace gsServer;
 
-Session::Session(NetworkAddressPtr address, GameSocket* socket)
+Session::Session(std::shared_ptr<NetworkAddress> address, GameSocket* socket)
 : m_remoteAddress(address)
 , m_remoteSocket(socket)
 , m_clientSequence(0)
@@ -53,7 +53,7 @@ void Session::sendToRemote(NetworkMessagePtr message)
 	m_remoteMessageQueue->queue(message);
 }
 
-void Session::handleIncoming(BinaryPacketPtr packet)
+void Session::handleIncoming(std::shared_ptr<BinaryPacket> packet)
 {
 	m_incomingQueue.push_back(packet);
 	setLastUpdateTime(gsCore::getTimeInMs());
@@ -69,12 +69,12 @@ void Session::setLastUpdateTime(uint64_t lastUpdateTime)
     m_lastUpdateTime = lastUpdateTime;
 }
 
-void Session::setRemoteAddress(NetworkAddressPtr address)
+void Session::setRemoteAddress(std::shared_ptr<NetworkAddress> address)
 {
     m_remoteAddress = address;
 }
 
-NetworkAddressPtr Session::getRemoteAddress()
+std::shared_ptr<NetworkAddress> Session::getRemoteAddress()
 {
     return m_remoteAddress;
 }

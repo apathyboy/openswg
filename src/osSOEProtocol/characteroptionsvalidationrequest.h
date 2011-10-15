@@ -29,10 +29,10 @@ namespace osSOEProtocol
 	{
 	public:
 		CharacterOptionsValidationRequest();
-		CharacterOptionsValidationRequest(gsNetwork::BinaryPacketPtr packet);
+		CharacterOptionsValidationRequest(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~CharacterOptionsValidationRequest();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

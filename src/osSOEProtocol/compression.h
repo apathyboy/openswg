@@ -27,8 +27,8 @@ namespace osSOEProtocol
     class Compression
     {
     public:
-        static void compress(gsNetwork::BinaryPacketPtr packet);
-        static void decompress(gsNetwork::BinaryPacketPtr packet);
+        static void compress(std::shared_ptr<gsNetwork::BinaryPacket> packet);
+        static void decompress(std::shared_ptr<gsNetwork::BinaryPacket> packet);
     };
 }
 

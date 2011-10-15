@@ -30,9 +30,9 @@ PingSocket::PingSocket(ISocketHandler &h)
 : GameSocket(h)
 {}
 
-bool PingSocket::handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddressPtr address)
+bool PingSocket::handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
 {
-    boost::optional<BinaryPacketPtr> processed;
+    boost::optional<std::shared_ptr<BinaryPacket>> processed;
     
     processed = packet;
 	

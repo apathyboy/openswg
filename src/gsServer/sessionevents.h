@@ -82,14 +82,14 @@ namespace gsServer
      */
     struct EventData_SessionRequested : public gsCore::IEventData
     {
-		explicit EventData_SessionRequested(gsNetwork::NetworkMessagePtr inMessage, gsNetwork::NetworkAddressPtr inAddress, gsNetwork::GameSocket* inSocket)
+		explicit EventData_SessionRequested(gsNetwork::NetworkMessagePtr inMessage, std::shared_ptr<gsNetwork::NetworkAddress> inAddress, gsNetwork::GameSocket* inSocket)
             : message(inMessage)
 			, address(inAddress)
 			, socket(inSocket)
         {}
 
 		gsNetwork::NetworkMessagePtr message;
-		gsNetwork::NetworkAddressPtr address;
+		std::shared_ptr<gsNetwork::NetworkAddress> address;
 		gsNetwork::GameSocket* socket;
     };
 
@@ -97,7 +97,7 @@ namespace gsServer
     {
     public:
         static char const * const gkName;
-        explicit Event_SessionRequested(gsNetwork::NetworkMessagePtr message, gsNetwork::NetworkAddressPtr address, gsNetwork::GameSocket* socket)
+        explicit Event_SessionRequested(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket)
             : gsCore::Event(gkName,
                     0,
                     gsCore::IEventDataPtr(GS_NEW EventData_SessionRequested(message, address, socket)))

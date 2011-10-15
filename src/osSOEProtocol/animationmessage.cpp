@@ -33,7 +33,7 @@ AnimationMessage::AnimationMessage()
 	setCrc(true);
 }
 
-AnimationMessage::AnimationMessage(BinaryPacketPtr packet)
+AnimationMessage::AnimationMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ AnimationMessage::AnimationMessage(BinaryPacketPtr packet)
 AnimationMessage::~AnimationMessage()
 {}
 
-BinaryPacketPtr AnimationMessage::serialize()
+std::shared_ptr<BinaryPacket> AnimationMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

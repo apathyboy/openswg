@@ -39,7 +39,7 @@ MovementMessage::MovementMessage()
 	movedZ = false;
 }
 
-MovementMessage::MovementMessage(BinaryPacketPtr packet)
+MovementMessage::MovementMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -69,9 +69,9 @@ bool MovementMessage::canSendScheduled()
 		return false;
 }
 		
-boost::shared_ptr<NetworkMessage> MovementMessage::clone()
+std::shared_ptr<NetworkMessage> MovementMessage::clone()
 {
-	boost::shared_ptr<MovementMessage> clone(GS_NEW MovementMessage);
+	std::shared_ptr<MovementMessage> clone(GS_NEW MovementMessage);
 	clone->objectId = this->objectId; // Target (this is the character moving)
     clone->ticks = this->ticks; // Ticks?
     clone->timer = this->timer; // Times?
@@ -89,9 +89,9 @@ boost::shared_ptr<NetworkMessage> MovementMessage::clone()
 	return clone;
 }
 
-BinaryPacketPtr MovementMessage::serialize()
+std::shared_ptr<BinaryPacket> MovementMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)8;

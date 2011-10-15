@@ -35,7 +35,7 @@ namespace osSOEProtocol
 	private:
 	};
 
-	typedef OS_SOEPROTOCOL_EXPORT boost::shared_ptr<TerminalTravel> TerminalTravelPtr;
+	typedef OS_SOEPROTOCOL_EXPORT std::shared_ptr<TerminalTravel> TerminalTravelPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_TERMINALTRAVEL

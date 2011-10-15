@@ -27,9 +27,9 @@ namespace osSOEProtocol
     class Encryption
     {
     public:
-        static void encrypt(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed);
-        static void crc(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed);
-        static void decrypt(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed);
+        static void encrypt(std::shared_ptr<gsNetwork::BinaryPacket> packet, uint32_t crcSeed);
+        static void crc(std::shared_ptr<gsNetwork::BinaryPacket> packet, uint32_t crcSeed);
+        static void decrypt(std::shared_ptr<gsNetwork::BinaryPacket> packet, uint32_t crcSeed);
     };
 }
 

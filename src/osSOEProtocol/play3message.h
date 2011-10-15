@@ -30,10 +30,10 @@ namespace osSOEProtocol
 	public:
 		uint64_t objectId;
 		Play3Message();
-		Play3Message(gsNetwork::BinaryPacketPtr packet);
+		Play3Message(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~Play3Message();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

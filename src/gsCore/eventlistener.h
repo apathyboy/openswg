@@ -22,7 +22,7 @@
 
 #include <gsCore/event.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace gsCore
 {
@@ -78,7 +78,7 @@ namespace gsCore
         }
     };
     
-    typedef boost::shared_ptr<IEventListener> EventListenerPtr;
+    typedef std::shared_ptr<IEventListener> EventListenerPtr;
 
     /** Event listener used for snooping ... simply emits event stats
      *  for all processed & known events to runtime log 

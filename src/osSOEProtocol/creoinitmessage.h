@@ -39,10 +39,10 @@ namespace osSOEProtocol
 		std::string sharedModel;
 
 		CreoInitMessage();
-		CreoInitMessage(gsNetwork::BinaryPacketPtr packet);
+		CreoInitMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~CreoInitMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

@@ -33,7 +33,7 @@ CharacterCreationRequest::CharacterCreationRequest()
 	setCrc(true);
 }
 
-CharacterCreationRequest::CharacterCreationRequest(BinaryPacketPtr packet)
+CharacterCreationRequest::CharacterCreationRequest(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ CharacterCreationRequest::CharacterCreationRequest(BinaryPacketPtr packet)
 CharacterCreationRequest::~CharacterCreationRequest()
 {}
 
-BinaryPacketPtr CharacterCreationRequest::serialize()
+std::shared_ptr<BinaryPacket> CharacterCreationRequest::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
 	return packet;
 }

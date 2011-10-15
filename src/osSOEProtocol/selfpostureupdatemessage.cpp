@@ -33,7 +33,7 @@ SelfPostureUpdateMessage::SelfPostureUpdateMessage()
 	setCrc(true);
 }
 
-SelfPostureUpdateMessage::SelfPostureUpdateMessage(BinaryPacketPtr packet)
+SelfPostureUpdateMessage::SelfPostureUpdateMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -47,9 +47,9 @@ SelfPostureUpdateMessage::~SelfPostureUpdateMessage()
 {}
 
 		
-boost::shared_ptr<NetworkMessage> SelfPostureUpdateMessage::clone()
+std::shared_ptr<NetworkMessage> SelfPostureUpdateMessage::clone()
 {
-	boost::shared_ptr<SelfPostureUpdateMessage> clone(GS_NEW SelfPostureUpdateMessage);
+	std::shared_ptr<SelfPostureUpdateMessage> clone(GS_NEW SelfPostureUpdateMessage);
 	clone->objectId = objectId; // Target (this is the character moving)
 	clone->posture = posture;
 
@@ -57,9 +57,9 @@ boost::shared_ptr<NetworkMessage> SelfPostureUpdateMessage::clone()
 }
 
 
-BinaryPacketPtr SelfPostureUpdateMessage::serialize()
+std::shared_ptr<BinaryPacket> SelfPostureUpdateMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

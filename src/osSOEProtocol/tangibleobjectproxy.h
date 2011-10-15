@@ -37,7 +37,7 @@ namespace osSOEProtocol
 		TangibleObjectProxy();
 		void createTemplate();
 		virtual void loadFromDatabaseId(uint64_t objectId);
-		virtual void addInRange(boost::shared_ptr<ObjectProxy> object){};
+		virtual void addInRange(std::shared_ptr<ObjectProxy> object){};
 		virtual void sendInRange(gsNetwork::NetworkMessagePtr message){};
 		virtual void sendReliableUpdate(gsServer::Session* session);
 
@@ -54,7 +54,7 @@ namespace osSOEProtocol
 		virtual void createObject();
 	};
 
-	typedef boost::shared_ptr<TangibleObjectProxy> TangibleObjectProxyPtr;
+	typedef std::shared_ptr<TangibleObjectProxy> TangibleObjectProxyPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_TANGIBLEOBJECTPROXY

@@ -33,7 +33,7 @@ EmoteMessage::EmoteMessage()
 	setCrc(true);
 }
 
-EmoteMessage::EmoteMessage(BinaryPacketPtr packet)
+EmoteMessage::EmoteMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ EmoteMessage::EmoteMessage(BinaryPacketPtr packet)
 EmoteMessage::~EmoteMessage()
 {}
 		
-boost::shared_ptr<NetworkMessage> EmoteMessage::clone()
+std::shared_ptr<NetworkMessage> EmoteMessage::clone()
 {
-	boost::shared_ptr<EmoteMessage> clone(GS_NEW EmoteMessage);
+	std::shared_ptr<EmoteMessage> clone(GS_NEW EmoteMessage);
 	clone->objectId = objectId; // Target (this is the character moving)
 	clone->targetId = targetId;
 	clone->emoteId = emoteId;
@@ -56,9 +56,9 @@ boost::shared_ptr<NetworkMessage> EmoteMessage::clone()
 	return clone;
 }
 
-BinaryPacketPtr EmoteMessage::serialize()
+std::shared_ptr<BinaryPacket> EmoteMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

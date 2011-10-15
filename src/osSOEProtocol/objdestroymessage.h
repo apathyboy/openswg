@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint64_t objectId;
 
 		ObjDestroyMessage();
-		ObjDestroyMessage(gsNetwork::BinaryPacketPtr packet);
+		ObjDestroyMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~ObjDestroyMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

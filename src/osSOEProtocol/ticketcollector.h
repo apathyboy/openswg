@@ -35,7 +35,7 @@ namespace osSOEProtocol
 	private:
 	};
 
-	typedef OS_SOEPROTOCOL_EXPORT boost::shared_ptr<TicketCollector> TicketCollectorPtr;
+	typedef OS_SOEPROTOCOL_EXPORT std::shared_ptr<TicketCollector> TicketCollectorPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_TICKETCOLLECTOR

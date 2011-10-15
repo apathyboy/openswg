@@ -33,7 +33,7 @@ AccountVersionMessage::AccountVersionMessage()
 	setCrc(true);
 }
 
-AccountVersionMessage::AccountVersionMessage(BinaryPacketPtr packet)
+AccountVersionMessage::AccountVersionMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ AccountVersionMessage::AccountVersionMessage(BinaryPacketPtr packet)
 AccountVersionMessage::~AccountVersionMessage()
 {}
 
-BinaryPacketPtr AccountVersionMessage::serialize()
+std::shared_ptr<BinaryPacket> AccountVersionMessage::serialize()
 {
-    BinaryPacketPtr packet(GS_NEW BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
 	return packet;
 }
 

@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint8_t availableSlots;
 
 		CharacterOptionsMessage();
-		CharacterOptionsMessage(gsNetwork::BinaryPacketPtr packet);
+		CharacterOptionsMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~CharacterOptionsMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

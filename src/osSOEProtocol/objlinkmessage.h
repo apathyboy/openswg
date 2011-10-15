@@ -39,10 +39,10 @@ namespace osSOEProtocol
 		uint32_t linkType;
 
 		ObjLinkMessage();
-		ObjLinkMessage(gsNetwork::BinaryPacketPtr packet);
+		ObjLinkMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~ObjLinkMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

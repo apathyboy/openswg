@@ -35,7 +35,7 @@ namespace gsNetwork
         static char const * const gkName;
 
     public:
-        virtual boost::optional<BinaryPacketPtr> processPacketData(BinaryPacketPtr packet, NetworkAddressPtr address);
+        virtual boost::optional<std::shared_ptr<BinaryPacket>> processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
     };
 }
 

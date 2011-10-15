@@ -29,10 +29,10 @@ namespace osSOEProtocol
 	{
 	public:
 		SettingUnk1Message();
-		SettingUnk1Message(gsNetwork::BinaryPacketPtr packet);
+		SettingUnk1Message(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~SettingUnk1Message();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

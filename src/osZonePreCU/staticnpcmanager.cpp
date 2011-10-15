@@ -91,7 +91,7 @@ void StaticNpcManager::loadStaticNpcs()
         {
             std::for_each(begin(result), end(result), [this, &count] (const mysqlpp::Row& row) 
             {  	
-				boost::shared_ptr<CreatureObjectProxy> staticNpc(GS_NEW CreatureObjectProxy);
+				std::shared_ptr<CreatureObjectProxy> staticNpc(GS_NEW CreatureObjectProxy);
 				staticNpc->createTemplate();
 				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64_t)row["id"]);
 				staticNpc->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64_t)row["object_id"]);

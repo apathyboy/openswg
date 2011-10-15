@@ -32,7 +32,7 @@ DisconnectMessage::DisconnectMessage()
 	setCrc(true);
 }
 
-DisconnectMessage::DisconnectMessage(BinaryPacketPtr packet)
+DisconnectMessage::DisconnectMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -44,9 +44,9 @@ DisconnectMessage::DisconnectMessage(BinaryPacketPtr packet)
 DisconnectMessage::~DisconnectMessage()
 {}
 
-BinaryPacketPtr DisconnectMessage::serialize()
+std::shared_ptr<BinaryPacket> DisconnectMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 	*packet << (uint16_t)SOE_DISCONNECT; // opcode
     *packet << connectionId;
     *packet << (uint16_t)htons(6);

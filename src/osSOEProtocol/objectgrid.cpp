@@ -53,7 +53,7 @@ void ObjectGrid::removeObject(ObjectProxyPtr object)
 	{
 		if (object->getObject()->getObjectId() == (*i)->getObject()->getObjectId())
 		{
-			boost::shared_ptr<ObjDestroyMessage> destroy(GS_NEW ObjDestroyMessage());
+			std::shared_ptr<ObjDestroyMessage> destroy(GS_NEW ObjDestroyMessage());
 			destroy->objectId = (*i)->getObject()->getObjectId();
 			object->getSession()->sendToRemote(destroy);
 		
@@ -97,7 +97,7 @@ void ObjectGrid::insert(ObjectProxyPtr object)
 	m_objects.push_back(object);
 }
 
-void ObjectGrid::moveCellObject(boost::shared_ptr<osSOEProtocol::CellMovementMessage> movement)
+void ObjectGrid::moveCellObject(std::shared_ptr<osSOEProtocol::CellMovementMessage> movement)
 {
 	boost::optional<ObjectProxyPtr> object =
 		findObjectProxyById(movement->objectId);
@@ -139,7 +139,7 @@ void ObjectGrid::moveCellObject(boost::shared_ptr<osSOEProtocol::CellMovementMes
 	sendInRange((*object)->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue(), movement);
 }
 
-void ObjectGrid::moveObject(boost::shared_ptr<osSOEProtocol::MovementMessage> movement)
+void ObjectGrid::moveObject(std::shared_ptr<osSOEProtocol::MovementMessage> movement)
 {
 	boost::optional<ObjectProxyPtr> object =
 		findObjectProxyById(movement->objectId);
@@ -180,7 +180,7 @@ void ObjectGrid::moveObject(boost::shared_ptr<osSOEProtocol::MovementMessage> mo
 	sendInRange((*object)->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue(), movement);
 }
 
-void ObjectGrid::sendInRange(uint64_t target, boost::shared_ptr<gsNetwork::NetworkMessage> message)
+void ObjectGrid::sendInRange(uint64_t target, std::shared_ptr<gsNetwork::NetworkMessage> message)
 {
 	boost::optional<ObjectProxyPtr> object = findObjectProxyById(target);
 	
@@ -203,7 +203,7 @@ void ObjectGrid::sendInRange(uint64_t target, boost::shared_ptr<gsNetwork::Netwo
 
 		if ((*i)->hasSession())
 		{
-			boost::shared_ptr<gsNetwork::NetworkMessage> clone =
+			std::shared_ptr<gsNetwork::NetworkMessage> clone =
 				message->clone();
 
 			clone->recipientId = (*i)->getObject()->getObjectId();		

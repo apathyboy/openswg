@@ -32,7 +32,7 @@ NetStatusRequestMessage::NetStatusRequestMessage()
 	setCrc(true);
 }
 
-NetStatusRequestMessage::NetStatusRequestMessage(BinaryPacketPtr packet)
+NetStatusRequestMessage::NetStatusRequestMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -44,9 +44,9 @@ NetStatusRequestMessage::NetStatusRequestMessage(BinaryPacketPtr packet)
 NetStatusRequestMessage::~NetStatusRequestMessage()
 {}
 
-BinaryPacketPtr NetStatusRequestMessage::serialize()
+std::shared_ptr<BinaryPacket> NetStatusRequestMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
 	return packet;
 }

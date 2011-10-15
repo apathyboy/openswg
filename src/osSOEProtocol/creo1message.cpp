@@ -33,7 +33,7 @@ Creo1Message::Creo1Message()
 	setCrc(true);
 }
 
-Creo1Message::Creo1Message(BinaryPacketPtr packet)
+Creo1Message::Creo1Message(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ Creo1Message::Creo1Message(BinaryPacketPtr packet)
 Creo1Message::~Creo1Message()
 {}
 
-BinaryPacketPtr Creo1Message::serialize()
+std::shared_ptr<BinaryPacket> Creo1Message::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

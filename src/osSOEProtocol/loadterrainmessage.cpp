@@ -33,7 +33,7 @@ LoadTerrainMessage::LoadTerrainMessage()
 	setCrc(true);
 }
 
-LoadTerrainMessage::LoadTerrainMessage(BinaryPacketPtr packet)
+LoadTerrainMessage::LoadTerrainMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ LoadTerrainMessage::LoadTerrainMessage(BinaryPacketPtr packet)
 LoadTerrainMessage::~LoadTerrainMessage()
 {}
 
-BinaryPacketPtr LoadTerrainMessage::serialize()
+std::shared_ptr<BinaryPacket> LoadTerrainMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

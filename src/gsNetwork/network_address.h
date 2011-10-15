@@ -1,6 +1,6 @@
 /**
  * Galaxy Open-Source Massively Multiplayer Game Simulation Engine
- * Copyright (C) 2007 OpenSWG Team <http://www.openswg.com>
+ * Copyright (C) 2011 OpenSWG Team <http://openswg.org>
  */
 
 // *********************************************************************
@@ -17,26 +17,15 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#ifndef OPENSWG_SOEPROTOCOL_PLAYINITMESSAGE
-#define OPENSWG_SOEPROTOCOL_PLAYINITMESSAGE
+#ifndef GALAXY_NETWORK_NETWORK_ADDRESS_H_
+#define GALAXY_NETWORK_NETWORK_ADDRESS_H_
 
-#include <gsNetwork/binarypacket.h>
-#include <gsNetwork/networkmessage.h>
+#include <memory>
+#include <boost/asio/ip/udp.hpp>
 
-namespace osSOEProtocol
+namespace gsNetwork
 {
-	class PlayInitMessage : public gsNetwork::NetworkMessage
-	{
-	public:
-		uint64_t objectId;
-
-		PlayInitMessage();
-		PlayInitMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
-		virtual ~PlayInitMessage();
-
-		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
-		virtual void unserialize();
-	};
+    typedef boost::asio::ip::udp::endpoint NetworkAddress2;
 }
 
-#endif // OPENSWG_SOEPROTOCOL_PLAYINITMESSAGE
+#endif  // GALAXY_NETWORK_NETWORK_ADDRESS_H_

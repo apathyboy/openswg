@@ -66,7 +66,7 @@ namespace osSOEProtocol
 		uint64_t m_galaxyId;
 	};
 
-	typedef boost::shared_ptr<PlayerCreatureObject> PlayerCreatureObjectPtr;
+	typedef std::shared_ptr<PlayerCreatureObject> PlayerCreatureObjectPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_PLAYERCREATUREOBJECT

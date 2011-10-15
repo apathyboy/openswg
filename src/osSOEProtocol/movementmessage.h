@@ -47,13 +47,13 @@ namespace osSOEProtocol
 		bool movedZ;
 
 		MovementMessage();
-		MovementMessage(gsNetwork::BinaryPacketPtr packet);
+		MovementMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~MovementMessage();
 
-		virtual boost::shared_ptr<NetworkMessage> clone();
+		virtual std::shared_ptr<NetworkMessage> clone();
 		virtual bool canSendScheduled();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	protected:
 		uint64_t m_lastUpdateTime;

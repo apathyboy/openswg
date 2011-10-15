@@ -33,7 +33,7 @@ Play8Message::Play8Message()
 	setCrc(true);
 }
 
-Play8Message::Play8Message(BinaryPacketPtr packet)
+Play8Message::Play8Message(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ Play8Message::Play8Message(BinaryPacketPtr packet)
 Play8Message::~Play8Message()
 {}
 
-BinaryPacketPtr Play8Message::serialize()
+std::shared_ptr<BinaryPacket> Play8Message::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

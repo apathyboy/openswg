@@ -52,7 +52,7 @@ bool LoginServerEventListener::handleEvent(const gsCore::Event &event)
     {
         EventData_SessionCreated * eventData = event.getDataPtr<EventData_SessionCreated>();	
 
-		boost::shared_ptr<ServerHeaderMessage> message(GS_NEW ServerHeaderMessage());
+		std::shared_ptr<ServerHeaderMessage> message(GS_NEW ServerHeaderMessage());
 		message->serverType = m_server->getServerType();
 		message->serverId = m_server->getServerId();
 

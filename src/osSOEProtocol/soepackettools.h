@@ -135,7 +135,7 @@ bool Compress(char **pData, uint16_t *nLength, bool crc);
      * protocol. This helper function available to all SOE protocol strategies
      * makes it easier to prepare packets with this standard algorithm.
      */
-void PrepareSOEPacket(gsNetwork::BinaryPacketPtr packet, gsServer::SessionPtr session, bool encrypt, bool compress, bool crc);
+void PrepareSOEPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet, gsServer::SessionPtr session, bool encrypt, bool compress, bool crc);
 }
 
 #endif

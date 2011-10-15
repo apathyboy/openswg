@@ -24,13 +24,10 @@
 #include <gsCore/macros.h>
 
 #include <Sockets/Ipv4Address.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace gsNetwork
 {
-    class NetworkAddress;
-    typedef boost::shared_ptr<NetworkAddress> NetworkAddressPtr;
-
     class NetworkAddress
     {
     public:

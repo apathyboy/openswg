@@ -38,9 +38,9 @@ namespace osSOEProtocol
 		void insert(ObjectProxyPtr object);
 		void update(uint64_t updateTimestamp);
 
-		void moveObject(boost::shared_ptr<osSOEProtocol::MovementMessage> movement);	
-		void moveCellObject(boost::shared_ptr<osSOEProtocol::CellMovementMessage> movement);	
-		void sendInRange(uint64_t target, boost::shared_ptr<gsNetwork::NetworkMessage> message);
+		void moveObject(std::shared_ptr<osSOEProtocol::MovementMessage> movement);	
+		void moveCellObject(std::shared_ptr<osSOEProtocol::CellMovementMessage> movement);	
+		void sendInRange(uint64_t target, std::shared_ptr<gsNetwork::NetworkMessage> message);
 
 		boost::optional<Object*> findObjectById(uint64_t objectId);
 		boost::optional<ObjectProxyPtr> findObjectProxyById(uint64_t objectId);

@@ -36,14 +36,14 @@ RadialMenuManager::~RadialMenuManager()
 
 void RadialMenuManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, BinaryPacketPtr> handler = makeFunctor((HandlerFunctor)0, *this, &RadialMenuManager::handleRadialSelection);	
+	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &RadialMenuManager::handleRadialSelection);	
 	factory->addOpcodeHandler(0x7ca18726, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
 }
 
 
-void RadialMenuManager::handleRadialSelection(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void RadialMenuManager::handleRadialSelection(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 	

@@ -197,7 +197,7 @@ void CharacterCreationManager::initialize()
 
 void CharacterCreationManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, BinaryPacketPtr> handler = makeFunctor((HandlerFunctor)0, *this, &CharacterCreationManager::handleCharacterCreationRequest);	
+	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &CharacterCreationManager::handleCharacterCreationRequest);	
 	factory->addOpcodeHandler(CMSG_NOTIFY_SESSION, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
 
 	handler = makeFunctor((HandlerFunctor)0, *this, &CharacterCreationManager::handleCharacterOptionsValidation);	
@@ -209,30 +209,30 @@ void CharacterCreationManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 
 
 
-void CharacterCreationManager::handleCharacterCreationRequest(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void CharacterCreationManager::handleCharacterCreationRequest(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 	
-	boost::shared_ptr<CharacterOptionsMessage> response(GS_NEW CharacterOptionsMessage());
+	std::shared_ptr<CharacterOptionsMessage> response(GS_NEW CharacterOptionsMessage());
 	response->availableSlots = 1; // Pull from db
 	session->sendToRemote(response);
 }
 
-void CharacterCreationManager::handleCharacterOptionsValidation(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void CharacterCreationManager::handleCharacterOptionsValidation(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 }
 
-void CharacterCreationManager::handleCreateCharacter(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) 
+void CharacterCreationManager::handleCreateCharacter(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) 
 {
-	boost::shared_ptr<CharacterCreationRequest> creationRequest(GS_NEW CharacterCreationRequest(message));
+	std::shared_ptr<CharacterCreationRequest> creationRequest(GS_NEW CharacterCreationRequest(message));
 	creationRequest->unserialize();
 
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 
@@ -313,7 +313,7 @@ void CharacterCreationManager::handleCreateCharacter(gsServer::Session* session,
 		return;
 	}
 
-	boost::shared_ptr<AssignCharacterIdMessage> response(GS_NEW AssignCharacterIdMessage());
+	std::shared_ptr<AssignCharacterIdMessage> response(GS_NEW AssignCharacterIdMessage());
 	response->characterId = characterId; // Pull from db
 	session->sendToRemote(response);
 }
@@ -371,7 +371,7 @@ void CharacterCreationManager::createCharacterItems(uint64_t playerId, const std
 			species.compare((*itor).species) == 0 &&
 			gender.compare((*itor).gender) == 0)
 		{
-			boost::shared_ptr<TangibleObjectProxy> item(GS_NEW TangibleObjectProxy);
+			std::shared_ptr<TangibleObjectProxy> item(GS_NEW TangibleObjectProxy);
 			item->createFromTemplate((*itor).templateItem);
 			item->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue(generateObjectId());
 			item->getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->setValue(playerId);

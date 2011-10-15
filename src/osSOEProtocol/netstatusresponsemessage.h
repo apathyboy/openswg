@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint16_t tick;
 
 		NetStatusResponseMessage();
-		NetStatusResponseMessage(gsNetwork::BinaryPacketPtr packet);
+		NetStatusResponseMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~NetStatusResponseMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

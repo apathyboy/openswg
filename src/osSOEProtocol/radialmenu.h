@@ -22,7 +22,7 @@
 
 #include <cstdint>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <string>
 #include <map>
 

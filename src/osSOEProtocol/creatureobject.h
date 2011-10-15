@@ -221,7 +221,7 @@ namespace osSOEProtocol
 		uint8_t m_posture;
 	};
 
-	typedef boost::shared_ptr<CreatureObject> CreatureObjectPtr;
+	typedef std::shared_ptr<CreatureObject> CreatureObjectPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_CREATUREOBJECT

@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		uint64_t objectId;
 
 		Play9UpdateMessage();
-		Play9UpdateMessage(gsNetwork::BinaryPacketPtr packet);
+		Play9UpdateMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~Play9UpdateMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

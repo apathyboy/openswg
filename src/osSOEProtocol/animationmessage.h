@@ -35,10 +35,10 @@ namespace osSOEProtocol
 		uint32_t animationCrc;
 		
 		AnimationMessage();
-		AnimationMessage(gsNetwork::BinaryPacketPtr packet);
+		AnimationMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~AnimationMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

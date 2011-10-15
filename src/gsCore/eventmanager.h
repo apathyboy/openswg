@@ -29,7 +29,7 @@
 #include <gsCore/process.h>
 #include <gsCore/timing.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <vector>
 #include <set>

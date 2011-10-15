@@ -33,10 +33,10 @@ namespace osSOEProtocol
 		uint32_t maxPacketSize;
 
 		SessionResponseMessage();
-		SessionResponseMessage(gsNetwork::BinaryPacketPtr packet);
+		SessionResponseMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~SessionResponseMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

@@ -52,13 +52,13 @@ AuthManager::AuthManager()
 
 void AuthManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	CBFunctor2<Session*, BinaryPacketPtr> handler = makeFunctor((HandlerFunctor)0, *this, &AuthManager::handleAuthRequest);	
+	CBFunctor2<Session*, std::shared_ptr<BinaryPacket>> handler = makeFunctor((HandlerFunctor)0, *this, &AuthManager::handleAuthRequest);	
 	factory->addOpcodeHandler(CMSG_ACCT_VERSION, OpcodeHandlerPtr(GS_NEW OpcodeHandler(handler)));
 }
 
-void AuthManager::handleAuthRequest(gsServer::Session* session, gsNetwork::BinaryPacketPtr message) const
+void AuthManager::handleAuthRequest(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message) const
 {
-	boost::shared_ptr<AccountVersionMessage> authData(GS_NEW AccountVersionMessage(message));
+	std::shared_ptr<AccountVersionMessage> authData(GS_NEW AccountVersionMessage(message));
 	authData->unserialize();
 
     if (authData->version.compare(std::string("20051010-17:00")) == 0)
@@ -75,11 +75,11 @@ void AuthManager::handleAuthRequest(gsServer::Session* session, gsNetwork::Binar
 	session->setAuthenticated(true);
 	session->setUsername(std::string("apathy"));
 
-	boost::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
+	std::shared_ptr<OkMessage> ok(GS_NEW OkMessage());
 	ok->sequence = session->getClientSequence();
 	session->sendToRemote(ok);
 
-	boost::shared_ptr<StationIdentifierMessage> identifier(GS_NEW StationIdentifierMessage);
+	std::shared_ptr<StationIdentifierMessage> identifier(GS_NEW StationIdentifierMessage);
 	identifier->session = session;
 
 	session->sendToRemote(identifier);

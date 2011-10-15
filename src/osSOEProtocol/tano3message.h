@@ -38,10 +38,10 @@ namespace osSOEProtocol
 		uint64_t objectId;
 
 		Tano3Message();
-		Tano3Message(gsNetwork::BinaryPacketPtr packet);
+		Tano3Message(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~Tano3Message();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

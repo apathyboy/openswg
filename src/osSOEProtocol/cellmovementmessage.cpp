@@ -34,7 +34,7 @@ CellMovementMessage::CellMovementMessage()
 	setCrc(true);
 }
 
-CellMovementMessage::CellMovementMessage(BinaryPacketPtr packet)
+CellMovementMessage::CellMovementMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -47,9 +47,9 @@ CellMovementMessage::CellMovementMessage(BinaryPacketPtr packet)
 CellMovementMessage::~CellMovementMessage()
 {}
 		
-boost::shared_ptr<NetworkMessage> CellMovementMessage::clone()
+std::shared_ptr<NetworkMessage> CellMovementMessage::clone()
 {
-	boost::shared_ptr<CellMovementMessage> clone(GS_NEW CellMovementMessage);
+	std::shared_ptr<CellMovementMessage> clone(GS_NEW CellMovementMessage);
 	clone->objectId = objectId; // Target (this is the character moving)
     clone->ticks = ticks; // Ticks?
     clone->timer = timer; // Times?
@@ -68,9 +68,9 @@ boost::shared_ptr<NetworkMessage> CellMovementMessage::clone()
 	return clone;
 }
 
-BinaryPacketPtr CellMovementMessage::serialize()
+std::shared_ptr<BinaryPacket> CellMovementMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)8;

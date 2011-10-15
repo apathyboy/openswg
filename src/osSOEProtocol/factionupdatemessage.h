@@ -33,10 +33,10 @@ namespace osSOEProtocol
 		uint32_t faction;
 
 		FactionUpdateMessage();
-		FactionUpdateMessage(gsNetwork::BinaryPacketPtr packet);
+		FactionUpdateMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~FactionUpdateMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

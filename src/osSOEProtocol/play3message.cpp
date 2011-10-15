@@ -33,7 +33,7 @@ Play3Message::Play3Message()
 	setCrc(true);
 }
 
-Play3Message::Play3Message(BinaryPacketPtr packet)
+Play3Message::Play3Message(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ Play3Message::Play3Message(BinaryPacketPtr packet)
 Play3Message::~Play3Message()
 {}
 
-BinaryPacketPtr Play3Message::serialize()
+std::shared_ptr<BinaryPacket> Play3Message::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

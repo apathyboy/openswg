@@ -33,7 +33,7 @@ SettingUnk1Message::SettingUnk1Message()
 	setCrc(true);
 }
 
-SettingUnk1Message::SettingUnk1Message(BinaryPacketPtr packet)
+SettingUnk1Message::SettingUnk1Message(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ SettingUnk1Message::SettingUnk1Message(BinaryPacketPtr packet)
 SettingUnk1Message::~SettingUnk1Message()
 {}
 
-BinaryPacketPtr SettingUnk1Message::serialize()
+std::shared_ptr<BinaryPacket> SettingUnk1Message::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

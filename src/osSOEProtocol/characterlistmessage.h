@@ -32,10 +32,10 @@ namespace osSOEProtocol
 		std::list<GalaxyCharacter*> characters;
 
 		CharacterListMessage();
-		CharacterListMessage(gsNetwork::BinaryPacketPtr packet);
+		CharacterListMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~CharacterListMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

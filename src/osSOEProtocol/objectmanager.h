@@ -62,11 +62,11 @@ namespace osSOEProtocol
 	public: // OPCODE HANDLING
 		virtual void registerOpcodes(gsServer::OpcodeFactory* factory);
 
-		void handleLoginCharacter(gsServer::Session* session, gsNetwork::BinaryPacketPtr packet) ;
-		void handleObjectPreload(gsServer::Session* session, gsNetwork::BinaryPacketPtr packet) ;
-		void handleUnknown(gsServer::Session* session, gsNetwork::BinaryPacketPtr packet) ;
-		void handleLoadReady(gsServer::Session* session, gsNetwork::BinaryPacketPtr packet) ;
-		void handleCommand(gsServer::Session* session, gsNetwork::BinaryPacketPtr packet) ;
+		void handleLoginCharacter(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet) ;
+		void handleObjectPreload(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet) ;
+		void handleUnknown(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet) ;
+		void handleLoadReady(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet) ;
+		void handleCommand(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet) ;
 	};
 
 	class ObjectManagerEventListener : public gsCore::IEventListener

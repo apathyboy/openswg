@@ -20,7 +20,7 @@
 #ifndef GALAXY_CORE_EVENTDATA
 #define GALAXY_CORE_EVENTDATA
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace gsCore
 {
@@ -63,7 +63,7 @@ namespace gsCore
     };
 
     typedef EventData<int> EventData_Int;
-    typedef boost::shared_ptr<IEventData> IEventDataPtr;
+    typedef std::shared_ptr<IEventData> IEventDataPtr;
 }
 
 #endif // GALAXY_CORE_EVENTDATA

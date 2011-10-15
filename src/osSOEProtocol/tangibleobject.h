@@ -20,7 +20,7 @@
 #ifndef OPENSWG_SOEPROTOCOL_TANGIBLEOBJECT
 #define OPENSWG_SOEPROTOCOL_TANGIBLEOBJECT
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <osSOEProtocol/object.h>
 
 namespace osSOEProtocol
@@ -46,7 +46,7 @@ namespace osSOEProtocol
 		bool m_equipped;
 	};
 
-	typedef boost::shared_ptr<TangibleObject> TangibleObjectPtr;
+	typedef std::shared_ptr<TangibleObject> TangibleObjectPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_TANGIBLEOBJECT

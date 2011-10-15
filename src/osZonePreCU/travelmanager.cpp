@@ -64,18 +64,18 @@ void TravelManager::updateTransports()
 			uint8_t posture = 0;
 			(*itor)->getPropertyAs<Uint8ObjectProperty*>(std::string("Posture"))->setValue(posture);
 			
-			boost::shared_ptr<ShuttleAnimationMessage> takeoff(GS_NEW ShuttleAnimationMessage);
+			std::shared_ptr<ShuttleAnimationMessage> takeoff(GS_NEW ShuttleAnimationMessage);
 			takeoff->objectId = objectId;
 			takeoff->posture = posture;
 			m_objectGrid->sendInRange(objectId,	takeoff);
 			/*
-			boost::shared_ptr<AnimationMessage> animation(GS_NEW AnimationMessage);
+			std::shared_ptr<AnimationMessage> animation(GS_NEW AnimationMessage);
 			animation->objectId = objectId;
 			animation->animationCrc = 0xab290245;
 			animation->posture = posture;
 			m_objectGrid->sendInRange(objectId,	animation);
 
-			boost::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
+			std::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
 			selfPostureUpdate->objectId = objectId;
 			selfPostureUpdate->posture = posture;
 			m_objectGrid->sendInRange(objectId,	selfPostureUpdate);
@@ -95,23 +95,23 @@ void TravelManager::updateTransports()
 			uint8_t posture = 2;
 			(*itor)->getPropertyAs<Uint8ObjectProperty*>(std::string("Posture"))->setValue(posture);
 			
-			boost::shared_ptr<ShuttleAnimationMessage> takeoff(GS_NEW ShuttleAnimationMessage);
+			std::shared_ptr<ShuttleAnimationMessage> takeoff(GS_NEW ShuttleAnimationMessage);
 			takeoff->objectId = objectId;
 			takeoff->posture = posture;
 			m_objectGrid->sendInRange(objectId,	takeoff);
 			/*
-			boost::shared_ptr<PostureUpdateMessage> postureUpdate(GS_NEW PostureUpdateMessage);
+			std::shared_ptr<PostureUpdateMessage> postureUpdate(GS_NEW PostureUpdateMessage);
 			postureUpdate->objectId = objectId;
 			postureUpdate->posture = posture;
 			m_objectGrid->sendInRange(objectId,	postureUpdate);
 
-			boost::shared_ptr<AnimationMessage> animation(GS_NEW AnimationMessage);
+			std::shared_ptr<AnimationMessage> animation(GS_NEW AnimationMessage);
 			animation->objectId = objectId;
 			animation->animationCrc = 0xab290245;
 			animation->posture = posture;
 			m_objectGrid->sendInRange(objectId,	animation);
 
-			boost::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
+			std::shared_ptr<SelfPostureUpdateMessage> selfPostureUpdate(GS_NEW SelfPostureUpdateMessage);
 			selfPostureUpdate->objectId = objectId;
 			selfPostureUpdate->posture = posture;
 			m_objectGrid->sendInRange(objectId,	selfPostureUpdate);
@@ -173,7 +173,7 @@ void TravelManager::loadTransports()
         {
             std::for_each(begin(result), end(result), [this, &count] (const mysqlpp::Row& row) 
             {  	
-				boost::shared_ptr<CreatureObjectProxy> transport(GS_NEW CreatureObjectProxy);
+				std::shared_ptr<CreatureObjectProxy> transport(GS_NEW CreatureObjectProxy);
 				transport->createTemplate();
 				transport->getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64_t)row["id"]);
 				transport->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64_t)row["object_id"]);
@@ -242,7 +242,7 @@ void TravelManager::loadTicketCollectors()
         {
             std::for_each(begin(result), end(result), [this, &count] (const mysqlpp::Row& row) 
             {  	
-				boost::shared_ptr<TangibleObjectProxy> collector(GS_NEW TangibleObjectProxy);
+				std::shared_ptr<TangibleObjectProxy> collector(GS_NEW TangibleObjectProxy);
 				collector->createTemplate();
 				collector->getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64_t)row["id"]);
 				collector->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64_t)row["object_id"]);
@@ -312,7 +312,7 @@ void TravelManager::loadTicketVendors()
         {
             std::for_each(begin(result), end(result), [this, &count] (const mysqlpp::Row& row) 
             { 
-				boost::shared_ptr<TangibleObjectProxy> vendor(GS_NEW TangibleObjectProxy);
+				std::shared_ptr<TangibleObjectProxy> vendor(GS_NEW TangibleObjectProxy);
 				vendor->createTemplate();
 				vendor->getPropertyAs<Uint64ObjectProperty*>(std::string("DatabaseId"))->setValue((uint64_t)row["id"]);
 				vendor->getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->setValue((uint64_t)row["object_id"]);

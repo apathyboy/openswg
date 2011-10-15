@@ -21,6 +21,7 @@
 #define GALAXY_NETWORK_NETWORKMESSAGE
 
 #include <cstdint>
+#include <memory>
 #include <gsNetwork/binarypacket.h>
 
 namespace gsNetwork
@@ -30,9 +31,9 @@ namespace gsNetwork
 	public:
 		uint64_t recipientId;
 
-		virtual boost::shared_ptr<NetworkMessage> clone() 
+		virtual std::shared_ptr<NetworkMessage> clone() 
 		{
-			boost::shared_ptr<NetworkMessage> clone;
+			std::shared_ptr<NetworkMessage> clone;
 			return clone;
 		}
 
@@ -54,7 +55,7 @@ namespace gsNetwork
 
 		uint16_t sendCount;
 
-		virtual BinaryPacketPtr serialize() = 0;
+		virtual std::shared_ptr<BinaryPacket> serialize() = 0;
 		virtual void unserialize() = 0;
 
 		bool crc() {return m_crc;}
@@ -73,10 +74,10 @@ namespace gsNetwork
 		bool m_crc;
 		bool m_reschedule;
 		bool m_encrypt;
-		BinaryPacketPtr m_serializedData;
+		std::shared_ptr<BinaryPacket> m_serializedData;
 	};
 
-	typedef boost::shared_ptr<NetworkMessage> NetworkMessagePtr;
+	typedef std::shared_ptr<NetworkMessage> NetworkMessagePtr;
 }
 
 #endif // GALAXY_NETWORK_NETWORKMESSAGE

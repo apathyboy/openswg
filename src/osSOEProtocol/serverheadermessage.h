@@ -32,10 +32,10 @@ namespace osSOEProtocol
 		uint32_t serverId;
 
 		ServerHeaderMessage();
-		ServerHeaderMessage(gsNetwork::BinaryPacketPtr packet);
+		ServerHeaderMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~ServerHeaderMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

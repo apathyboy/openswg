@@ -37,8 +37,8 @@ namespace gsNetwork
 		virtual ~PriorityQueue();
 	
 		virtual void queue(NetworkMessagePtr message);
-		virtual void resend(uint16_t sequence, GameSocket* socket, NetworkAddressPtr address);
-		virtual void sendQueue(GameSocket* socket, NetworkAddressPtr address);
+		virtual void resend(uint16_t sequence, GameSocket* socket, std::shared_ptr<NetworkAddress> address);
+		virtual void sendQueue(GameSocket* socket, std::shared_ptr<NetworkAddress> address);
 
 	protected:
 		virtual uint16_t getNextSequence();

@@ -33,12 +33,12 @@ namespace osSOEProtocol
 		std::vector<uint64_t> moods;
 
 		SpatialChatMessage();
-		SpatialChatMessage(gsNetwork::BinaryPacketPtr packet);
+		SpatialChatMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~SpatialChatMessage();
 
-		virtual boost::shared_ptr<NetworkMessage> clone();
+		virtual std::shared_ptr<NetworkMessage> clone();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

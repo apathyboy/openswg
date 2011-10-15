@@ -32,7 +32,7 @@ NetStatusResponseMessage::NetStatusResponseMessage()
 	setCrc(false);
 }
 
-NetStatusResponseMessage::NetStatusResponseMessage(BinaryPacketPtr packet)
+NetStatusResponseMessage::NetStatusResponseMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -44,9 +44,9 @@ NetStatusResponseMessage::NetStatusResponseMessage(BinaryPacketPtr packet)
 NetStatusResponseMessage::~NetStatusResponseMessage()
 {}
 
-BinaryPacketPtr NetStatusResponseMessage::serialize()
+std::shared_ptr<BinaryPacket> NetStatusResponseMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_NET_STATUS_RES;
     *packet << tick;

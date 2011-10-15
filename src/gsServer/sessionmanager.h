@@ -25,7 +25,7 @@
 #include <map>
 
 #include <boost/optional.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <gsCore/process.h>
 #include <gsNetwork/binarypacket.h>
@@ -57,14 +57,14 @@ namespace gsServer
         virtual void update(const uint64_t updateTimestamp);
         virtual void removeDeadSessions(const uint64_t updateTimestamp);
         virtual void initialize();
-		virtual void queueRemoteMessage(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address);
+		virtual void queueRemoteMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address);
 
     public:
 		virtual uint32_t countSessions() { return m_sessions.size(); }
         void addSession(SessionPtr session);
 		virtual void removeSession(SessionMap::iterator i);
         virtual void removeSession(SessionPtr session);
-		virtual boost::optional<SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, gsNetwork::NetworkAddressPtr address, gsNetwork::GameSocket* socket);
+		virtual boost::optional<SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
 
         boost::optional<SessionPtr> findSession(std::string address);
 

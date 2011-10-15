@@ -49,10 +49,10 @@ namespace osSOEProtocol
 		uint8_t posture;
 
 		Creo3Message();
-		Creo3Message(gsNetwork::BinaryPacketPtr packet);
+		Creo3Message(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~Creo3Message();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

@@ -50,9 +50,9 @@ namespace gsNetwork
 
     public:
 		virtual void sendServerHeader(std::string serverName, uint32_t serverId) {}
-		virtual void sendNewConnectionResponse(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address) {}
-		virtual void sendPacket(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address);
-		virtual void sendPacket(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address, bool encrypt, bool compress, bool crc) {}
+		virtual void sendNewConnectionResponse(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address) {}
+		virtual void sendPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address);
+		virtual void sendPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address, bool encrypt, bool compress, bool crc) {}
 
         /**
 		 * This virtual override allows GameSocket implementations a chance to handle
@@ -63,7 +63,7 @@ namespace gsNetwork
 		 * method will queue the message in an appropriate location to be handled by
 		 * the main server thread.
 		 */
-        virtual bool handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddressPtr address);
+        virtual bool handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
 
 	public: // UdpSocket Overrides 
 		// @NOTE If the underlying socket library is ever changed this section needs

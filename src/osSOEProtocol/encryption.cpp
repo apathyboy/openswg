@@ -26,7 +26,7 @@
 using namespace gsNetwork;
 using namespace osSOEProtocol;
 
-void Encryption::crc(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
+void Encryption::crc(std::shared_ptr<gsNetwork::BinaryPacket> packet, uint32_t crcSeed)
 {
     char* data = packet->getData();
     uint32_t length = packet->getLength();
@@ -38,7 +38,7 @@ void Encryption::crc(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
         packet->append<char>(data[i]);
 }
         
-void Encryption::encrypt(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
+void Encryption::encrypt(std::shared_ptr<gsNetwork::BinaryPacket> packet, uint32_t crcSeed)
 {
     char* data = packet->getData();
     uint32_t length = packet->getLength();
@@ -50,7 +50,7 @@ void Encryption::encrypt(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
         packet->append<char>(data[i]);	
 }
         
-void Encryption::decrypt(gsNetwork::BinaryPacketPtr packet, uint32_t crcSeed)
+void Encryption::decrypt(std::shared_ptr<gsNetwork::BinaryPacket> packet, uint32_t crcSeed)
 {
     char* data = packet->getData();
     uint32_t length = packet->getLength();

@@ -23,7 +23,7 @@
 #include <gsCore/eventdata.h>
 #include <gsCore/eventtype.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <strstream>
 
@@ -86,7 +86,7 @@ namespace gsCore
                                  // if no associated data )
     };
     
-    typedef boost::shared_ptr<Event> EventPtr;
+    typedef std::shared_ptr<Event> EventPtr;
 }
 
 #endif // GALAXY_CORE_EVENT

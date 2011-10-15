@@ -33,7 +33,7 @@ AssignCharacterIdMessage::AssignCharacterIdMessage()
 	setCrc(true);
 }
 
-AssignCharacterIdMessage::AssignCharacterIdMessage(BinaryPacketPtr packet)
+AssignCharacterIdMessage::AssignCharacterIdMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ AssignCharacterIdMessage::AssignCharacterIdMessage(BinaryPacketPtr packet)
 AssignCharacterIdMessage::~AssignCharacterIdMessage()
 {}
 
-BinaryPacketPtr AssignCharacterIdMessage::serialize()
+std::shared_ptr<BinaryPacket> AssignCharacterIdMessage::serialize()
 {
-	BinaryPacketPtr packet(GS_NEW BinaryPacket);
+	std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)2;

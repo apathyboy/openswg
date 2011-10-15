@@ -26,7 +26,7 @@
 #include <osSOEProtocol/objectcomponenttemplate.h>
 
 #include <boost/optional.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <string>
 #include <map>
 
@@ -140,7 +140,7 @@ namespace osSOEProtocol
 		uint32_t m_state;
 	};
 
-	typedef boost::shared_ptr<Object> ObjectPtr;
+	typedef std::shared_ptr<Object> ObjectPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_OBJECT

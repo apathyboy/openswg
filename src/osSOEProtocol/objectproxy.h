@@ -24,7 +24,7 @@
 
 #include <osSOEProtocol/object.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <map>
 #include <vector>
@@ -45,7 +45,7 @@ namespace osSOEProtocol
 		bool hasSession() { return (m_session != NULL) ? true : false; }
 		gsServer::Session* getSession() { return m_session; }
 
-		virtual void addInRange(boost::shared_ptr<ObjectProxy> object) =0;
+		virtual void addInRange(std::shared_ptr<ObjectProxy> object) =0;
 		virtual void sendReliableUpdate(gsServer::Session* session) = 0;
 		virtual void sendInRange(gsNetwork::NetworkMessagePtr message) = 0;
 		virtual void notifyInRange(bool sendToSelf);
@@ -83,20 +83,20 @@ namespace osSOEProtocol
 
 		gsServer::Session* m_session;
 
-		std::vector<boost::shared_ptr<ObjectProxy> > m_inRange;
+		std::vector<std::shared_ptr<ObjectProxy> > m_inRange;
 	private:
 		bool m_hasMoved;
 		bool m_propertiesBuilt;
 
 
          ///Map of properties.
-         std::map<std::string, boost::shared_ptr<ObjectProperty> > m_propertyMap;
+         std::map<std::string, std::shared_ptr<ObjectProperty> > m_propertyMap;
 
          ///vector of properties (for order).
-		 std::vector<boost::shared_ptr<ObjectProperty> > m_properties;
+		 std::vector<std::shared_ptr<ObjectProperty> > m_properties;
 	};
 
-	typedef boost::shared_ptr<ObjectProxy> ObjectProxyPtr;
+	typedef std::shared_ptr<ObjectProxy> ObjectProxyPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_OBJECTPROXY

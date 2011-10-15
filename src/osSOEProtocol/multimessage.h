@@ -30,13 +30,13 @@ namespace osSOEProtocol
 	class MultiMessage : public gsNetwork::NetworkMessage
 	{
 	public:
-		std::list<gsNetwork::BinaryPacketPtr> segments;
+		std::list<std::shared_ptr<gsNetwork::BinaryPacket>> segments;
 
 		MultiMessage();
-		MultiMessage(gsNetwork::BinaryPacketPtr packet);
+		MultiMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~MultiMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

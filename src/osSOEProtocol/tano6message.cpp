@@ -33,7 +33,7 @@ Tano6Message::Tano6Message()
 	setCrc(true);
 }
 
-Tano6Message::Tano6Message(BinaryPacketPtr packet)
+Tano6Message::Tano6Message(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ Tano6Message::Tano6Message(BinaryPacketPtr packet)
 Tano6Message::~Tano6Message()
 {}
 
-BinaryPacketPtr Tano6Message::serialize()
+std::shared_ptr<BinaryPacket> Tano6Message::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     // Send TANO 6
     *packet << (uint16_t)SOE_CHL_DATA_A;

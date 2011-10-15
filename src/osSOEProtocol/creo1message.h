@@ -43,10 +43,10 @@ namespace osSOEProtocol
 		uint32_t inventoryCredits;
 
 		Creo1Message();
-		Creo1Message(gsNetwork::BinaryPacketPtr packet);
+		Creo1Message(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~Creo1Message();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

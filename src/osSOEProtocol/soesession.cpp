@@ -36,7 +36,7 @@ using namespace gsNetwork;
 using namespace gsServer;
 using namespace osSOEProtocol;
 
-SOESession::SOESession(gsNetwork::NetworkAddressPtr address, gsNetwork::GameSocket *socket)
+SOESession::SOESession(std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket *socket)
 : Session(address, socket)
 {
 	setValid(false);
@@ -47,7 +47,7 @@ void SOESession::processIncomingQueue()
 	if (! m_incomingQueue.size())
 		return;
 
-	std::list<BinaryPacketPtr>::iterator itor = 
+	std::list<std::shared_ptr<BinaryPacket>>::iterator itor = 
 		m_incomingQueue.begin();
 
 	for (; itor != m_incomingQueue.end();)
@@ -58,7 +58,7 @@ void SOESession::processIncomingQueue()
 	}
 }
 
-void SOESession::handleSOELayer(BinaryPacketPtr packet) {
+void SOESession::handleSOELayer(std::shared_ptr<BinaryPacket> packet) {
 	if ((packet->getLength() - (packet->getReadPosition())) < 2)
 		return;
 
@@ -68,10 +68,10 @@ void SOESession::handleSOELayer(BinaryPacketPtr packet) {
 	{
 	case SOE_MULTI_PKT:
 		{
-			boost::shared_ptr<MultiMessage> message(GS_NEW MultiMessage(packet));
+			std::shared_ptr<MultiMessage> message(GS_NEW MultiMessage(packet));
 			message->unserialize();
 
-			std::list<BinaryPacketPtr>::iterator i = message->segments.begin();
+			std::list<std::shared_ptr<BinaryPacket>>::iterator i = message->segments.begin();
 
 			while (i != message->segments.end())
 			{
@@ -83,7 +83,7 @@ void SOESession::handleSOELayer(BinaryPacketPtr packet) {
 
 	case SOE_DISCONNECT:
 		{
-			boost::shared_ptr<DisconnectMessage> message(GS_NEW DisconnectMessage(packet));
+			std::shared_ptr<DisconnectMessage> message(GS_NEW DisconnectMessage(packet));
 			message->unserialize();
 			
 			safeTriggerEvent(Event_DisconnectRequested(message, this));
@@ -92,10 +92,10 @@ void SOESession::handleSOELayer(BinaryPacketPtr packet) {
 
 	case SOE_NET_STATUS_REQ:
 		{
-			boost::shared_ptr<NetStatusRequestMessage> message(GS_NEW NetStatusRequestMessage(packet));
+			std::shared_ptr<NetStatusRequestMessage> message(GS_NEW NetStatusRequestMessage(packet));
 			message->unserialize();
 
-			boost::shared_ptr<NetStatusResponseMessage> response(GS_NEW NetStatusResponseMessage());
+			std::shared_ptr<NetStatusResponseMessage> response(GS_NEW NetStatusResponseMessage());
 			response->tick = message->tick;
 			sendToRemote(response);
 		}
@@ -103,12 +103,12 @@ void SOESession::handleSOELayer(BinaryPacketPtr packet) {
 
 	case SOE_CHL_DATA_A:
 		{
-			boost::shared_ptr<DataChannelMessage> message(GS_NEW DataChannelMessage(packet));
+			std::shared_ptr<DataChannelMessage> message(GS_NEW DataChannelMessage(packet));
 			message->unserialize();
 
 			setClientSequence(message->clientSequence);
 
-			std::list<BinaryPacketPtr>::iterator i = message->segments.begin();
+			std::list<std::shared_ptr<BinaryPacket>>::iterator i = message->segments.begin();
 	
 			while (i != message->segments.end())
 			{
@@ -120,7 +120,7 @@ void SOESession::handleSOELayer(BinaryPacketPtr packet) {
 
 	case SOE_ACK_A:
 		{
-			boost::shared_ptr<AcknowledgeMessage> message(GS_NEW AcknowledgeMessage(packet));
+			std::shared_ptr<AcknowledgeMessage> message(GS_NEW AcknowledgeMessage(packet));
 			message->unserialize();
 
 			safeTriggerEvent(Event_Acknowledge(message, this));
@@ -134,7 +134,7 @@ void SOESession::handleSOELayer(BinaryPacketPtr packet) {
 	}
 }
 
-void SOESession::processClientCommand(gsNetwork::BinaryPacketPtr packet)
+void SOESession::processClientCommand(std::shared_ptr<gsNetwork::BinaryPacket> packet)
 {
 	if (packet->getLength() < 4)
 		return;

@@ -29,10 +29,10 @@ namespace osSOEProtocol
 	{
 	public:
 		PingMessage();
-		PingMessage(gsNetwork::BinaryPacketPtr packet);
+		PingMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~PingMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

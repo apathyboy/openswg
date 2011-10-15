@@ -20,7 +20,7 @@
 #ifndef GALAXY_CORE_EVENTTYPE
 #define GALAXY_CORE_EVENTTYPE
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace gsCore
 {

@@ -20,6 +20,8 @@
 
 #include "osSOEProtocol/radialmenu.h"
 
+#include <algorithm>
+
 #ifdef ERROR
 #undef ERROR
 #endif

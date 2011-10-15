@@ -33,7 +33,7 @@ FactionUpdateMessage::FactionUpdateMessage()
 	setCrc(true);
 }
 
-FactionUpdateMessage::FactionUpdateMessage(BinaryPacketPtr packet)
+FactionUpdateMessage::FactionUpdateMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ FactionUpdateMessage::FactionUpdateMessage(BinaryPacketPtr packet)
 FactionUpdateMessage::~FactionUpdateMessage()
 {}
 
-BinaryPacketPtr FactionUpdateMessage::serialize()
+std::shared_ptr<BinaryPacket> FactionUpdateMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

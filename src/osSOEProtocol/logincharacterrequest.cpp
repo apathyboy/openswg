@@ -33,7 +33,7 @@ LoginCharacterRequest::LoginCharacterRequest()
 	setCrc(true);
 }
 
-LoginCharacterRequest::LoginCharacterRequest(BinaryPacketPtr packet)
+LoginCharacterRequest::LoginCharacterRequest(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ LoginCharacterRequest::LoginCharacterRequest(BinaryPacketPtr packet)
 LoginCharacterRequest::~LoginCharacterRequest()
 {}
 
-BinaryPacketPtr LoginCharacterRequest::serialize()
+std::shared_ptr<BinaryPacket> LoginCharacterRequest::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
 	return packet;
 }

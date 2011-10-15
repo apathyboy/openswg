@@ -34,18 +34,18 @@ namespace osSOEProtocol
 		uint8_t posture;
 		
 		ShuttleAnimationMessage();
-		ShuttleAnimationMessage(gsNetwork::BinaryPacketPtr packet);
+		ShuttleAnimationMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~ShuttleAnimationMessage();
-		virtual boost::shared_ptr<NetworkMessage> clone() 
+		virtual std::shared_ptr<NetworkMessage> clone() 
 		{
-			boost::shared_ptr<ShuttleAnimationMessage> clone(GS_NEW ShuttleAnimationMessage);
+			std::shared_ptr<ShuttleAnimationMessage> clone(GS_NEW ShuttleAnimationMessage);
 			clone->objectId = objectId;
 			clone->posture = posture;
 
 			return clone;
 		}
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

@@ -31,7 +31,7 @@ namespace osSOEProtocol
 		CreatureObjectProxy();
 		virtual void createTemplate();
 		virtual void loadFromDatabaseId(uint64_t objectId) {};
-		virtual void addInRange(boost::shared_ptr<ObjectProxy> object){};
+		virtual void addInRange(std::shared_ptr<ObjectProxy> object){};
 		virtual void sendInRange(gsNetwork::NetworkMessagePtr message){};
 		virtual void sendReliableUpdate(gsServer::Session* session);
 		virtual void store() {}
@@ -43,7 +43,7 @@ namespace osSOEProtocol
 		virtual void createObject();
 	};
 
-	typedef boost::shared_ptr<CreatureObjectProxy> CreatureObjectProxyPtr;
+	typedef std::shared_ptr<CreatureObjectProxy> CreatureObjectProxyPtr;
 }
 
 #endif // OPENSWG_SOEPROTOCOL_CREATUREOBJECTPROXY

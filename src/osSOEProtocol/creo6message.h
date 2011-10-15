@@ -53,10 +53,10 @@ namespace osSOEProtocol
 		bool isPlayer;
 
 		Creo6Message();
-		Creo6Message(gsNetwork::BinaryPacketPtr packet);
+		Creo6Message(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~Creo6Message();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

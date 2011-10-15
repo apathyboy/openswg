@@ -32,10 +32,10 @@ namespace osSOEProtocol
 		gsServer::Session* session;
 
 		StationIdentifierMessage();
-		StationIdentifierMessage(gsNetwork::BinaryPacketPtr packet);
+		StationIdentifierMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~StationIdentifierMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

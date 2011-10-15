@@ -30,7 +30,7 @@ SessionRequestMessage::SessionRequestMessage()
 	setPriority(0);
 }
 
-SessionRequestMessage::SessionRequestMessage(BinaryPacketPtr packet)
+SessionRequestMessage::SessionRequestMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -40,9 +40,9 @@ SessionRequestMessage::SessionRequestMessage(BinaryPacketPtr packet)
 SessionRequestMessage::~SessionRequestMessage()
 {}
 
-BinaryPacketPtr SessionRequestMessage::serialize()
+std::shared_ptr<BinaryPacket> SessionRequestMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
 	return packet;
 }

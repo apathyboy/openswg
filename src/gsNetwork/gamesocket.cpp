@@ -36,13 +36,13 @@ GameSocket::GameSocket(ISocketHandler &h)
 {}
 
 
-void GameSocket::sendPacket(gsNetwork::BinaryPacketPtr packet, gsNetwork::NetworkAddressPtr address)
+void GameSocket::sendPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address)
 {
 	SendToBuf(*(address->getRawAddress()), packet->getData(), packet->getLength());
 }
 
 
-bool GameSocket::handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddressPtr address)
+bool GameSocket::handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
 {
 	// Any processing should be done by concrete game socket implementations.
 	return false;
@@ -51,8 +51,8 @@ bool GameSocket::handleRemoteIncoming(BinaryPacketPtr packet, NetworkAddressPtr 
 void GameSocket::OnRawData(const char *data, size_t length, sockaddr *sa_from, socklen_t sa_length)
 {
 	// Wrap the raw network data in GSF data structures.
-    NetworkAddressPtr address(GS_NEW NetworkAddress(sa_from, sa_length));    
-    BinaryPacketPtr   packet(GS_NEW BinaryPacket(data, length));    
+    std::shared_ptr<NetworkAddress> address(GS_NEW NetworkAddress(sa_from, sa_length));    
+    std::shared_ptr<BinaryPacket>   packet(GS_NEW BinaryPacket(reinterpret_cast<const unsigned char*>(data), length));    
 
     // Only trigger a remote message if the socket hasn't already 
     // handled the message (i.e., it was a low level request such as

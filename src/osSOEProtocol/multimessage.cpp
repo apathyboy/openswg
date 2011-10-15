@@ -32,7 +32,7 @@ MultiMessage::MultiMessage()
 	setCrc(true);
 }
 
-MultiMessage::MultiMessage(BinaryPacketPtr packet)
+MultiMessage::MultiMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -44,9 +44,9 @@ MultiMessage::MultiMessage(BinaryPacketPtr packet)
 MultiMessage::~MultiMessage()
 {}
 
-BinaryPacketPtr MultiMessage::serialize()
+std::shared_ptr<BinaryPacket> MultiMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
 	return packet;
 }
@@ -72,7 +72,7 @@ void MultiMessage::unserialize()
         else if (size < 1)
             return;
 
-		BinaryPacketPtr segment(GS_NEW BinaryPacket);
+		std::shared_ptr<BinaryPacket> segment(GS_NEW BinaryPacket);
 
 		for (uint32_t j = 0; j < size; ++j)
 			segment->append<char>(m_serializedData->read<char>());

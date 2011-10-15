@@ -33,7 +33,7 @@ UnkInt900Message::UnkInt900Message()
 	setCrc(true);
 }
 
-UnkInt900Message::UnkInt900Message(BinaryPacketPtr packet)
+UnkInt900Message::UnkInt900Message(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ UnkInt900Message::UnkInt900Message(BinaryPacketPtr packet)
 UnkInt900Message::~UnkInt900Message()
 {}
 
-BinaryPacketPtr UnkInt900Message::serialize()
+std::shared_ptr<BinaryPacket> UnkInt900Message::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

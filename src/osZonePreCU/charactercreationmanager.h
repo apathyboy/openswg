@@ -87,9 +87,9 @@ namespace osZonePreCU
 	public: // OPCODE HANDLING
 		virtual void registerOpcodes(gsServer::OpcodeFactory* factory);
 	
-		void handleCharacterCreationRequest(gsServer::Session* session, gsNetwork::BinaryPacketPtr message);
-		void handleCharacterOptionsValidation(gsServer::Session* session, gsNetwork::BinaryPacketPtr message);
-		void handleCreateCharacter(gsServer::Session* session, gsNetwork::BinaryPacketPtr message);
+		void handleCharacterCreationRequest(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message);
+		void handleCharacterOptionsValidation(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message);
+		void handleCreateCharacter(gsServer::Session* session, std::shared_ptr<gsNetwork::BinaryPacket> message);
 
 	public:
 		void initialize();

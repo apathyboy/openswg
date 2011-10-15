@@ -33,7 +33,7 @@ PlayCloseMessage::PlayCloseMessage()
 	setCrc(true);
 }
 
-PlayCloseMessage::PlayCloseMessage(BinaryPacketPtr packet)
+PlayCloseMessage::PlayCloseMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ PlayCloseMessage::PlayCloseMessage(BinaryPacketPtr packet)
 PlayCloseMessage::~PlayCloseMessage()
 {}
 
-BinaryPacketPtr PlayCloseMessage::serialize()
+std::shared_ptr<BinaryPacket> PlayCloseMessage::serialize()
 {
-    BinaryPacketPtr packet(new BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());

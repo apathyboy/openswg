@@ -33,7 +33,7 @@ GalaxyListMessage::GalaxyListMessage()
 	setCrc(true);
 }
 
-GalaxyListMessage::GalaxyListMessage(BinaryPacketPtr packet)
+GalaxyListMessage::GalaxyListMessage(std::shared_ptr<BinaryPacket> packet)
 : NetworkMessage()
 {
 	setPriority(0);
@@ -46,9 +46,9 @@ GalaxyListMessage::GalaxyListMessage(BinaryPacketPtr packet)
 GalaxyListMessage::~GalaxyListMessage()
 {}
 
-BinaryPacketPtr GalaxyListMessage::serialize()
+std::shared_ptr<BinaryPacket> GalaxyListMessage::serialize()
 {
-    BinaryPacketPtr packet(GS_NEW BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)3;

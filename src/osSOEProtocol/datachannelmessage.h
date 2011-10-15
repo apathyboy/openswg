@@ -30,15 +30,15 @@ namespace osSOEProtocol
 	class DataChannelMessage : public gsNetwork::NetworkMessage
 	{
 	public:
-		std::list<gsNetwork::BinaryPacketPtr> segments;
+		std::list<std::shared_ptr<gsNetwork::BinaryPacket>> segments;
 		uint16_t clientSequence;
 		uint16_t delta;
 
 		DataChannelMessage();
-		DataChannelMessage(gsNetwork::BinaryPacketPtr packet);
+		DataChannelMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~DataChannelMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

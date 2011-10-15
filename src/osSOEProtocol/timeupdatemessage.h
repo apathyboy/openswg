@@ -31,10 +31,10 @@ namespace osSOEProtocol
 		//uint64 time;
 
 		TimeUpdateMessage();
-		TimeUpdateMessage(gsNetwork::BinaryPacketPtr packet);
+		TimeUpdateMessage(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~TimeUpdateMessage();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

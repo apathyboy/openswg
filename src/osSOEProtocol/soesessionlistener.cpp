@@ -52,7 +52,7 @@ bool SOESessionListener::handleEvent(Event const & event)
 		uint16_t opcode = eventData->packet->read<uint16_t>();
 		if (opcode == SOE_SESSION_REQUEST)
 		{
-			boost::shared_ptr<SessionRequestMessage> message(GS_NEW SessionRequestMessage(eventData->packet));
+			std::shared_ptr<SessionRequestMessage> message(GS_NEW SessionRequestMessage(eventData->packet));
 			message->unserialize();
 		
 			boost::optional<SessionPtr> session = m_sessionManager->createSession(message, eventData->address, eventData->socket);

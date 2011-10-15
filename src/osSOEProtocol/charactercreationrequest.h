@@ -44,10 +44,10 @@ namespace osSOEProtocol
 		uint8_t tutorial;
 
 		CharacterCreationRequest();
-		CharacterCreationRequest(gsNetwork::BinaryPacketPtr packet);
+		CharacterCreationRequest(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		virtual ~CharacterCreationRequest();
 
-		virtual gsNetwork::BinaryPacketPtr serialize();
+		virtual std::shared_ptr<gsNetwork::BinaryPacket> serialize();
 		virtual void unserialize();
 	};
 }

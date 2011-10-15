@@ -25,7 +25,7 @@
 #include <gsCore/callback.h>
 #include <gsNetwork/binarypacket.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/optional.hpp>
 
 #include <map>
@@ -33,27 +33,27 @@
 namespace gsServer
 {
 	class Session;
-	typedef CBFunctor2<Session*, gsNetwork::BinaryPacketPtr> *HandlerFunctor;
+	typedef CBFunctor2<Session*, std::shared_ptr<gsNetwork::BinaryPacket>> *HandlerFunctor;
 
 	/** Define our handler function type.
 	 */
 	class OpcodeHandler
 	{
 	public:
-		OpcodeHandler(const CBFunctor2<Session*, gsNetwork::BinaryPacketPtr> &inHandler)
+		OpcodeHandler(const CBFunctor2<Session*, std::shared_ptr<gsNetwork::BinaryPacket>> &inHandler)
 			: m_handler(inHandler)
 		{}
 
-		void handle(Session* session, gsNetwork::BinaryPacketPtr packet)
+		void handle(Session* session, std::shared_ptr<gsNetwork::BinaryPacket> packet)
 		{
 			m_handler(session, packet);
 		}
 		
 	protected:
-		CBFunctor2<Session*, gsNetwork::BinaryPacketPtr> m_handler;
+		CBFunctor2<Session*, std::shared_ptr<gsNetwork::BinaryPacket>> m_handler;
 	};
 
-	typedef boost::shared_ptr<OpcodeHandler> OpcodeHandlerPtr;
+	typedef std::shared_ptr<OpcodeHandler> OpcodeHandlerPtr;
 	class OpcodeFactory
 	{
 	public:

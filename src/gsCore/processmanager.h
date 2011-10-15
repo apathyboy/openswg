@@ -22,7 +22,7 @@
 
 #include <gsCore/process.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <list>
 
@@ -39,7 +39,7 @@ namespace gsCore
         bool hasProcesses();
 
     protected:
-        typedef std::list< boost::shared_ptr<Process> > ProcessList;
+        typedef std::list< std::shared_ptr<Process> > ProcessList;
         ProcessList m_processList;
 
     private:
