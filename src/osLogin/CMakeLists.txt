@@ -22,7 +22,10 @@ if(WIN32)
         ${CMAKE_CURRENT_BINARY_DIR}/osLogin.vcxproj.user @ONLY
     )
     
-    configure_file(${CMAKE_SOURCE_DIR}/data/config/login.ini
-        ${CMAKE_BINARY_DIR}/config/login.ini @COPYONLY
-    )
+    if (NOT EXISTS ${CMAKE_BINARY_DIR}/config/login.ini)
+        file(COPY ${CMAKE_SOURCE_DIR}/data/config/login.ini
+            DESTINATION ${CMAKE_BINARY_DIR}/config)
+    endif()
 endif()
+
+install(TARGETS osLogin DESTINATION bin)

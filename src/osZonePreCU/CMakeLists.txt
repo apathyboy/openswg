@@ -21,8 +21,11 @@ if(WIN32)
     configure_file(${CMAKE_SOURCE_DIR}/build-aux/windows/user_project.vcxproj.in
         ${CMAKE_CURRENT_BINARY_DIR}/osZonePreCU.vcxproj.user @ONLY
     )
-    
-    configure_file(${CMAKE_SOURCE_DIR}/data/config/zoneprecu.ini
-        ${CMAKE_BINARY_DIR}/config/zoneprecu.ini @COPYONLY
-    )
+        
+    if (NOT EXISTS ${CMAKE_BINARY_DIR}/config/login.ini)
+        file(COPY ${CMAKE_SOURCE_DIR}/data/config/login.ini
+            DESTINATION ${CMAKE_BINARY_DIR}/config)
+    endif()
 endif()
+
+install(TARGETS osZonePreCU DESTINATION bin)

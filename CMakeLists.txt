@@ -78,6 +78,37 @@ if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244")
 	
 	file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/logs)
+	
+	set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
+	    
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/config DESTINATION bin)
+	
+	install(
+	    DIRECTORY 
+	          ${GLOG_DEBUG_DLL_PATH}/
+	          ${MYSQL_DLL_PATH}/
+	          ${MYSQLPP_DEBUG_DLL_PATH}/
+	          ${ZLIB_DEBUG_DLL_PATH}/
+	    DESTINATION bin
+	    CONFIGURATIONS Debug
+	    FILES_MATCHING PATTERN "*.dll"
+	)
+	
+	install(
+	    DIRECTORY 
+	          ${GLOG_RELEASE_DLL_PATH}/
+	          ${MYSQL_DLL_PATH}/
+	          ${MYSQLPP_RELEASE_DLL_PATH}/
+	          ${ZLIB_RELEASE_DLL_PATH}/
+	    DESTINATION bin
+	    CONFIGURATIONS Release
+	    FILES_MATCHING PATTERN "*.dll"
+	)
+	
+	install(
+	    DIRECTORY 
+	    DESTINATION bin/logs
+	)
 endif()
 
 add_subdirectory(src/gsApplication)
