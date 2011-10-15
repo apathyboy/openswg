@@ -28,7 +28,6 @@
 #include <gsCore/eventmanager.h>
 #include <gsCore/processmanager.h>
 #include <gsCore/sha1.h>
-#include <gsServer/serverapplication.h>
 #include <gsNetwork/events.h>
 #include <gsNetwork/adminsocket.h>
 #include <gsNetwork/clientsocket.h>

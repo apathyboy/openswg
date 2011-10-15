@@ -1,6 +1,6 @@
 /**
  * Galaxy Open-Source Massively Multiplayer Game Simulation Engine
- * Copyright (C) 2007 OpenSWG Team <http://www.openswg.com>
+ * Copyright (C) 2011 OpenSWG Team <http://openswg.org>
  */
 
 // *********************************************************************
@@ -20,13 +20,19 @@
 #ifndef GALAXY_SERVER_SERVERAPPLICATION
 #define GALAXY_SERVER_SERVERAPPLICATION
 
-#include <gsApplication/application.h>
-#include <gsCore/macros.h>
-#include <gsNetwork/gamesocket.h>
-#include <gsNetwork/gamesocketfactory.h>
-#include <gsNetwork/gamesocketlistener.h>
+#include <cstdint>
 
-#include <Sockets/SocketHandler.h>
+#include <memory>
+#include <string>
+
+#include "gsApplication/application.h"
+
+namespace gsNetwork
+{
+    class GameSocket;
+    class GameSocketListener;
+    class GameSocketFactory;
+};
 
 namespace gsServer
 {
@@ -52,10 +58,15 @@ namespace gsServer
 		uint32_t getServerId() {return m_serverId;}
 
     protected:
+        class ServerApplicationImpl;
+        std::unique_ptr<ServerApplicationImpl> impl_;
+
         gsNetwork::GameSocketListener* m_socketListener;
         gsNetwork::GameSocketFactory* m_socketFactory;
+
 		std::string m_serverType;
-		uint32_t m_serverId;
+		
+        uint32_t m_serverId;
     };
 }
 

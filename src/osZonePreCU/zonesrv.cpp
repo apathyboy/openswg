@@ -33,8 +33,6 @@
 #include <osSOEProtocol/soesocketfactory.h>
 #include <gsNetwork/commsocket.h>
 
-#include <gsServer/serverapplication.h>
-
 #include <gsCore/datastore.h> // The datastore has to be loaded after the
                               // network layer to prevent header conflicts.
 

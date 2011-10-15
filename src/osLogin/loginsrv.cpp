@@ -19,31 +19,19 @@
 
 #include <crtdbg.h>
 
+#include <memory>
+#include <string>
+
 #include <glog/logging.h>
 
-#include <gsCore/globals.h>
-#include <gsCore/macros.h>
-#include <gsCore/options.h>
-#include <gsCore/timing.h>
+#include "osLogin/loginserver.h"
 
-#include <osSOEProtocol/soeclientsocket.h>
-#include <osSOEProtocol/soesocketfactory.h>
-#include <gsNetwork/commsocket.h>
-
-#include <gsServer/serverapplication.h>
-
-#include <gsCore/datastore.h> // The datastore has to be loaded after the
-                              // network layer to prevent header conflicts.
-
-#include <osLogin/loginserver.h>
-
-#include <boost/shared_ptr.hpp>
+using namespace std;
 
 // Global constants.
-char const * const kpAppName = "OpenSWG Login Server";
-char const * const kpVersion = "1.0.0";
-
-using namespace gsCore;
+const string kpAppName = "OpenSWG Login Server";
+const string kpVersion = "1.0.0";
+const string kpConfigFile = "config/login.ini";
 
 int main(int argc, char *argv[])
 {    
@@ -74,22 +62,19 @@ int main(int argc, char *argv[])
     FLAGS_stderrthreshold = 1;
 
     // Print out headers for the console.
-    printf("%s v%s\n", kpAppName, kpVersion);
-    printf("Copyright (c) 2006, 2007 the OpenSWG Team\n\n");
-
-    // Declare variables.
-    std::string configFilename = "config/login.ini";
-
+    cout << kpAppName << " v" << kpVersion << "\n";
+    cout << "Copyright (c) 2006 - 2011 the OpenSWG Team\n\n" << endl;
+    
     // Create an instance of the server application. We'll customize
     // this by adding in our own custom sockets and processes.
-	LoginServer* app = GS_NEW LoginServer(std::string("LoginServer:29511"), 29511);
+	LoginServer app("LoginServer:29511", 29511);
 
     // This is where the configuration file is parsed and we
     // can begin setting up the application environment.
-    app->initialize(configFilename);
+    app.initialize(kpConfigFile);
     
     // Start the main server loop.
-    app->run();
+    app.run();
 
 	//_CRTDBG_LEAK_CHECK_DF is used at program initialization to force a 
 	//   leak check just before program exit. This is important because

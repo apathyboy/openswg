@@ -20,10 +20,8 @@
 #ifndef GALAXY_SERVER_SERVEREVENTLISTENER
 #define GALAXY_SERVER_SERVEREVENTLISTENER
 
-#include <gsCore/eventmanager.h>
-#include <gsCore/globals.h>
-#include <gsCore/macros.h>
-#include <gsServer/serverapplication.h>
+#include "gsCore/eventmanager.h"
+#include "gsServer/server_application.h"
 
 namespace gsServer
 {

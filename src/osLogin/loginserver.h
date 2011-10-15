@@ -23,8 +23,9 @@
 #include <cstdint>
 #include <string>
 
+#include "gsServer/server_application.h"
+
 #include <gsServer/opcodehandler.h>
-#include <gsServer/serverapplication.h>
 #include <gsServer/session.h>
 #include <gsNetwork/binarypacket.h>
 #include <osLogin/authmanager.h>

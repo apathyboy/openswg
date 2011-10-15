@@ -20,8 +20,9 @@
 #ifndef OPENSWG_ZONEPRECU_PRECUZONESERVER
 #define OPENSWG_ZONEPRECU_PRECUZONESERVER
 
+#include "gsServer/server_application.h"
+
 #include <gsServer/opcodehandler.h>
-#include <gsServer/serverapplication.h>
 #include <gsServer/session.h>
 #include <gsNetwork/binarypacket.h>
 #include <osSOEProtocol/galaxymanager.h>
