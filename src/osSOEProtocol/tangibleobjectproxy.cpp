@@ -110,9 +110,9 @@ void TangibleObjectProxy::store()
 		
         mysqlpp::StoreQueryResult result = q.store();
                 
-		if (result)
+        if (result && result.num_rows() > 0)
         {
-		    q = Datastore::getStationDB().query();
+		    q = Datastore::getGalaxyDB().query();
 
 		    q << "UPDATE `character_items` "
               << "SET character_id = " << getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->getValue() << " , "

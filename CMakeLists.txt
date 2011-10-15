@@ -74,7 +74,6 @@ endif()
 add_subdirectory(src/gsApplication)
 add_subdirectory(src/gsCore)
 add_subdirectory(src/gsNetwork)
-add_subdirectory(src/gsObjects)
 add_subdirectory(src/gsServer)
 add_subdirectory(src/Sockets)
 

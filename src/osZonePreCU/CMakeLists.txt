@@ -6,7 +6,6 @@ target_link_libraries(osZonePreCU
     gsApplication
     gsCore
     gsNetwork
-    gsObjects
     gsServer
     osSOEProtocol
     Sockets

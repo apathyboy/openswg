@@ -6,7 +6,6 @@ target_link_libraries(osLogin
     gsApplication
     gsCore
     gsNetwork
-    gsObjects
     gsServer
     osSOEProtocol
     Sockets
