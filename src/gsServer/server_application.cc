@@ -114,25 +114,25 @@ void ServerApplication::initialize(const std::string& configFilename)
     if (adminSocket != SOCKET_DISABLED)
     {
         sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::AdminSocket::gkName, io_service_, adminSocket));
-        LOG(INFO) << "Listening for admin messages on port: " << adminSocket;
+        LOG(WARNING) << "Listening for admin messages on port: " << adminSocket;
     }
 
     if (clientSocket != SOCKET_DISABLED)
     {
         sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::ClientSocket::gkName, io_service_, clientSocket));
-        LOG(INFO) << "Listening for client messages on port: " << clientSocket;
+        LOG(WARNING) << "Listening for client messages on port: " << clientSocket;
     }
 
     if (commSocket != SOCKET_DISABLED)
     {
         sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::CommSocket::gkName, io_service_, commSocket));
-        LOG(INFO) << "Listening for server messages on port: " << commSocket;
+        LOG(WARNING) << "Listening for server messages on port: " << commSocket;
     }
 
     if (pingSocket != SOCKET_DISABLED)
     {
         sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::PingSocket::gkName, io_service_, pingSocket));
-        LOG(INFO) << "Listening for ping messages on port: " << pingSocket;
+        LOG(WARNING) << "Listening for ping messages on port: " << pingSocket;
     }
 }
 

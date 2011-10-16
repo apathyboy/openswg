@@ -30,7 +30,11 @@ const string UdpEventSocket::TYPE_NAME = "game_socket";
 
 UdpEventSocket::UdpEventSocket(boost::asio::io_service& io_service, uint16_t port)
 : socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
-{}
+  , buffer_(496)
+  , port_(port)
+{
+    AsyncReceive();
+}
 
 void UdpEventSocket::sendServerHeader(
     std::string server_name, 
