@@ -59,11 +59,11 @@ bool SOESessionListener::handleEvent(Event const & event)
 			
 			if (! session)
 			{
-                LOG(ERROR) << "Unable to create session for address: " << eventData->address->getAddressString();
+                LOG(ERROR) << "Unable to create session for address: " << ToString(*eventData->address);
 				return true;			
 			}
 			
-            LOG(INFO) << "Session created for address: " << eventData->address->getAddressString();
+            LOG(INFO) << "Session created for address: " << ToString(*eventData->address);
             LOG(INFO) << "Total sessions: " << m_sessionManager->countSessions();
 		}
     }

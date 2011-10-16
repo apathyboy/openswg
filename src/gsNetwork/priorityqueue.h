@@ -22,29 +22,31 @@
 
 #include <cstdint>
 
-#include <gsNetwork/gamesocket.h>
-#include <gsNetwork/networkaddress.h>
-#include <gsNetwork/networkmessage.h>
-
 #include <list>
+#include <map>
+
+#include "gsNetwork/network_address.h"
 
 namespace gsNetwork
 {
+    class UdpEventSocket;
+    class NetworkMessage;
+
 	class PriorityQueue
 	{
 	public:
 		PriorityQueue(uint32_t slots = 1);
 		virtual ~PriorityQueue();
 	
-		virtual void queue(NetworkMessagePtr message);
-		virtual void resend(uint16_t sequence, GameSocket* socket, std::shared_ptr<NetworkAddress> address);
-		virtual void sendQueue(GameSocket* socket, std::shared_ptr<NetworkAddress> address);
+		virtual void queue(std::shared_ptr<NetworkMessage> message);
+		virtual void resend(uint16_t sequence, std::shared_ptr<UdpEventSocket> socket, std::shared_ptr<NetworkAddress> address);
+		virtual void sendQueue(std::shared_ptr<UdpEventSocket> socket, std::shared_ptr<NetworkAddress> address);
 
 	protected:
 		virtual uint16_t getNextSequence();
-		std::list<NetworkMessagePtr> m_messages;
+		std::list<std::shared_ptr<NetworkMessage>> m_messages;
 		
-		typedef std::map<uint16_t, NetworkMessagePtr> SentQueue;
+		typedef std::map<uint16_t, std::shared_ptr<NetworkMessage>> SentQueue;
 		SentQueue m_sentMessages;
 
 		uint16_t m_sequence;

@@ -68,7 +68,7 @@ void ObjectProxy::radialSelection(uint8_t option, gsServer::Session* session)
 		
 void ObjectProxy::sendMovementUpdate(gsServer::Session* session)
 {
-	std::shared_ptr<MovementMessage> message(GS_NEW MovementMessage);
+	std::shared_ptr<MovementMessage> message(new MovementMessage);
 
 	message->objectId; // Target (this is the character moving)
     message->ticks; // Ticks?

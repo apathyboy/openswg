@@ -18,8 +18,10 @@
 // *********************************************************************
 
 #include <osSOEProtocol/postureupdatemessage.h>
+
+#include <boost/asio.hpp>
+
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -49,7 +51,7 @@ PostureUpdateMessage::~PostureUpdateMessage()
 		
 std::shared_ptr<NetworkMessage> PostureUpdateMessage::clone()
 {
-	std::shared_ptr<PostureUpdateMessage> clone(GS_NEW PostureUpdateMessage);
+	std::shared_ptr<PostureUpdateMessage> clone(new PostureUpdateMessage);
 	clone->objectId = objectId; // Target (this is the character moving)
 	clone->posture = posture;
 

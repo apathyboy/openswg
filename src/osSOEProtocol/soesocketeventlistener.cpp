@@ -28,7 +28,7 @@ using namespace gsNetwork;
 using namespace gsServer;
 using namespace osSOEProtocol;
 
-SOESocketEventListener::SOESocketEventListener(SOEClientSocket* socket)
+SOESocketEventListener::SOESocketEventListener(std::shared_ptr<SOEClientSocket> socket)
 : m_socket(socket)
 {}
 

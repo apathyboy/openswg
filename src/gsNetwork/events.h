@@ -26,8 +26,8 @@
 #include <gsCore/globals.h>
 #include <gsCore/macros.h>
 #include <gsNetwork/binarypacket.h>
-#include <gsNetwork/gamesocket.h>
-#include <gsNetwork/networkaddress.h>
+#include <gsNetwork/udp_event_socket.h>
+#include <gsNetwork/network_address.h>
 
 namespace gsNetwork
 {
@@ -37,7 +37,7 @@ namespace gsNetwork
     struct EventData_RemoteConnectionRequest : public gsCore::IEventData
     {
         explicit EventData_RemoteConnectionRequest(std::shared_ptr<NetworkAddress> inAddress, 
-                                                   GameSocket* inSocket,
+                                                   std::shared_ptr<UdpEventSocket> inSocket,
                                                    uint32_t inConnectionId)
             : address(inAddress)
             , socket(inSocket)
@@ -45,7 +45,7 @@ namespace gsNetwork
         {}
 
         std::shared_ptr<NetworkAddress> address;
-        GameSocket* socket;
+        std::shared_ptr<UdpEventSocket> socket;
         uint32_t connectionId; 
     };
 
@@ -53,7 +53,7 @@ namespace gsNetwork
     {
     public:
         static char const * const gkName;
-        explicit Event_RemoteConnectionRequest(std::shared_ptr<NetworkAddress> address, GameSocket* socket, uint32_t connectionId)
+        explicit Event_RemoteConnectionRequest(std::shared_ptr<NetworkAddress> address, std::shared_ptr<UdpEventSocket> socket, uint32_t connectionId)
             : gsCore::Event(gkName,
                     0,
                     gsCore::IEventDataPtr(GS_NEW EventData_RemoteConnectionRequest(address, socket, connectionId)))
@@ -66,20 +66,20 @@ namespace gsNetwork
     struct EventData_RemoteConnectionEstablished : public gsCore::IEventData
     {
         explicit EventData_RemoteConnectionEstablished(std::string inAddress, 
-                                                       GameSocket* inSocket)
+                                                       std::shared_ptr<UdpEventSocket> inSocket)
             : address(inAddress)
             , socket(inSocket)
         {}
 
         std::string address;
-        GameSocket* socket;
+        std::shared_ptr<UdpEventSocket> socket;
     };
 
     class Event_RemoteConnectionEstablished : public gsCore::Event
     {
     public:
         static char const * const gkName;
-        explicit Event_RemoteConnectionEstablished(std::string address, GameSocket* socket)
+        explicit Event_RemoteConnectionEstablished(std::string address, std::shared_ptr<UdpEventSocket> socket)
             : gsCore::Event(gkName,
                     0,
                     gsCore::IEventDataPtr(GS_NEW EventData_RemoteConnectionEstablished(address, socket)))
@@ -94,7 +94,7 @@ namespace gsNetwork
     {
         explicit EventData_RemoteMessage(std::shared_ptr<NetworkAddress> inAddress, 
                                          std::shared_ptr<BinaryPacket> inPacket, 
-                                         GameSocket* inSocket)
+                                         std::shared_ptr<UdpEventSocket> inSocket)
             : address(inAddress)
             , packet(inPacket)
             , socket(inSocket)
@@ -102,7 +102,7 @@ namespace gsNetwork
 
         std::shared_ptr<NetworkAddress> address;
         std::shared_ptr<BinaryPacket> packet;
-        GameSocket* socket;
+        std::shared_ptr<UdpEventSocket> socket;
     };
 
     class Event_RemoteMessage : public gsCore::Event
@@ -111,7 +111,7 @@ namespace gsNetwork
         static char const * const gkName;
         explicit Event_RemoteMessage(std::shared_ptr<NetworkAddress> address, 
                                      std::shared_ptr<BinaryPacket> packet, 
-                                     GameSocket* socket)
+                                     std::shared_ptr<UdpEventSocket> socket)
             : gsCore::Event(gkName,
                     0,
                     gsCore::IEventDataPtr(GS_NEW EventData_RemoteMessage(address, packet, socket)))

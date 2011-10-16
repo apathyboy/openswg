@@ -18,8 +18,10 @@
 // *********************************************************************
 
 #include <osSOEProtocol/timeupdatemessage.h>
+
+#include <boost/asio.hpp>
+
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 #include <gsCore/timing.h>
 
 using namespace gsCore;

@@ -28,12 +28,12 @@
 
 namespace gsNetwork
 {
-    class UdpEventSocket
+    class UdpEventSocket : public std::enable_shared_from_this<UdpEventSocket>
     {
     public:
         static const std::string TYPE_NAME;
 
-        UdpEventSocket(boost::asio::io_service& io_service);
+        UdpEventSocket(boost::asio::io_service& io_service, uint16_t port);
 
         virtual void sendServerHeader(
             std::string server_name, 
@@ -41,15 +41,15 @@ namespace gsNetwork
         
 		virtual void sendNewConnectionResponse(
             std::shared_ptr<BinaryPacket> packet, 
-            std::shared_ptr<NetworkAddress2> address);
+            std::shared_ptr<NetworkAddress> address);
 
 		virtual void sendPacket(
             std::shared_ptr<BinaryPacket> packet, 
-            std::shared_ptr<NetworkAddress2> address);
+            std::shared_ptr<NetworkAddress> address);
 
 		virtual void sendPacket(
             std::shared_ptr<BinaryPacket> packet, 
-            std::shared_ptr<NetworkAddress2> address, 
+            std::shared_ptr<NetworkAddress> address, 
             bool encrypt, 
             bool compress, 
             bool crc);
@@ -66,12 +66,14 @@ namespace gsNetwork
 		 */
         virtual bool handleRemoteIncoming(
             std::shared_ptr<BinaryPacket> packet, 
-            std::shared_ptr<NetworkAddress2> address);
+            std::shared_ptr<NetworkAddress> address);
 
     private:
         void HandleReceive(
             const boost::system::error_code& error,
             size_t bytes_received);
+
+        void HandleSend(const boost::system::error_code& error, size_t bytes_sent);
 
         void AsyncReceive();
         

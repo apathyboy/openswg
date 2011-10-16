@@ -60,7 +60,7 @@ void SessionManager::update(const uint64_t updateTimestamp)
 		}
 		else
 		{
-            LOG(WARNING) << "Removing invalid session for address: " << (*i).second->getRemoteAddress()->getAddressString();
+            LOG(WARNING) << "Removing invalid session for address: " << ToString(*(*i).second->getRemoteAddress());
 			removeSession(i++);
 		}
 	}
@@ -73,7 +73,7 @@ void SessionManager::removeDeadSessions(const uint64_t updateTimestamp)
 	{
 		if (updateTimestamp - (*i).second->getLastUpdateTime() > 1000 * 60)
 		{
-            LOG(WARNING) << "Removing inactive session for address: " << (*i).second->getRemoteAddress()->getAddressString();
+            LOG(WARNING) << "Removing inactive session for address: " << ToString(*(*i).second->getRemoteAddress());
 			removeSession(i++);
 		}
 		else 
@@ -81,7 +81,7 @@ void SessionManager::removeDeadSessions(const uint64_t updateTimestamp)
 	}
 }
 
-boost::optional<SessionPtr> SessionManager::createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, GameSocket *socket)
+boost::optional<SessionPtr> SessionManager::createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, std::shared_ptr<UdpEventSocket> socket)
 {
 	return NULL;
 }
@@ -96,12 +96,12 @@ void SessionManager::initialize()
 
 void SessionManager::addSession(SessionPtr session)
 {
-	SessionMap::iterator i = m_sessions.find(session->getRemoteAddress()->getAddressString());
+	SessionMap::iterator i = m_sessions.find(ToString(*(session->getRemoteAddress())));
 
 	if (i != m_sessions.end())
 		return;
 
-	m_sessions[session->getRemoteAddress()->getAddressString()] = session;
+	m_sessions[ToString(*(session->getRemoteAddress()))] = session;
     
     LOG(INFO) << "Current session count: " << m_sessions.size();
 }

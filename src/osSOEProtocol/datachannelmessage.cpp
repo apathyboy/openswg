@@ -19,7 +19,6 @@
 
 #include <osSOEProtocol/datachannelmessage.h>
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -78,7 +77,7 @@ void DataChannelMessage::unserialize()
 			else if (size < 6 ) // Minimum datachannel packet size
 				return;
 
-			std::shared_ptr<BinaryPacket> segment(GS_NEW BinaryPacket);
+			std::shared_ptr<BinaryPacket> segment(new BinaryPacket);
 
 			uint16_t group = m_serializedData->read<uint16_t>();
 			for (uint32_t j = 0; j < (size-(uint32_t)2); ++j)
@@ -92,7 +91,7 @@ void DataChannelMessage::unserialize()
 
 	else
 	{
-		std::shared_ptr<BinaryPacket> segment(GS_NEW BinaryPacket);
+		std::shared_ptr<BinaryPacket> segment(new BinaryPacket);
 
 		for (uint32_t i = m_serializedData->getReadPosition(); i < m_serializedData->getLength(); ++i)
 			segment->append<char>(m_serializedData->read<char>());

@@ -53,7 +53,7 @@ void ObjectGrid::removeObject(ObjectProxyPtr object)
 	{
 		if (object->getObject()->getObjectId() == (*i)->getObject()->getObjectId())
 		{
-			std::shared_ptr<ObjDestroyMessage> destroy(GS_NEW ObjDestroyMessage());
+			std::shared_ptr<ObjDestroyMessage> destroy(new ObjDestroyMessage());
 			destroy->objectId = (*i)->getObject()->getObjectId();
 			object->getSession()->sendToRemote(destroy);
 		

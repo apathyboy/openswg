@@ -21,11 +21,20 @@
 #define GALAXY_NETWORK_NETWORK_ADDRESS_H_
 
 #include <memory>
+#include <string>
+
 #include <boost/asio/ip/udp.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace gsNetwork
 {
-    typedef boost::asio::ip::udp::endpoint NetworkAddress2;
+    typedef boost::asio::ip::udp::endpoint NetworkAddress;
+
+    inline std::string ToString(const NetworkAddress& address)
+    {
+        std::string output = address.address().to_string() + ":" + boost::lexical_cast<std::string>(address.port());
+        return output;
+    }
 }
 
 #endif  // GALAXY_NETWORK_NETWORK_ADDRESS_H_

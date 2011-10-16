@@ -19,7 +19,6 @@
 
 #include <osSOEProtocol/acknowledgemessage.h>
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -43,7 +42,7 @@ AcknowledgeMessage::~AcknowledgeMessage()
 
 std::shared_ptr<BinaryPacket> AcknowledgeMessage::serialize()
 {
-    std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet = std::make_shared<BinaryPacket>();
     *packet << (uint16_t)SOE_ACK_A;
     *packet << (uint16_t)sequence;
     *packet << (uint8_t)0 << (uint16_t)0;

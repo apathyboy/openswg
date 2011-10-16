@@ -39,12 +39,12 @@ namespace osSOEProtocol
     public: // gsCore::Process virtual overrides
 		virtual void initialize();
         virtual void update(const uint64_t updateTimestamp);		
-		virtual boost::optional<gsServer::SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
+		virtual boost::optional<gsServer::SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, std::shared_ptr<gsNetwork::UdpEventSocket> socket);
 
         inline uint32_t generateRandomCrcSeed() {
             uint32_t crcSeed;
             srand((unsigned int)time(0));
-            uint16_t *test = GS_NEW uint16_t[2];
+            uint16_t *test = new uint16_t[2];
             uint16_t randomNum = rand()%65535;
             memcpy(&test[0], &randomNum, 2);
             randomNum = rand()%65535;

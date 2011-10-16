@@ -21,8 +21,6 @@
 #include <osSOEProtocol/encryption.h>
 #include <osSOEProtocol/opcodes.h>
 
-#include <Sockets/Utility.h>
-
 using namespace gsNetwork;
 using namespace osSOEProtocol;
 

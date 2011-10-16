@@ -36,7 +36,7 @@ using namespace gsNetwork;
 using namespace gsServer;
 using namespace osSOEProtocol;
 
-SOESession::SOESession(std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket *socket)
+SOESession::SOESession(std::shared_ptr<gsNetwork::NetworkAddress> address, std::shared_ptr<gsNetwork::UdpEventSocket> socket)
 : Session(address, socket)
 {
 	setValid(false);

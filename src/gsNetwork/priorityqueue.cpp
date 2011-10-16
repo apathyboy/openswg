@@ -17,7 +17,10 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsNetwork/priorityqueue.h>
+#include "gsNetwork/priorityqueue.h"
+
+#include "gsNetwork/networkmessage.h"
+#include "gsNetwork/udp_event_socket.h"
 
 using namespace gsNetwork;
 
@@ -34,12 +37,12 @@ uint16_t PriorityQueue::getNextSequence()
 	return m_sequence++;
 }
 
-void PriorityQueue::queue(NetworkMessagePtr message)
+void PriorityQueue::queue(std::shared_ptr<NetworkMessage> message)
 {
 	m_messages.push_back(message);
 }
 
-void PriorityQueue::resend(uint16_t sequence, GameSocket* socket, std::shared_ptr<NetworkAddress> address)
+void PriorityQueue::resend(uint16_t sequence, std::shared_ptr<UdpEventSocket> socket, std::shared_ptr<NetworkAddress> address)
 {
 	SentQueue::iterator i = m_sentMessages.find(sequence);
 
@@ -52,14 +55,14 @@ void PriorityQueue::resend(uint16_t sequence, GameSocket* socket, std::shared_pt
 	}
 }
 
-void PriorityQueue::sendQueue(GameSocket* socket, std::shared_ptr<NetworkAddress> address)
+void PriorityQueue::sendQueue(std::shared_ptr<UdpEventSocket> socket, std::shared_ptr<NetworkAddress> address)
 {
 	if (m_messages.size() < 1) return;
 
-	std::list<NetworkMessagePtr>::iterator i = m_messages.begin();
+	std::list<std::shared_ptr<NetworkMessage>>::iterator i = m_messages.begin();
 	for(;i != m_messages.end();)
 	{
-		NetworkMessagePtr message = *i;
+		std::shared_ptr<NetworkMessage> message = *i;
 
 		if (message->reschedule() && (! message->canSendScheduled()))
 		{

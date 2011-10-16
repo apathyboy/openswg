@@ -28,8 +28,8 @@ using namespace std;
 
 const string UdpEventSocket::TYPE_NAME = "game_socket";
 
-UdpEventSocket::UdpEventSocket(boost::asio::io_service& io_service)
-: socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 111))
+UdpEventSocket::UdpEventSocket(boost::asio::io_service& io_service, uint16_t port)
+: socket_(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
 {}
 
 void UdpEventSocket::sendServerHeader(
@@ -39,21 +39,30 @@ void UdpEventSocket::sendServerHeader(
 
 void UdpEventSocket::sendNewConnectionResponse(
     std::shared_ptr<BinaryPacket> packet, 
-    std::shared_ptr<NetworkAddress2> address) 
+    std::shared_ptr<NetworkAddress> address) 
 {}
 
 void UdpEventSocket::sendPacket(
     std::shared_ptr<BinaryPacket> packet, 
-    std::shared_ptr<NetworkAddress2> address)
-{}
+    std::shared_ptr<NetworkAddress> address)
+{
+    socket_.async_send_to(boost::asio::buffer(packet->getData(), packet->getLength()),
+      *address,
+      std::tr1::bind(
+        &UdpEventSocket::HandleSend, this,
+        std::tr1::placeholders::_1,
+        std::tr1::placeholders::_2));
+}
 
 void UdpEventSocket::sendPacket(
     std::shared_ptr<BinaryPacket> packet, 
-    std::shared_ptr<NetworkAddress2> address, 
+    std::shared_ptr<NetworkAddress> address, 
     bool encrypt, 
     bool compress, 
     bool crc) 
-{}
+{
+    sendPacket(packet, address);
+}
 
 /**
  * This virtual override allows GameSocket implementations a chance to 
@@ -67,7 +76,7 @@ void UdpEventSocket::sendPacket(
  */
 bool UdpEventSocket::handleRemoteIncoming(
     std::shared_ptr<BinaryPacket> packet, 
-    std::shared_ptr<NetworkAddress2> address)
+    std::shared_ptr<NetworkAddress> address)
 {
     return false;
 }
@@ -87,16 +96,30 @@ void UdpEventSocket::HandleReceive(
     // handled the message (i.e., it was a low level request such as
     // a session request or resend request, could be potential 
 	// mischief as well).
-    //if (! handleRemoteIncoming(packet, address))
-    //{
-    //    // Trigger a remote message event which will be read by
-    //    // the simulation layer, which in turn will pass the message
-    //    // along to the intended recipient.
-    //    safeQueueEvent(EventPtr(GS_NEW Event_RemoteMessage(address, packet, this)));
-    //}
+    if (! handleRemoteIncoming(packet, address))
+    {
+        // Trigger a remote message event which will be read by
+        // the simulation layer, which in turn will pass the message
+        // along to the intended recipient.
+        safeQueueEvent(EventPtr(GS_NEW Event_RemoteMessage(address, packet, shared_from_this())));
+    }
 
     AsyncReceive();
 }
 
+void UdpEventSocket::HandleSend(const boost::system::error_code& error, size_t bytes_sent) 
+{
+    /* @todo: Handle send issues here */
+    error, bytes_sent;
+}
+
 void UdpEventSocket::AsyncReceive()
-{}
+{
+    socket_.async_receive_from(boost::asio::buffer(buffer_),
+      remote_endpoint_,
+        std::tr1::bind(
+          &UdpEventSocket::HandleReceive,
+          this,
+          std::tr1::placeholders::_1,
+          std::tr1::placeholders::_2));
+}

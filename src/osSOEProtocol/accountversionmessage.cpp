@@ -19,7 +19,6 @@
 
 #include <osSOEProtocol/accountversionmessage.h>
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -48,7 +47,7 @@ AccountVersionMessage::~AccountVersionMessage()
 
 std::shared_ptr<BinaryPacket> AccountVersionMessage::serialize()
 {
-    std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
+    std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
 	return packet;
 }
 

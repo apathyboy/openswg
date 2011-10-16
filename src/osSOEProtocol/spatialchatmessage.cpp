@@ -18,8 +18,10 @@
 // *********************************************************************
 
 #include <osSOEProtocol/spatialchatmessage.h>
+
+#include <boost/asio.hpp>
+
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -48,7 +50,7 @@ SpatialChatMessage::~SpatialChatMessage()
 		
 std::shared_ptr<NetworkMessage> SpatialChatMessage::clone()
 {
-	std::shared_ptr<SpatialChatMessage> clone(GS_NEW SpatialChatMessage);
+	std::shared_ptr<SpatialChatMessage> clone(new SpatialChatMessage);
 	clone->message = this->message;
 	clone->targetId = this->targetId;
 	clone->moods = this->moods;	

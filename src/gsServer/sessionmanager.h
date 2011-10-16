@@ -29,7 +29,7 @@
 
 #include <gsCore/process.h>
 #include <gsNetwork/binarypacket.h>
-#include <gsNetwork/networkaddress.h>
+#include <gsNetwork/network_address.h>
 #include <gsServer/session.h>
 #include <gsServer/opcodehandler.h>
 
@@ -64,7 +64,7 @@ namespace gsServer
         void addSession(SessionPtr session);
 		virtual void removeSession(SessionMap::iterator i);
         virtual void removeSession(SessionPtr session);
-		virtual boost::optional<SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
+		virtual boost::optional<SessionPtr> createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, std::shared_ptr<gsNetwork::UdpEventSocket> socket);
 
         boost::optional<SessionPtr> findSession(std::string address);
 

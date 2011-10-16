@@ -17,26 +17,13 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/eventmanager.h>
-#include <gsNetwork/commsocket.h>
-#include <gsNetwork/networkaddress.h>
-#include <gsNetwork/events.h>
+#include "gsNetwork/commsocket.h"
 
-using namespace gsCore;
 using namespace gsNetwork;
 
 char const * const CommSocket::gkName = "comm_socket";
 
-CommSocket::CommSocket(ISocketHandler &h)
-: GameSocket(h)
+CommSocket::CommSocket(boost::asio::io_service &io_service, uint16_t port)
+: UdpEventSocket(io_service, port)
 {}
-
-boost::optional<std::shared_ptr<BinaryPacket>> CommSocket::processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
-{
-    boost::optional<std::shared_ptr<BinaryPacket>> processed;
-    
-    processed = packet;
-
-    return (*processed);
-}
 

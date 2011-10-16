@@ -17,25 +17,18 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/eventmanager.h>
-#include <gsNetwork/pingsocket.h>
-#include <gsNetwork/events.h>
+#include "gsNetwork/pingsocket.h"
 
-using namespace gsCore;
 using namespace gsNetwork;
 
 char const * const PingSocket::gkName = "ping_socket";
 
-PingSocket::PingSocket(ISocketHandler &h)
-: GameSocket(h)
+PingSocket::PingSocket(boost::asio::io_service &io_service, uint16_t port)
+: UdpEventSocket(io_service, port)
 {}
 
 bool PingSocket::handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
 {
-    boost::optional<std::shared_ptr<BinaryPacket>> processed;
-    
-    processed = packet;
-	
 	sendPacket(packet, address);
 
     return true;

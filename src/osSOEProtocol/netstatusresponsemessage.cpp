@@ -19,7 +19,6 @@
 
 #include <osSOEProtocol/netstatusresponsemessage.h>
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;

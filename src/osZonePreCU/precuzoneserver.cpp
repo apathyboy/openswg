@@ -32,11 +32,9 @@
 #include <gsNetwork/adminsocket.h>
 #include <gsNetwork/clientsocket.h>
 #include <gsNetwork/commsocket.h>
-#include <gsNetwork/gamesocket.h>
 #include <gsNetwork/pingsocket.h>
 #include <gsServer/serverevents.h>
 #include <gsCore/datastore.h>
-#include <Sockets/StdoutLog.h>
 #include <osZonePreCU/precuzoneservereventlistener.h>
 #include <osSOEProtocol/soesocketfactory.h>
 #include <osSOEProtocol/stationidentifiermessage.h>

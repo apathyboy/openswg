@@ -20,10 +20,8 @@
 #ifndef OPENSWG_SOEPROTOCOL_SOECLIENTSOCKET
 #define OPENSWG_SOEPROTOCOL_SOECLIENTSOCKET
 
-#include <gsCore/globals.h>
-#include <gsCore/macros.h>
-#include <gsNetwork/clientsocket.h>
-#include <gsServer/sessionmanager.h>
+#include "gsNetwork/clientsocket.h"
+#include "gsServer/sessionmanager.h"
 
 #define CompressSize 150
 
@@ -32,7 +30,7 @@ namespace osSOEProtocol
     class SOEClientSocket : public gsNetwork::ClientSocket
     {
     public:
-		SOEClientSocket(gsServer::SessionManager* sessionManager, ISocketHandler &h);
+		SOEClientSocket(gsServer::SessionManager* sessionManager, boost::asio::io_service &io_service, uint16_t port);
 
     public:
         /**

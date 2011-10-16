@@ -20,22 +20,16 @@
 #ifndef GALAXY_NETWORK_COMMSOCKET
 #define GALAXY_NETWORK_COMMSOCKET
 
-#include <gsCore/globals.h>
-#include <gsCore/macros.h>
-
-#include <gsNetwork/gamesocket.h>
+#include "gsNetwork/udp_event_socket.h"
 
 namespace gsNetwork
 {
-    class CommSocket : public GameSocket
+    class CommSocket : public UdpEventSocket
     {
     public:
-        CommSocket(ISocketHandler&);
+        CommSocket(boost::asio::io_service& io_service, uint16_t port);
 
         static char const * const gkName;
-
-    public:
-        virtual boost::optional<std::shared_ptr<BinaryPacket>> processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
     };
 }
 

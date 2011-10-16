@@ -18,8 +18,10 @@
 // *********************************************************************
 
 #include <osSOEProtocol/tano6message.h>
+
+#include <boost/asio.hpp>
+
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;

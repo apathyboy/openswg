@@ -20,26 +20,28 @@
 #ifndef GALAXY_NETWORK_GAMESOCKETFACTORY
 #define GALAXY_NETWORK_GAMESOCKETFACTORY
 
-#include <Sockets/SocketHandler.h>
-
+#include <cstdint>
+#include <memory>
 #include <string>
+
+#include <boost/asio/io_service.hpp>
 
 namespace gsNetwork
 {
-    class GameSocket;
+    class UdpEventSocket;
     class GameSocketFactory
     {
     public:
         GameSocketFactory();
 
     public:
-        GameSocket* createGameSocket(const std::string type, ISocketHandler &h);
+        std::shared_ptr<UdpEventSocket> createGameSocket(const std::string type, boost::asio::io_service &io_service, uint16_t port);
 
     protected:
-        virtual GameSocket* createAdminSocket(ISocketHandler &h);
-        virtual GameSocket* createClientSocket(ISocketHandler &h);
-        virtual GameSocket* createCommSocket(ISocketHandler &h);
-        virtual GameSocket* createPingSocket(ISocketHandler &h);
+        virtual std::shared_ptr<UdpEventSocket> createAdminSocket(boost::asio::io_service &io_service, uint16_t port);
+        virtual std::shared_ptr<UdpEventSocket> createClientSocket(boost::asio::io_service &io_service, uint16_t port);
+        virtual std::shared_ptr<UdpEventSocket> createCommSocket(boost::asio::io_service &io_service, uint16_t port);
+        virtual std::shared_ptr<UdpEventSocket> createPingSocket(boost::asio::io_service &io_service, uint16_t port);
 
     };
 }

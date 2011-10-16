@@ -18,8 +18,10 @@
 // *********************************************************************
 
 #include <osSOEProtocol/emotemessage.h>
+
+#include <boost/asio.hpp>
+
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -48,7 +50,7 @@ EmoteMessage::~EmoteMessage()
 		
 std::shared_ptr<NetworkMessage> EmoteMessage::clone()
 {
-	std::shared_ptr<EmoteMessage> clone(GS_NEW EmoteMessage);
+	std::shared_ptr<EmoteMessage> clone(new EmoteMessage);
 	clone->objectId = objectId; // Target (this is the character moving)
 	clone->targetId = targetId;
 	clone->emoteId = emoteId;

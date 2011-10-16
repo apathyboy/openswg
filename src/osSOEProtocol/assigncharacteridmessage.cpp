@@ -19,7 +19,8 @@
 
 #include <osSOEProtocol/assigncharacteridmessage.h>
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
+
+#include <boost/asio.hpp>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -48,7 +49,7 @@ AssignCharacterIdMessage::~AssignCharacterIdMessage()
 
 std::shared_ptr<BinaryPacket> AssignCharacterIdMessage::serialize()
 {
-	std::shared_ptr<BinaryPacket> packet(GS_NEW BinaryPacket);
+	std::shared_ptr<BinaryPacket> packet(new BinaryPacket);
     *packet << (uint16_t)SOE_CHL_DATA_A;
     *packet << (uint16_t)htons(getSequence());
     *packet << (uint16_t)2;

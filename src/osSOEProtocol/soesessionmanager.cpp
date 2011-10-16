@@ -53,13 +53,13 @@ void SOESessionManager::initialize()
     safeAddListener(listener, EventType(Event_DisconnectRequested::gkName));
 }
 
-boost::optional<SessionPtr> SOESessionManager::createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, GameSocket *socket)
+boost::optional<SessionPtr> SOESessionManager::createSession(gsNetwork::NetworkMessagePtr message, std::shared_ptr<gsNetwork::NetworkAddress> address, std::shared_ptr<UdpEventSocket> socket)
 {
-	SessionMap::iterator i = m_sessions.find(address->getAddressString());
+	SessionMap::iterator i = m_sessions.find(ToString(*address));
 	
 	if (i != m_sessions.end())
 	{
-        LOG(ERROR) << "Session already exists for address: " << address->getAddressString();
+        LOG(ERROR) << "Session already exists for address: " << ToString(*address);
 		return NULL;
 	}
 

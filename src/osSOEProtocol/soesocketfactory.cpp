@@ -33,13 +33,13 @@ SOESocketFactory::SOESocketFactory(SessionManager* sessionManager)
 : m_sessionManager(sessionManager)
 {}
 
-GameSocket* SOESocketFactory::createClientSocket(ISocketHandler &h)
+std::shared_ptr<UdpEventSocket> SOESocketFactory::createClientSocket(boost::asio::io_service &io_service, uint16_t port)
 {
-    SOEClientSocket* socket = GS_NEW SOEClientSocket(m_sessionManager, h);
+    auto socket = std::make_shared<SOEClientSocket>(m_sessionManager, io_service, port);
 		
 	EventListenerPtr listener(GS_NEW SOESocketEventListener(socket));
     safeAddListener(listener, EventType(Event_SessionCreated::gkName));
 
-    return dynamic_cast<GameSocket*>(socket);
+    return socket;
 }
 

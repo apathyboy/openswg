@@ -20,7 +20,6 @@
 #include <osSOEProtocol/creoinitmessage.h>
 #include <osSOEProtocol/opcodes.h>
 #include <osSOEProtocol/soepackettools.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;

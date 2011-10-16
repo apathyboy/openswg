@@ -35,16 +35,16 @@ using namespace gsNetwork;
 using namespace gsServer;
 using namespace osSOEProtocol;
 
-SOEClientSocket::SOEClientSocket(SessionManager* sessionManager, ISocketHandler &h)
-: m_sessionManager(sessionManager)
-, ClientSocket(h)
+SOEClientSocket::SOEClientSocket(SessionManager* sessionManager, boost::asio::io_service &io_service, uint16_t port)
+: ClientSocket(io_service, port)
+, m_sessionManager(sessionManager)
 {}
 
 bool SOEClientSocket::handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
 {
 	// Lookup the session in the session manager.
 	boost::optional<SessionPtr> sessionLookup 
-		= m_sessionManager->findSession(address->getAddressString());
+		= m_sessionManager->findSession(ToString(*address));
 
 	// Decrypt/decompress the packet if a valid session was returned.
 	if (sessionLookup && (*sessionLookup)->isValid())
@@ -61,7 +61,7 @@ bool SOEClientSocket::handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet,
 
 void SOEClientSocket::sendPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet, std::shared_ptr<gsNetwork::NetworkAddress> address, bool encrypt, bool compress, bool crc)
 {
-	boost::optional<SessionPtr> sessionLookup = m_sessionManager->findSession(address->getAddressString());
+	boost::optional<SessionPtr> sessionLookup = m_sessionManager->findSession(ToString(*address));
 
 	if (sessionLookup && (*sessionLookup)->isValid())
 	{
@@ -69,7 +69,7 @@ void SOEClientSocket::sendPacket(std::shared_ptr<gsNetwork::BinaryPacket> packet
         
 		PrepareSOEPacket(packet, session, encrypt, compress, crc);
 
-		SendToBuf(*(address->getRawAddress()), packet->getData(), packet->getLength());
+        UdpEventSocket::sendPacket(packet, address);
 	}
 }
 

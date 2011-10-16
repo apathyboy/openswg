@@ -22,14 +22,14 @@
 using namespace gsNetwork;
 using namespace gsServer;
 
-Session::Session(std::shared_ptr<NetworkAddress> address, GameSocket* socket)
+Session::Session(std::shared_ptr<NetworkAddress> address, std::shared_ptr<UdpEventSocket> socket)
 : m_remoteAddress(address)
 , m_remoteSocket(socket)
 , m_clientSequence(0)
 {
 	m_isLoggedIn = false;
 	m_isValid = false;
-	m_remoteMessageQueue = GS_NEW PriorityQueue();
+	m_remoteMessageQueue = new PriorityQueue();
 }
 
 bool Session::isValid()

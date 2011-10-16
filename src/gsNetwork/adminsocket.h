@@ -20,22 +20,16 @@
 #ifndef GALAXY_NETWORK_ADMINSOCKET
 #define GALAXY_NETWORK_ADMINSOCKET
 
-#include <gsCore/globals.h>
-#include <gsCore/macros.h>
-
-#include <gsNetwork/gamesocket.h>
+#include "gsNetwork/udp_event_socket.h"
 
 namespace gsNetwork
 {
-    class AdminSocket : public GameSocket
+    class AdminSocket : public UdpEventSocket
     {
     public:
-        AdminSocket(ISocketHandler&);
+        AdminSocket(boost::asio::io_service& io_service, uint16_t port);
 
         static char const * const gkName;
-
-    public:
-        virtual boost::optional<std::shared_ptr<BinaryPacket>> processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
     };
 }
 

@@ -19,7 +19,6 @@
 
 #include "gsServer/server_application.h"
 
-#include <boost/asio.hpp>
 #include <boost/thread/thread.hpp>
 
 #ifdef ERROR
@@ -32,42 +31,29 @@
 #include <gsServer/servereventlistener.h>
 #include <gsServer/sessionmanager.h>
 #include <gsNetwork/events.h>
-#include <gsNetwork/gamesocket.h>
 #include <gsNetwork/gamesocketfactory.h>
-#include <gsNetwork/gamesocketlistener.h>
 #include <gsNetwork/adminsocket.h>
 #include <gsNetwork/clientsocket.h>
 #include <gsNetwork/commsocket.h>
-#include <gsNetwork/gamesocket.h>
 #include <gsNetwork/pingsocket.h>
 #include <gsCore/datastore.h>
-#include <Sockets/StdoutLog.h>
 
 using namespace gsCore;
 using namespace gsServer;
 using namespace gsNetwork;
 
+static uint32_t SOCKET_DISABLED = 0;
+
 mysqlpp::Connection sStationDB;
 mysqlpp::Connection sGalaxyDB;
-
-
-namespace gsServer
-{
-    class ServerApplication::ServerApplicationImpl
-    {
-    private:
-        boost::asio::io_service io_service;
-    };
-}
-
 
 ServerApplication::ServerApplication(std::string serverType, uint32_t serverId)
 : m_serverType(serverType)
 , m_serverId(serverId)
+, io_service_()
+, work_(io_service_)
 , gsApplication::Application()
-{
-    m_socketListener = GS_NEW GameSocketListener;
-}
+{}
 
 ServerApplication::~ServerApplication()
 {
@@ -76,8 +62,6 @@ ServerApplication::~ServerApplication()
 
 void ServerApplication::shutdown()
 {
-	m_socketListener->toggleRunning();
-
 	boost::this_thread::sleep(boost::posix_time::seconds(1));
 	
 	if (Datastore::getStationDB().connected())
@@ -129,26 +113,26 @@ void ServerApplication::initialize(const std::string& configFilename)
 
     if (adminSocket != SOCKET_DISABLED)
     {
-        addSocket(m_socketFactory->createGameSocket(gsNetwork::AdminSocket::gkName, *m_socketListener), adminSocket);
+        sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::AdminSocket::gkName, io_service_, adminSocket));
         LOG(INFO) << "Listening for admin messages on port: " << adminSocket;
     }
 
     if (clientSocket != SOCKET_DISABLED)
     {
-        addSocket(m_socketFactory->createGameSocket(gsNetwork::ClientSocket::gkName, *m_socketListener), clientSocket);
-        LOG(INFO) << "Listening for client messages on port: " << adminSocket;
+        sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::ClientSocket::gkName, io_service_, clientSocket));
+        LOG(INFO) << "Listening for client messages on port: " << clientSocket;
     }
 
     if (commSocket != SOCKET_DISABLED)
     {
-        addSocket(m_socketFactory->createGameSocket(gsNetwork::CommSocket::gkName, *m_socketListener), commSocket);
-        LOG(INFO) << "Listening for server messages on port: " << adminSocket;
+        sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::CommSocket::gkName, io_service_, commSocket));
+        LOG(INFO) << "Listening for server messages on port: " << commSocket;
     }
 
     if (pingSocket != SOCKET_DISABLED)
     {
-        addSocket(m_socketFactory->createGameSocket(gsNetwork::PingSocket::gkName, *m_socketListener), pingSocket);
-        LOG(INFO) << "Listening for ping messages on port: " << adminSocket;
+        sockets_.push_back(m_socketFactory->createGameSocket(gsNetwork::PingSocket::gkName, io_service_, pingSocket));
+        LOG(INFO) << "Listening for ping messages on port: " << pingSocket;
     }
 }
 
@@ -157,23 +141,10 @@ void ServerApplication::setSocketFactory(GameSocketFactory* factory)
     m_socketFactory = factory;
 }
 
-void ServerApplication::addSocket(GameSocket* socket, uint16_t port)
-{
-    if (socket->Bind(port))
-    {
-        LOG(ERROR) << "Failed to add socket";
-        return;
-    }
-
-    m_socketListener->Add(socket);
-}
-
 void ServerApplication::startNetwork()
 {
-    m_socketListener->toggleRunning();
-    
     boost::thread t([this] () {
-        m_socketListener->run();
+        io_service_.run();
     });
 }
 

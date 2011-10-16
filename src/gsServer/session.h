@@ -26,8 +26,8 @@
 #include <memory>
 
 #include <gsCore/process.h>
-#include <gsNetwork/gamesocket.h>
-#include <gsNetwork/networkaddress.h>
+#include "gsNetwork/udp_event_socket.h"
+#include "gsNetwork/network_address.h"
 #include <gsNetwork/networkmessage.h>
 #include <gsNetwork/priorityqueue.h>
 #include <gsServer/opcodehandler.h>
@@ -47,7 +47,7 @@ namespace gsServer
 			READY,
 			DEAD
 		};
-		Session(std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
+		Session(std::shared_ptr<gsNetwork::NetworkAddress> address, std::shared_ptr<gsNetwork::UdpEventSocket> socket);
 
         bool isValid();
         void setValid(bool valid);
@@ -102,7 +102,7 @@ namespace gsServer
 		std::list<std::shared_ptr<gsNetwork::BinaryPacket>> m_incomingQueue;
 		gsNetwork::PriorityQueue* m_remoteMessageQueue;
 
-		gsNetwork::GameSocket* m_remoteSocket;
+		std::shared_ptr<gsNetwork::UdpEventSocket> m_remoteSocket;
 
         std::shared_ptr<gsNetwork::NetworkAddress> m_remoteAddress;
     };

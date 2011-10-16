@@ -21,7 +21,6 @@
 #include <osSOEProtocol/movementmessage.h>
 #include <osSOEProtocol/opcodes.h>
 #include <osSOEProtocol/soepackettools.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -71,7 +70,7 @@ bool MovementMessage::canSendScheduled()
 		
 std::shared_ptr<NetworkMessage> MovementMessage::clone()
 {
-	std::shared_ptr<MovementMessage> clone(GS_NEW MovementMessage);
+	std::shared_ptr<MovementMessage> clone(new MovementMessage);
 	clone->objectId = this->objectId; // Target (this is the character moving)
     clone->ticks = this->ticks; // Ticks?
     clone->timer = this->timer; // Times?

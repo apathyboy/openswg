@@ -8,7 +8,6 @@ target_link_libraries(osZonePreCU
     gsNetwork
     gsServer
     osSOEProtocol
-    Sockets
 	debug ${GLOG_LIBRARY_DEBUG}
 	optimized ${GLOG_LIBRARY_RELEASE}
 	debug ${MYSQLPP_LIBRARY_DEBUG}

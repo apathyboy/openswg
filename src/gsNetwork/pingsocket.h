@@ -20,21 +20,18 @@
 #ifndef GALAXY_NETWORK_PINGSOCKET
 #define GALAXY_NETWORK_PINGSOCKET
 
-#include <gsCore/globals.h>
-#include <gsCore/macros.h>
-#include <gsNetwork/gamesocket.h>
+#include "gsNetwork/udp_event_socket.h"
 
 namespace gsNetwork
 {
-    class PingSocket : public GameSocket
+    class PingSocket : public UdpEventSocket
     {
     public:
         static char const * const gkName;
 
-        PingSocket(ISocketHandler &h);
+        PingSocket(boost::asio::io_service& io_service, uint16_t port);
 
-    public:
-        virtual bool handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
+        bool handleRemoteIncoming(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
     };
 }
 

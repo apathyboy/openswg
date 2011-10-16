@@ -24,8 +24,6 @@
 
 #include <gsNetwork/events.h>
 
-#include <Sockets/Utility.h>
-
 using namespace gsCore;
 using namespace gsNetwork;
 
@@ -53,9 +51,7 @@ bool PacketLogListener::handleEvent( Event const & event )
         EventData_RemoteMessage * eventData = event.getDataPtr<EventData_RemoteMessage>();
         
         LOG(INFO) << "Received Packet\n" <<
-            eventData->address->getAddressString().c_str() << " -> " <<
-            Utility::GetLocalAddress().c_str() << ":" << eventData->socket->GetPort() <<
-            eventData->packet->getLogString().c_str();
+            ToString(*eventData->address) << " -> Server " << eventData->packet->getLogString();
     }
 
     return false;

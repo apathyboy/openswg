@@ -30,13 +30,13 @@ namespace osSOEProtocol
 	class SOESocketEventListener : public gsCore::IEventListener
 	{
     public:
-        SOESocketEventListener(SOEClientSocket* socket);
+        SOESocketEventListener(std::shared_ptr<SOEClientSocket> socket);
         virtual ~SOESocketEventListener();
         char const * getName(void) { return "SOESocketEventListener"; }
         bool handleEvent(gsCore::Event const & event);
 
 	protected:
-		SOEClientSocket* m_socket;
+		std::shared_ptr<SOEClientSocket> m_socket;
 	};
 }
 

@@ -20,7 +20,6 @@
 #include <osSOEProtocol/cellmovementmessage.h>
 #include <osSOEProtocol/opcodes.h>
 #include <osSOEProtocol/soepackettools.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -49,7 +48,7 @@ CellMovementMessage::~CellMovementMessage()
 		
 std::shared_ptr<NetworkMessage> CellMovementMessage::clone()
 {
-	std::shared_ptr<CellMovementMessage> clone(GS_NEW CellMovementMessage);
+	std::shared_ptr<CellMovementMessage> clone(new CellMovementMessage);
 	clone->objectId = objectId; // Target (this is the character moving)
     clone->ticks = ticks; // Ticks?
     clone->timer = timer; // Times?

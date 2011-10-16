@@ -20,8 +20,7 @@
 #ifndef OPENSWG_SOEPROTOCOL_SOESESSION
 #define OPENSWG_SOEPROTOCOL_SOESESSION
 
-#include <gsNetwork/gamesocket.h>
-#include <gsNetwork/networkaddress.h>
+#include <gsNetwork/network_address.h>
 #include <gsServer/session.h>
 
 #include <memory>
@@ -33,7 +32,7 @@ namespace osSOEProtocol
 	class SOESession : public gsServer::Session
     {
     public:
-		SOESession(std::shared_ptr<gsNetwork::NetworkAddress> address, gsNetwork::GameSocket* socket);
+		SOESession(std::shared_ptr<gsNetwork::NetworkAddress> address, std::shared_ptr<gsNetwork::UdpEventSocket> socket);
 
 		void handleSOELayer(std::shared_ptr<gsNetwork::BinaryPacket> packet);
 		void processClientCommand(std::shared_ptr<gsNetwork::BinaryPacket> packet);

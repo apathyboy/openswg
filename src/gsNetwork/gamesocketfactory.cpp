@@ -17,58 +17,54 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsNetwork/adminsocket.h>
-#include <gsNetwork/clientsocket.h>
-#include <gsNetwork/commsocket.h>
-#include <gsNetwork/gamesocket.h>
-#include <gsNetwork/pingsocket.h>
-#include <gsNetwork/gamesocketfactory.h>
+#include "gsNetwork/gamesocketfactory.h"
+
+#include "gsNetwork/adminsocket.h"
+#include "gsNetwork/clientsocket.h"
+#include "gsNetwork/commsocket.h"
+#include "gsNetwork/pingsocket.h"
 
 using namespace gsNetwork;
 
 GameSocketFactory::GameSocketFactory()
 {}
 
-GameSocket* GameSocketFactory::createGameSocket(const std::string type, ISocketHandler &h)
+std::shared_ptr<UdpEventSocket> GameSocketFactory::createGameSocket(const std::string type, boost::asio::io_service &io_service, uint16_t port)
 {
-    GameSocket* socket;
+    std::shared_ptr<UdpEventSocket> socket;
 
     if (strcmp(type.c_str(), AdminSocket::gkName) == 0)
-        socket = createAdminSocket(h);
+        socket = createAdminSocket(io_service, port);
 
     if (strcmp(type.c_str(), ClientSocket::gkName) == 0)
-        socket = createClientSocket(h);
+        socket = createClientSocket(io_service, port);
 
     if (strcmp(type.c_str(), CommSocket::gkName) == 0)
-        socket = createCommSocket(h);
+        socket = createCommSocket(io_service, port);
     
     if (strcmp(type.c_str(), PingSocket::gkName) == 0)
-        socket = createPingSocket(h);
+        socket = createPingSocket(io_service, port);
 
     return socket;
 }
 
-GameSocket* GameSocketFactory::createAdminSocket(ISocketHandler &h)
+std::shared_ptr<UdpEventSocket> GameSocketFactory::createAdminSocket(boost::asio::io_service &io_service, uint16_t port)
 {
-    AdminSocket* socket = GS_NEW AdminSocket(h);
-    return dynamic_cast<GameSocket*>(socket);
+    return std::make_shared<AdminSocket>(io_service, port);
 }
 
-GameSocket* GameSocketFactory::createClientSocket(ISocketHandler &h)
+std::shared_ptr<UdpEventSocket> GameSocketFactory::createClientSocket(boost::asio::io_service &io_service, uint16_t port)
 {
-    ClientSocket* socket = GS_NEW ClientSocket(h);
-    return dynamic_cast<GameSocket*>(socket);
+    return std::make_shared<ClientSocket>(io_service, port);
 }
 
-GameSocket* GameSocketFactory::createCommSocket(ISocketHandler &h)
+std::shared_ptr<UdpEventSocket> GameSocketFactory::createCommSocket(boost::asio::io_service &io_service, uint16_t port)
 {
-    CommSocket* socket = GS_NEW CommSocket(h);
-    return dynamic_cast<GameSocket*>(socket);
+    return std::make_shared<CommSocket>(io_service, port);
 }
 
-GameSocket* GameSocketFactory::createPingSocket(ISocketHandler &h)
+std::shared_ptr<UdpEventSocket> GameSocketFactory::createPingSocket(boost::asio::io_service &io_service, uint16_t port)
 {
-    PingSocket* socket = GS_NEW PingSocket(h);
-    return dynamic_cast<GameSocket*>(socket);
+    return std::make_shared<PingSocket>(io_service, port);
 }
 

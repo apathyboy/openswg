@@ -129,7 +129,6 @@ add_subdirectory(src/gsApplication)
 add_subdirectory(src/gsCore)
 add_subdirectory(src/gsNetwork)
 add_subdirectory(src/gsServer)
-add_subdirectory(src/Sockets)
 
 add_subdirectory(src/osLogin)
 add_subdirectory(src/osSOEProtocol)

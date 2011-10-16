@@ -17,26 +17,12 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/eventmanager.h>
-#include <gsNetwork/adminsocket.h>
-#include <gsNetwork/networkaddress.h>
-#include <gsNetwork/events.h>
+#include "gsNetwork/adminsocket.h"
 
-using namespace gsCore;
 using namespace gsNetwork;
 
 char const * const AdminSocket::gkName = "admin_socket";
 
-AdminSocket::AdminSocket(ISocketHandler &h)
-: GameSocket(h)
+AdminSocket::AdminSocket(boost::asio::io_service &io_service, uint16_t port)
+: UdpEventSocket(io_service, port)
 {}
-
-boost::optional<std::shared_ptr<BinaryPacket>> AdminSocket::processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
-{
-    boost::optional<std::shared_ptr<BinaryPacket>> processed;
-    
-    processed = packet;
-
-    return (*processed);
-}
-

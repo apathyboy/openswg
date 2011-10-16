@@ -47,7 +47,7 @@ void TangibleObjectProxy::createTemplate()
 
 void TangibleObjectProxy::createObject()
 {
-	std::shared_ptr<TangibleObject> tanoObject(GS_NEW TangibleObject);
+	std::shared_ptr<TangibleObject> tanoObject(new TangibleObject);
 	m_object = tanoObject;
 
 	buildPropertyMap();
@@ -248,7 +248,7 @@ void TangibleObjectProxy::loadFromDatabaseId(uint64_t databaseId)
 
 void TangibleObjectProxy::sendReliableUpdate(Session* session)
 {
-	std::shared_ptr<CreoInitMessage> creoInit(GS_NEW CreoInitMessage());
+	std::shared_ptr<CreoInitMessage> creoInit(new CreoInitMessage());
 	creoInit->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	creoInit->quaternionX = getPropertyAs<FloatObjectProperty*>(std::string("QuaternionX"))->getValue();
 	creoInit->quaternionY = getPropertyAs<FloatObjectProperty*>(std::string("QuaternionY"))->getValue();
@@ -261,35 +261,35 @@ void TangibleObjectProxy::sendReliableUpdate(Session* session)
 	session->sendToRemote(creoInit);
 
 	// Send Obj Link
-	std::shared_ptr<ObjLinkMessage> objLink(GS_NEW ObjLinkMessage());
+	std::shared_ptr<ObjLinkMessage> objLink(new ObjLinkMessage());
 	objLink->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	objLink->parentId = getPropertyAs<Uint64ObjectProperty*>(std::string("ParentId"))->getValue();
 	objLink->linkType = m_linkType;
 	session->sendToRemote(objLink);
 
 	// Send TANO 3
-	std::shared_ptr<Tano3Message> tano3(GS_NEW Tano3Message());
+	std::shared_ptr<Tano3Message> tano3(new Tano3Message());
 	tano3->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	tano3->category = getPropertyAs<StringObjectProperty*>(std::string("Category"))->getValue();
 	tano3->type = getPropertyAs<StringObjectProperty*>(std::string("Type"))->getValue();
 	session->sendToRemote(tano3);
 
 	// Send TANO 6
-	std::shared_ptr<Tano6Message> tano6(GS_NEW Tano6Message());
+	std::shared_ptr<Tano6Message> tano6(new Tano6Message());
 	tano6->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(tano6);
 
 	// Send TANO 8
-	std::shared_ptr<Tano8Message> tano8(GS_NEW Tano8Message());
+	std::shared_ptr<Tano8Message> tano8(new Tano8Message());
 	tano8->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(tano8);
 
 	// Send TANO 9
-	std::shared_ptr<Tano9Message> tano9(GS_NEW Tano9Message());
+	std::shared_ptr<Tano9Message> tano9(new Tano9Message());
 	tano9->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(tano9);
 
-	std::shared_ptr<ObjCloseMessage> objClose(GS_NEW ObjCloseMessage());
+	std::shared_ptr<ObjCloseMessage> objClose(new ObjCloseMessage());
 	objClose->objectId = getPropertyAs<Uint64ObjectProperty*>(std::string("ObjectId"))->getValue();
 	session->sendToRemote(objClose);	
 }

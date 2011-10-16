@@ -19,7 +19,6 @@
 
 #include <osSOEProtocol/multimessage.h>
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
@@ -72,7 +71,7 @@ void MultiMessage::unserialize()
         else if (size < 1)
             return;
 
-		std::shared_ptr<BinaryPacket> segment(GS_NEW BinaryPacket);
+		std::shared_ptr<BinaryPacket> segment(new BinaryPacket);
 
 		for (uint32_t j = 0; j < size; ++j)
 			segment->append<char>(m_serializedData->read<char>());

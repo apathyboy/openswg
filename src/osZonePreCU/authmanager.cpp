@@ -35,7 +35,7 @@ AuthManager::AuthManager()
 
 void AuthManager::registerOpcodes(gsServer::OpcodeFactory* factory)
 {
-	factory->addOpcodeHandler(CMSG_DATA_SES_VER, OpcodeHandlerPtr(GS_NEW OpcodeHandler(
+	factory->addOpcodeHandler(CMSG_DATA_SES_VER, OpcodeHandlerPtr(new OpcodeHandler(
         bind(&AuthManager::handleAuthRequest, this, std::placeholders::_1, std::placeholders::_2))));
 }
 

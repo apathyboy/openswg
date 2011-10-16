@@ -17,25 +17,12 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // *********************************************************************
 
-#include <gsCore/eventmanager.h>
-#include <gsNetwork/clientsocket.h>
-#include <gsNetwork/events.h>
+#include "gsNetwork/clientsocket.h"
 
-using namespace gsCore;
 using namespace gsNetwork;
 
 char const * const ClientSocket::gkName = "client_socket";
 
-ClientSocket::ClientSocket(ISocketHandler &h)
-: GameSocket(h)
+ClientSocket::ClientSocket(boost::asio::io_service &io_service, uint16_t port)
+: UdpEventSocket(io_service, port)
 {}
-
-boost::optional<std::shared_ptr<BinaryPacket>> ClientSocket::processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address)
-{
-    boost::optional<std::shared_ptr<BinaryPacket>> processed;
-    
-    processed = packet;
-
-    return (*processed);
-}
-

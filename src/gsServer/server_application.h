@@ -24,12 +24,15 @@
 
 #include <memory>
 #include <string>
+#include <vector>
+
+#include <boost/asio/io_service.hpp>
 
 #include "gsApplication/application.h"
 
 namespace gsNetwork
 {
-    class GameSocket;
+    class UdpEventSocket;
     class GameSocketListener;
     class GameSocketFactory;
 };
@@ -47,7 +50,6 @@ namespace gsServer
         virtual void startNetwork();
 		virtual void run();
 
-        void addSocket(gsNetwork::GameSocket* socket, uint16_t port);
         gsNetwork::GameSocketListener* getSocketListener() { return m_socketListener; }
 
         void setSocketFactory(gsNetwork::GameSocketFactory* factory);
@@ -58,8 +60,9 @@ namespace gsServer
 		uint32_t getServerId() {return m_serverId;}
 
     protected:
-        class ServerApplicationImpl;
-        std::unique_ptr<ServerApplicationImpl> impl_;
+        boost::asio::io_service io_service_;
+        boost::asio::io_service::work work_;
+        std::vector<std::shared_ptr<gsNetwork::UdpEventSocket>> sockets_;
 
         gsNetwork::GameSocketListener* m_socketListener;
         gsNetwork::GameSocketFactory* m_socketFactory;

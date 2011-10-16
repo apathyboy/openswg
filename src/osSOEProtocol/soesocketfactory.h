@@ -22,8 +22,6 @@
 
 #include <gsNetwork/gamesocketfactory.h>
 
-#include <Sockets/SocketHandler.h>
-
 #include <string>
 
 namespace osSOEProtocol
@@ -35,7 +33,7 @@ namespace osSOEProtocol
 
     protected:
 		gsServer::SessionManager* m_sessionManager;
-        virtual gsNetwork::GameSocket* createClientSocket(ISocketHandler &h);
+        virtual std::shared_ptr<gsNetwork::UdpEventSocket> createClientSocket(boost::asio::io_service &io_service, uint16_t port);
     };
 }
 

@@ -20,21 +20,16 @@
 #ifndef GALAXY_NETWORK_CLIENTSOCKET
 #define GALAXY_NETWORK_CLIENTSOCKET
 
-#include <gsCore/globals.h>
-#include <gsCore/macros.h>
-#include <gsNetwork/gamesocket.h>
+#include "gsNetwork/udp_event_socket.h"
 
 namespace gsNetwork
 {
-    class ClientSocket : public GameSocket
+    class ClientSocket : public UdpEventSocket
     {
     public:
         static char const * const gkName;
 
-        ClientSocket(ISocketHandler &h);
-
-    public:
-        virtual boost::optional<std::shared_ptr<BinaryPacket>> processPacketData(std::shared_ptr<BinaryPacket> packet, std::shared_ptr<NetworkAddress> address);
+        ClientSocket(boost::asio::io_service& io_service, uint16_t port);
     };
 }
 

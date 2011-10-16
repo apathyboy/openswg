@@ -19,7 +19,8 @@
 
 #include <osSOEProtocol/animationmessage.h>
 #include <osSOEProtocol/opcodes.h>
-#include <gsNetwork/gamesocket.h>
+
+#include <boost/asio.hpp>
 
 using namespace gsNetwork;
 using namespace osSOEProtocol;
